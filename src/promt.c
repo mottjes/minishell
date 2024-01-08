@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   promt.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/08 18:03:49 by mottjes          ###   ########.fr       */
+/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
+/*   Updated: 2024/01/08 17:52:10 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+char	*get_promt(char **input)
+{
+	char buff[100];
+	int i;
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
-# include <sys/wait.h>
+	i = 0;
+	if (getcwd(buff, 100) == NULL)
+		perror("getcwd failed!\n");
 
-# define READLINE_LIBRARY
-# include "../readline/include/history.h"
-# include "../readline/include/readline.h"
-# include "../readline/include/rlstdc.h"
-
-// promt.c
-char	*get_promt(char **input);
-
-
-#endif
+	while (buff[i])
+		i++;
+	while (buff[i] != '/')
+		i--;
+	strlcat(buff, " \% ", 100);
+	*input = readline(buff + i + 1);
+	return (*input);
+}

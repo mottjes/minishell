@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/08 17:32:40 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/08 18:03:45 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,26 @@ void sh_echo(char *arg)
 	printf("%s\n", arg);
 }
 
-void	get_promt(char *promt)
-{
-	if (getcwd(promt, 100) == NULL)
-		perror("getcwd failed!\n");
-	strcat(promt, " \% ");
-}
-
 int	main(void)
 {
-	char promt[100];
-	char *line;
+	char *input;
 	pid_t pid;
 	int status;
 	char *argv[] = {"/bin/ls", NULL};
 	
+	printf("<-------------------------------------------->\n");
+	printf("<--------- super tolles Minishell ----------->\n");
+	printf("<-------------------------------------------->\n");
 	while (1)
 	{
-		get_promt(promt);
-		line = readline(promt);
-		if (!strcmp(line, "exit"))
+		input = get_promt(&input);
+		if (!strcmp(input, "exit"))
 		 	break;
-		if (!strcmp(line, "pwd"))
+		if (!strcmp(input, "pwd"))
 			sh_pwd();
-		if (!strncmp(line, "echo", 4))
-			sh_echo(line + 5);
-		if (!strcmp(line, "ls"))
+		if (!strncmp(input, "echo", 4))
+			sh_echo(input + 5);
+		if (!strcmp(input, "ls"))
 		{
 			pid = fork();
 			if (pid == -1)
