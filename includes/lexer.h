@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/08 20:38:14 by mottjes          ###   ########.fr       */
+/*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
+/*   Updated: 2024/01/08 20:37:55 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef LEXER_H
+# define LEXER_H
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+typedef struct s_lexer
+{
+	char	*value;
+	int		pos;
+	s_lexer	*next;
+}		t_lexer;
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
-# include <sys/wait.h>
-# include "lexer.h"
-# define READLINE_LIBRARY
-# include "../readline/include/history.h"
-# include "../readline/include/readline.h"
-# include "../readline/include/rlstdc.h"
-
-// promt.c
-char	*get_promt(char **input);
 
 
 #endif
