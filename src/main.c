@@ -6,12 +6,11 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/08 18:03:45 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/09 13:18:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void sh_pwd(void)
 {
@@ -26,6 +25,25 @@ void sh_echo(char *arg)
 	printf("%s\n", arg);
 }
 
+
+
+void	lexer(char *input)
+{
+	t_lexer *start;
+	t_lexer *next;
+	int i;
+	
+	i = 0;
+	while (input)
+	{
+		start = malloc(sizeof(t_lexer));
+		start->pos = i;
+		start->next = next;
+	}
+	
+}
+
+
 int	main(void)
 {
 	char *input;
@@ -33,12 +51,13 @@ int	main(void)
 	int status;
 	char *argv[] = {"/bin/ls", NULL};
 	
-	printf("<-------------------------------------------->\n");
-	printf("<--------- super tolles Minishell ----------->\n");
-	printf("<-------------------------------------------->\n");
 	while (1)
 	{
 		input = get_promt(&input);
+
+		lexer(input);
+
+		
 		if (!strcmp(input, "exit"))
 		 	break;
 		if (!strcmp(input, "pwd"))
