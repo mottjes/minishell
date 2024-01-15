@@ -1,20 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/15 13:29:09 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/24 13:26:45 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+convert a upper case to lower case letter if there is one
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+int	ft_tolower(int c)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	if (c >= 'A' && c <= 'Z')
+		c += 32;
+	return (c);
 }
+
+/*
+int main(void)
+{
+	int	c;
+
+	c = 'A';
+	printf("%c\n", ft_tolower(c));
+	printf("%c\n", tolower(c));
+}
+*/
+
+/*
+gcc ft_tolower.c -Wall -Wextra -Werror
+*/

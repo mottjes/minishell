@@ -6,11 +6,81 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/09 13:18:34 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:12:39 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	main(void)
+{
+	char *input;
+	t_token *token;
+
+	while (1)
+	{
+		get_promt(&input);
+		lexer(&input, &token);
+
+		while (token)
+		{
+			printf("token pos: %i\n", token->pos);
+			printf("token str: %s\n", token->str);
+			printf("token type: %u\n", token->type);
+			token = token->next;
+		}
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+// void	lexer(char *input)
+// {
+// 	t_lexer *start;
+// 	t_lexer *next;
+// 	int i;
+	
+// 	i = 0;
+// 	while (input)
+// 	{
+// 		start = malloc(sizeof(t_lexer));
+// 		start->pos = i;
+// 		start->next = next;
+// 	}
+	
+// }
 
 void sh_pwd(void)
 {
@@ -24,28 +94,6 @@ void sh_echo(char *arg)
 {
 	printf("%s\n", arg);
 }
-
-
-
-void	lexer(char *input)
-{
-	t_lexer *start;
-	t_lexer *next;
-	int i;
-	
-	i = 0;
-	while (input)
-	{
-		start = malloc(sizeof(t_lexer));
-		start->pos = i;
-		start->next = next;
-	}
-	
-}
-
-
-int	main(void)
-{
 	char *input;
 	pid_t pid;
 	int status;
@@ -55,9 +103,7 @@ int	main(void)
 	{
 		input = get_promt(&input);
 
-		lexer(input);
-
-		
+		//lexer(input);
 		if (!strcmp(input, "exit"))
 		 	break;
 		if (!strcmp(input, "pwd"))
@@ -80,4 +126,4 @@ int	main(void)
 		}
 	}
 	return (0);
-}
+*/

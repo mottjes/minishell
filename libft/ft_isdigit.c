@@ -1,20 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/15 12:18:18 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/24 13:22:04 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+checks if an integer is an digit 
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+int	ft_isdigit(int c)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
 }
+
+/*
+int	main(void)
+{
+	int	c;
+
+	c = '0';
+	printf("%d\n", ft_isdigit(c));
+	printf("%d\n", isdigit(c));
+}
+*/
+
+/*
+gcc ft_isdigit.c -Wall -Wextra -Werror
+*/

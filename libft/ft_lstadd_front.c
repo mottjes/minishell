@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/24 13:31:58 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/26 13:13:58 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+Adds the node ’new’ at the beginning of the list.
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+void	ft_lstadd_front(t_list **lst, t_list *newnode)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	newnode->next = *lst;
+	*lst = newnode;
 }

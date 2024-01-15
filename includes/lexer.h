@@ -6,34 +6,32 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/09 18:35:19 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/15 19:00:43 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
-/*
 
-lexer:
-lexical analysis where the input is read char by char to form tokens
-
-1.	word 
-2.	'-'
-'|'	
-'<'
-'>'
-'>>'
-'<<'
-*/
-
-typedef struct s_lexer
+typedef enum s_token_type
 {
-	char	*value;
-	
-	int		pos;
-	s_lexer	*next;
-}		t_lexer;
+	WORD,					// string
+	PIPE,					// pipe 
+	RE_IN,					// redirects input
+	RE_OUT,					// redirects output
+	RE_APP,					// redirects output in append mode
+	HERE_DOC,				// delimiter
+}			t_token_type;
 
+typedef struct s_token
+{
+	char			*str;
+	t_token_type	type;
+	int				pos;
+	struct s_token	*next;
+}		t_token;
+
+void	lexer(char **input,t_token **token);
 
 
 #endif

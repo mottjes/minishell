@@ -1,20 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/24 13:32:14 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/26 08:55:28 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+Counts the number of nodes in a list.
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+int	ft_lstsize(t_list *lst)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	int	size;
+
+	size = 0;
+	if (lst == NULL)
+		return (size);
+	while (lst)
+	{
+		size++;
+		lst = lst->next;
+	}
+	return (size);
 }
+
+/*
+int	main(void)
+{
+
+}
+*/
+
+/*
+
+*/

@@ -1,20 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/17 12:32:43 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/24 13:24:47 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+Outputs the character ’c’ to the given file
+descriptor
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+void	ft_putchar_fd(char c, int fd)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	write(fd, &c, 1);
 }
+
+/*
+int main(void)
+{
+	char c = 'A';
+	int fd = 2;
+	ft_putchar_fd(c, fd);
+}
+*/
+
+/*
+gcc ft_putchar_fd.c -Wall -Wextra -Werror
+*/

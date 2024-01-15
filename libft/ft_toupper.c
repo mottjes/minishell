@@ -1,20 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/15 13:20:46 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/24 13:26:43 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+convert a lower case to upper case letter if there is one
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+int	ft_toupper(int c)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	if (c >= 'a' && c <= 'z')
+		c -= 32;
+	return (c);
 }
+
+/*
+int main(void)
+{
+	int	c;
+
+	c = 'z';
+	printf("%c\n", ft_toupper(c));
+	printf("%c\n", toupper(c));
+}
+*/
+
+/*
+gcc ft_toupper.c -Wall -Wextra -Werror
+*/

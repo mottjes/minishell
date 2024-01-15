@@ -1,20 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   promt.c                                            :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 17:36:17 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 13:55:15 by mottjes          ###   ########.fr       */
+/*   Created: 2023/05/15 12:30:19 by mottjes           #+#    #+#             */
+/*   Updated: 2023/05/24 13:24:19 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/*
+checks if an integer is an ascii character
+*/
 
-void	get_promt(char **input)
+#include "libft.h"
+
+int	ft_isascii(int c)
 {
-	printf(CYAN BOLD "minishell"  RESET);
-	printf(BLUE " %%" RESET);
-	*input = readline(" ");
+	if (c >= 0 && c <= 127)
+		return (1);
+	else
+		return (0);
 }
+
+/*
+int main(void)
+{
+	int	c;
+
+	c = 42;
+	printf("%d\n", ft_isascii(c));
+	printf("%d\n", isascii(c));
+}
+*/
+
+/*
+gcc ft_isascii.c -Wall -Wextra -Werror
+*/
