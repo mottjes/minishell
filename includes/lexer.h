@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 19:00:43 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:01:40 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,15 @@ typedef struct s_token
 	struct s_token	*next;
 }		t_token;
 
+//			promt.c
 void	lexer(char **input,t_token **token);
+
+//			lexer.c
+void	lexer(char **input, t_token **token_ptr);
+void	tokens_identify(t_token **token_ptr);
+void 	tokens_str_cpy(char *input, t_token **token_ptr);
+void 	tokens_init(char *input, int count, t_token **token_ptr);
+int		tokens_count(char *input);
 
 
 #endif
