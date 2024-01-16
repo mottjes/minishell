@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 20:12:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/16 12:42:00 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(void)
 			printf("token type: %u\n", token->type);
 			token = token->next;
 		}
-		
 	}
 }
 

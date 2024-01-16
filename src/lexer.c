@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 20:14:13 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/16 12:58:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	tokens_count(char *input)
 	int i;
 	int tokens;
 
-	tokens = 0;
 	i = 0;
+	tokens = 0;
 	while(input[i])
 	{
 		while(input[i] == ' ' || input[i] == '\t')
@@ -32,7 +32,7 @@ int	tokens_count(char *input)
 				i++;
 			tokens++;
 		}
-		else if (input[i])
+		else if(input[i])
 			tokens++;
 		while(input[i] != ' ' && input [i] != '\t' && input[i])
 			i++;
@@ -66,13 +66,14 @@ void tokens_init(char *input, int count, t_token **token)
 	}
 }
 
-int	token_identify(char *input, int i, t_token *token_ptr)
+
+int identify_re_in_and_here_doc(char *input, int i, t_token *token_ptr)
 {
 	if (input[i] == '<')
 	{
 		i++;
 		if(input[i] == '>')
-			return(printf("minishell: syntax error"), 1);
+			return(-1);
 		if(input[i] == '<')
 		{
 			token_ptr->type = HERE_DOC;
@@ -83,11 +84,16 @@ int	token_identify(char *input, int i, t_token *token_ptr)
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 	}
-	else if(input[i] == '>')
+	return (i);
+}
+
+int identify_re_out_and_re_app(char *input, int i, t_token *token_ptr)
+{
+	if(input[i] == '>')
 	{
 		i++;
 		if(input[i] == '<')
-			return(printf("minishell: syntax error"), 1);
+			return(-1);
 		if(input[i] == '>')
 		{
 			i++;
@@ -98,14 +104,30 @@ int	token_identify(char *input, int i, t_token *token_ptr)
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 	}
-	else if (input[i] == '|')
+	return (i);
+}
+
+int	token_identify(char *input, int i, t_token *token_ptr)
+{
+	if (identify_re_in_and_here_doc(input, i, token_ptr) == -1)
+		return (printf("minishell: syntax error"), -1);
+	if (!token_ptr->type)
 	{
-		if(input[i + 1] != ' ' && input[i + 1] != '\t')
-			return (printf("minishell: syntax error near unexpected token `|'\n"), 1);	
-		token_ptr->type = PIPE;
+		if(identify_re_out_and_re_app(input, i, token_ptr) == -1)
+			return(printf("minishell: syntax error"), -1);
 	}
-	else 
-		token_ptr->type = WORD;
+	if (!token_ptr->type)
+	{
+		if (input[i] == '|')
+		{
+			if (input[i + 1] != ' ' && input[i + 1] != '\t')
+				return (printf("minishell: syntax error near unexpected token `|'\n"), 1);	
+			token_ptr->type = PIPE;
+		}
+		else 
+			token_ptr->type = WORD;
+		return (i);
+	}
 	return (i);
 }	
 
@@ -120,9 +142,9 @@ void token_str_cpy(char *input, t_token **token)
 	j = 0;
 	size = 0;
 	token_ptr = *token;
-	while(input[i] && token_ptr != NULL)
+	while (input[i] && token_ptr != NULL)
 	{
-		while(input[i] == ' ' || input[i] == '\t')
+		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 		i = token_identify(input, i, token_ptr);
 		j = i;
@@ -139,12 +161,19 @@ void token_str_cpy(char *input, t_token **token)
 		token_ptr = token_ptr->next;
 	}
 }
+void	tokens_identify()
+{
+	
+}
 
 void	lexer(char **input, t_token **token)
 {
 	int count;
 	
+	if (**input == '\0')
+		return ;
 	count = tokens_count(*input);
 	tokens_init(*input, count, token);
 	token_str_cpy(*input, token);
+	tokens_identify(*input, count);
 }
