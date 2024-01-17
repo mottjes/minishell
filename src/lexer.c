@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/16 15:03:48 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:17:57 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,14 +115,15 @@ void	tokens_identify(t_token **token_ptr)
 	}
 }
 
-void	lexer(char **input, t_token **token_ptr)
+void	lexer(char **input_ptr, t_token **token_ptr)
 {
 	int count;
 	
-	if (**input == '\0')
+	if (**input_ptr == '\0')
 		return ;
-	count = tokens_count(*input);
-	tokens_init(*input, count, token_ptr);
-	tokens_str_cpy(*input, token_ptr);
+	input_split(input_ptr);
+	count = tokens_count(*input_ptr);
+	tokens_init(*input_ptr, count, token_ptr);
+	tokens_str_cpy(*input_ptr, token_ptr);
 	tokens_identify(token_ptr);
 }

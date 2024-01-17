@@ -6,98 +6,52 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/16 16:02:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:10:05 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void print_lexer(t_token *token)
-{
-	while(token)
-	{
-		printf("pos: %d\n", token->pos);
-		printf("str: %s\n", token->str);
-		printf("type: %d\n", token->type);
-		token = token->next;
-	}
-}
+// void print_lexer(t_token *token)
+// {
+// 	while(token)
+// 	{
+// 		printf("pos: %d\n", token->pos);
+// 		printf("str: %s\n", token->str);
+// 		printf("type: %d\n", token->type);
+// 		token = token->next;
+// 	}
+// }
 
-void	tokens_free(t_token **token_ptr)
-{
-	t_token *next;
-	t_token	*current;
+// void	tokens_free(t_token **token_ptr)
+// {
+// 	t_token *next;
+// 	t_token	*current;
 
-	current = *token_ptr;
-	while (current)
-	{
-		next = current->next;
-		free(current->str);
-		free (current);
-		current = next;
-	}
-	*token_ptr = NULL;
-}
-
-void	add_space(char **input_ptr, int i)
-{
-	int		size;
-	char	*input;
-	
-	size = ft_strlen(*input_ptr) + 2;
-	input = malloc(sizeof(char) * size);
-	if (!input)
-		return ; //error handling
-	ft_strlcpy(input, *input_ptr, i + 1);
-	input[i] = ' ';
-	ft_strlcpy(input + i + 1, *input_ptr + i, size - i);
-	free(*input_ptr);
-	*input_ptr = input;
-}
-
-void	input_split(char **input_ptr)
-{
-	int i;
-	char *input;
-
-	i = 0;
-	input = *input_ptr;
-	while(input[i])
-	{
-		if(input[i] == '<')
-		{
-			i++;
-			if(input[i] == '<')
-				i++;
-			if (!(input[i] == ' ') && input[i])
-				add_space(input_ptr, i);
-		}
-		else if(input[i] == '>')
-		{
-			i++;
-			if(input[i] == '>')
-				i++;
-			if (!(input[i] == ' ') && input[i])
-				add_space(input_ptr, i);
-		}
-		i++;
-	}
-}
+// 	current = *token_ptr;
+// 	while (current)
+// 	{
+// 		next = current->next;
+// 		free(current->str);
+// 		free (current);
+// 		current = next;
+// 	}
+// 	*token_ptr = NULL;
+// }
 
 int	main(void)
 {
 	char *input;
-	t_token *token;
+	t_token 	*token;
 
 	while (1)
 	{
 		get_promt(&input);
-		input_split(&input);
 		lexer(&input, &token);
-		print_lexer(token);
+
+
 		
-
-
+		//print_lexer(token);
 		//tokens_free(&token);
 		//free(input);
 	}
