@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/17 17:17:57 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:27:03 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,15 @@ void	tokens_identify(t_token **token_ptr)
 		{
 			if(token->str[1] == '<')
 				token->type = HERE_DOC;
-		token->type = RE_IN;
+			else
+				token->type = RE_IN;
 		}
 		else if(token->str[0] == '>')
 		{
 			if(token->str[1] + 1 == '>')
 				token->type = RE_APP;
-		token->type = RE_OUT;
+			else
+				token->type = RE_OUT;
 		}
 		else if(token->str[0] == '|')
 			token->type = PIPE;

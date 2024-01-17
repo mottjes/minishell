@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/17 17:20:37 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:25:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	add_space(char **input_ptr, int i)
 	ft_strlcpy(input + i + 1, *input_ptr + i, size - i);
 	free(*input_ptr);
 	*input_ptr = input;
-	printf("%s\n", input);
 }
 
 int	check_before_operator(char **input_ptr, int i)
@@ -62,8 +61,6 @@ void	input_split(char **input_ptr)
 	
 	i = 0;
 	input = *input_ptr;
-	
-	i = 0;
 	while(input[i])
 	{
 		if(input[i] == '<' && input[i + 1] != '<')

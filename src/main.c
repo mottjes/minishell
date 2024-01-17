@@ -6,22 +6,22 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/17 17:10:05 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:25:26 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// void print_lexer(t_token *token)
-// {
-// 	while(token)
-// 	{
-// 		printf("pos: %d\n", token->pos);
-// 		printf("str: %s\n", token->str);
-// 		printf("type: %d\n", token->type);
-// 		token = token->next;
-// 	}
-// }
+void print_lexer(t_token *token)
+{
+	while(token)
+	{
+		printf("pos: %d\n", token->pos);
+		printf("str: %s\n", token->str);
+		printf("type: %d\n", token->type);
+		token = token->next;
+	}
+}
 
 // void	tokens_free(t_token **token_ptr)
 // {
@@ -51,7 +51,7 @@ int	main(void)
 
 
 		
-		//print_lexer(token);
+		print_lexer(token);
 		//tokens_free(&token);
 		//free(input);
 	}
