@@ -6,11 +6,11 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/17 17:25:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:41:05 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	add_space(char **input_ptr, int i)
 {
@@ -20,7 +20,7 @@ void	add_space(char **input_ptr, int i)
 	size = ft_strlen(*input_ptr) + 2;
 	input = malloc(sizeof(char) * size);
 	if (!input)
-		return ;			//error handling
+		return ;									//error handling
 	ft_strlcpy(input, *input_ptr, i + 1);
 	input[i] = ' ';
 	ft_strlcpy(input + i + 1, *input_ptr + i, size - i);

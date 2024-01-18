@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/17 17:25:26 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:37:38 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,36 +39,48 @@ void print_lexer(t_token *token)
 // 	*token_ptr = NULL;
 // }
 
+
+
 int	main(void)
 {
 	char *input;
 	t_token 	*token;
 
+	token = NULL;
 	while (1)
 	{
+		signals();
 		get_promt(&input);
 		lexer(&input, &token);
-
+		free(input);
+		//parser();
 
 		
 		print_lexer(token);
 		//tokens_free(&token);
-		//free(input);
 	}
 }
 
 
 
 
+/*
+readline functions:
+readline, -> reads line puts promt
+rl_clear_history, -> clears input history
+rl_on_new_line,	-> Tell the update functions that we have moved onto a new (empty) line, usually after outputting a newline.
+rl_replace_line, -> Replace the contents of rl_line_buffer with text. The point and mark are preserved, if possible. If clear_undo is non-zero, the undo list associated with the current line is cleared.
+rl_redisplay, -> Change what’s displayed on the screen to reflect the current contents of rl_line_buffer.
+add_history, ->adds history
+*/
+/*
+ctrl-C displays a new prompt on a new line. (SIGINT)
+◦ ctrl-D exits the shell.
+◦ ctrl-\ does nothing
 
-
-
-
-
-
-
-
-
+signal,
+sigaction, sigemptyset, sigaddset, kill, exit
+*/
 
 
 

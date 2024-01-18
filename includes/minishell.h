@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/15 14:37:58 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:41:22 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@
 # include <string.h>
 # include <unistd.h>
 # include <sys/wait.h>
-# include "lexer.h"
+# include <signal.h>
 # include "../libft/libft.h"
 # define READLINE_LIBRARY
 # include "../readline/include/history.h"
 # include "../readline/include/readline.h"
+# include "lexer.h"
+
+
 
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
@@ -34,10 +37,11 @@
 #define RESET   "\x1b[0m"
 #define BOLD	"\033[1m"
 
-
-
-// promt.c
+//				promt.c
 void	get_promt(char **input);
 
+//				signals.c
+void	signals(void);
+void	signal_handler(int signal);
 
 #endif

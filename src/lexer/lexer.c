@@ -6,11 +6,11 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/17 17:27:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:41:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	tokens_count(char *input)
 {
@@ -40,7 +40,7 @@ void tokens_init(char *input, int count, t_token **token_ptr)
 	i = 1;
 	first_token = malloc(sizeof(t_token));
 	if (!first_token)
-		return ; // error handling
+		return ; 							// error handling
 	*token_ptr = first_token;
 	first_token->pos = i;
 	count--;
@@ -48,7 +48,7 @@ void tokens_init(char *input, int count, t_token **token_ptr)
 	{
 		next_token = malloc(sizeof(t_token));
 		if (!next_token)
-			return ; // error handling
+			return ; 						// error handling
 		first_token->next = next_token;
 		i++;
 		next_token->pos = i;
@@ -81,7 +81,7 @@ void tokens_str_cpy(char *input, t_token **token_ptr)
 		}
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
-			return ; // error handling
+			return ; 								// error handling
 		ft_strlcpy(token->str, input + j, size + 1);
 		size = 0;
 		token = token->next;
