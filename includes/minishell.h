@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/18 14:41:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/18 16:54:05 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # include "../readline/include/readline.h"
 # include "lexer.h"
 
-
-
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
@@ -43,5 +41,14 @@ void	get_promt(char **input);
 //				signals.c
 void	signals(void);
 void	signal_handler(int signal);
+
+//				builtins.c
+void	env(char *envp[]);
+void	pwd(void);
+void	cd(char *path);
+
+//				parser.c
+void	parser(t_token *token);
+
 
 #endif

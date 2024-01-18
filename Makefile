@@ -6,17 +6,20 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/01/18 14:38:56 by mottjes          ###   ########.fr        #
+#    Updated: 2024/01/18 15:57:08 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC =	src/main.c				\
-		src/promt.c				\
-		src/lexer/lexer.c 		\
-		src/lexer/input_split.c	\
-		src/signals.c			\
+SRC =	src/main.c					\
+		src/promt.c					\
+		src/signals.c				\
+		src/lexer/lexer.c 			\
+		src/lexer/input_split.c		\
+		src/parser/parser.c			\
+		src/executor/executor.c		\
+		src/builtins/builtins.c		\
 		
 CC = gcc
 
