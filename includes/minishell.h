@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/18 16:54:05 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:43:21 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "../readline/include/history.h"
 # include "../readline/include/readline.h"
 # include "lexer.h"
+# include "parser.h"
 
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
@@ -34,6 +35,13 @@
 #define CYAN    "\x1b[36m"
 #define RESET   "\x1b[0m"
 #define BOLD	"\033[1m"
+
+typedef	struct s_minishell
+{
+	char		*input;
+	t_token		*token_list;
+	t_cmd_table	*cmd_table;
+}		t_minishell;
 
 //				promt.c
 void	get_promt(char **input);
@@ -46,9 +54,5 @@ void	signal_handler(int signal);
 void	env(char *envp[]);
 void	pwd(void);
 void	cd(char *path);
-
-//				parser.c
-void	parser(t_token *token);
-
 
 #endif

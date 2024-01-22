@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/18 16:55:53 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:57:03 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 	- reads token list 
 	- checks syntax
+		- only one in and one out redirection
 	- wrong syntax -> error return and restart the loop
 	- builds the command table
 */
@@ -57,9 +58,19 @@ void	syntax_check(t_token *token)
 	}
 }
 
-void	parser(t_token *token)
+void	command_table_init(t_token *token, t_cmd_table *cmd_table)
+{
+	
+	
+
+
+
+
+	
+}
+
+void	parser(t_token *token, t_cmd_table *cmd_table)
 {
 	syntax_check(token);
-
-	//command_table_init();
+	command_table_init(token, cmd_table);
 }
