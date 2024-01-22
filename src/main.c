@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/22 14:44:41 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/22 18:05:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		signals();
 		get_promt(&shell.input);
-		lexer(&shell.input, &shell.token_list);
-		parser(shell.token_list, shell.cmd_table);
+		lexer(&shell);
+		parser(&shell);
+
 		
 		//print_lexer(shell.token_list);
 		//tokens_free(&shell.token_list);
