@@ -6,14 +6,14 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 17:50:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:01:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-typedef struct s_minishell t_minishell;
+typedef struct s_data t_data;
 
 typedef enum s_token_type
 {
@@ -34,7 +34,7 @@ typedef struct s_token
 }		t_token;
 
 //			lexer.c
-void	lexer(t_minishell *shell);
+void	lexer(t_data *shell);
 int		tokens_count(char *input);
 void 	token_list_init(char *input, int count, t_token **token_ptr);
 void 	tokens_str_cpy(char *input, t_token **token_ptr);

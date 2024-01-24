@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 17:54:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:18:25 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,14 @@ void	builtin_check(t_cmd *cmd_list)
 	}
 }
 
-void	parser(t_minishell *shell)
+void	cmd_get_path(t_data *shell)
 {
-	if (shell->error)
+	
+}
+
+void	parser(t_data *shell)
+{
+	if (shell->restart)
 		return ;
 	//syntax_check(shell->token_list);
 	cmd_table_init(shell);

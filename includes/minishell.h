@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 14:17:00 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:19:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 #define RESET   "\x1b[0m"
 #define BOLD	"\033[1m"
 
-typedef	struct s_minishell
+typedef	struct s_data
 {
 	char		*input;
 	t_token		*token_list;
@@ -44,11 +44,11 @@ typedef	struct s_minishell
 	char		*in_file;
 	char		*out_file;
 	char		**envp;
-	int			error;
-}		t_minishell;
+	int			restart;
+}		t_data;
 
 //				promt.c
-void	get_promt(char **input);
+void	get_promt(t_data *shell);
 
 //				signals.c
 void	signals(void);

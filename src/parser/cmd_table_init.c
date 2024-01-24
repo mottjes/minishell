@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 17:52:41 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:20:43 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,21 @@ int	arg_count(t_token *token)
 	return (count);
 }
 
-void	cmd_list_init(t_minishell *shell, int count)
+void	cmd_list_init(t_data *shell, int count)
 {
 	t_cmd *first_cmd;
 	t_cmd *next_cmd;
 
 	first_cmd = malloc(sizeof(t_cmd));
 	if (!first_cmd)
-		return ; 							// error handling
+		return ; 												// error handling
 	shell->cmd_list = first_cmd;
 	count--;
 	while(count)
 	{
 		next_cmd = malloc(sizeof(t_cmd));
 		if (!next_cmd)
-			return ; 						// error handling
+			return ; 											// error handling
 		first_cmd->next = next_cmd;
 		first_cmd = next_cmd;
 		count--;
@@ -61,7 +61,7 @@ void	cmd_list_init(t_minishell *shell, int count)
 	first_cmd->next = NULL;
 }
 
-void	get_redirections(t_minishell *shell)
+void	get_redirections(t_data *shell)
 {
 	t_token *token;
 	
@@ -106,7 +106,7 @@ void	get_redirections(t_minishell *shell)
 	}
 }
 
-void	cmds_str_copy(t_minishell *shell)
+void	cmds_str_copy(t_data *shell)
 {
 	t_cmd *cmds;
 	t_token *token;
@@ -123,11 +123,11 @@ void	cmds_str_copy(t_minishell *shell)
 		{
 			cmds->cmd = ft_strdup(token->str);
 			if (!cmds->cmd)
-				return ; 				//error handling
+				return ; 													//error handling
 			token = token->next;
 			cmds->args = malloc(sizeof(char *) * (arg_count(token) + 1));
 			if (!cmds->args)
-				return ;				//error handling
+				return ;													//error handling
 			while (token && token->type == WORD)
 			{
 				cmds->args[i] = ft_strdup(token->str);
@@ -144,12 +144,10 @@ void	cmds_str_copy(t_minishell *shell)
 	}
 }
 
-void	cmd_table_init(t_minishell *shell)
+void	cmd_table_init(t_data *shell)
 {
 	int count;
-
-	if (!shell->token_list)
-		return ;		
+	
 	count = cmds_count(shell->token_list);
 	cmd_list_init(shell, count);
 	cmds_str_copy(shell);

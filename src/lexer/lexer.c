@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 17:49:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:21:19 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void token_list_init(char *input, int count, t_token **token_ptr)
 	i = 1;
 	first_token = malloc(sizeof(t_token));
 	if (!first_token)
-		return ; 							// error handling
+		return ; 										// error handling
 	*token_ptr = first_token;
 	first_token->pos = i;
 	count--;
@@ -48,7 +48,7 @@ void token_list_init(char *input, int count, t_token **token_ptr)
 	{
 		next_token = malloc(sizeof(t_token));
 		if (!next_token)
-			return ; 						// error handling
+			return ; 									// error handling
 		first_token->next = next_token;
 		i++;
 		next_token->pos = i;
@@ -81,7 +81,7 @@ void tokens_str_cpy(char *input, t_token **token_ptr)
 		}
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
-			return ; 								// error handling
+			return ; 												// error handling
 		ft_strlcpy(token->str, input + j, size + 1);
 		size = 0;
 		token = token->next;
@@ -117,21 +117,18 @@ void	tokens_identify(t_token **token_ptr)
 	}
 }
 
-void	lexer(t_minishell *shell)
+void	lexer(t_data *shell)
 {
 	int count;
 	
-	if (!shell->input)
-	{
-		shell->error = 1;
-		return ;					// restart loop
-	}					
+	if (shell->restart)
+		return ;		
 	input_split(&shell->input);
 	count = tokens_count(shell->input);
 	if (!count)
-		{
-		shell->error = 1;
-		return ;					// restart loop
+	{
+		shell->restart = 1;
+		return ;
 	}
 	token_list_init(shell->input, count, &shell->token_list);
 	tokens_str_cpy(shell->input, &shell->token_list);

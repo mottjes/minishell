@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 13:05:36 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:59:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 	syntax rules:
 		multiple in and outfiles allowed?????
 */
-
 void	syntax_check(t_token *token)
 {
 	t_token *token_before;
