@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/01/22 16:20:25 by mottjes          ###   ########.fr        #
+#    Updated: 2024/01/24 17:50:47 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC =	src/main.c					\
 		src/lexer/lexer.c 			\
 		src/lexer/input_split.c		\
 		src/parser/parser.c			\
+		src/parser/cmd_table_init.c \
 		src/parser/syntax_check.c	\
 		src/executor/executor.c		\
 		src/builtins/builtins.c		\
