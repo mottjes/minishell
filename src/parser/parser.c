@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/22 18:05:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:18:24 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,44 @@ void	get_redirections(t_minishell *shell)
 	}
 }
 
+void	cmds_str_copy(t_minishell *shell)
+{
+	t_cmd *cmds;
+	t_token *token;
+	t_token *prev;
+	int i;
+
+	i = 0;
+	cmds = shell->cmd_list;
+	token = shell->token_list;
+	prev = token;
+	while (token)
+	{
+		if(token->type == WORD && (prev->type == WORD || prev->type == PIPE))
+		{
+			cmds->cmd = ft_strdup(token->str);
+			if (!cmds->cmd)
+				return ; 				//error handling
+			token = token->next;
+			cmds->args = malloc(sizeof(char *) * (arg_count(token) + 1));
+			if (!cmds->args)
+				return ;				//error handling
+			while (token && token->type == WORD)
+			{
+				cmds->args[i] = ft_strdup(token->str);
+				token = token->next;
+				i++;
+			}
+			cmds = cmds->next;
+		}
+		if (token)
+		{
+			prev = token;
+			token = token->next;
+		}
+	}
+}
+
 void	command_table_init(t_minishell *shell)
 {
 	int count;
@@ -114,14 +152,53 @@ void	command_table_init(t_minishell *shell)
 		return ;		
 	count = cmds_count(shell->token_list);
 	cmds_init(shell, count);
+	cmds_str_copy(shell);
 	get_redirections(shell);
-	//cmds_str_copy(shell);
 }
 
 void	parser(t_minishell *shell)
 {
-	if (shell->error)
-		return ;
-	//syntax_check(token);
+	//syntax_check(shell->token_list);
 	command_table_init(shell);
 }
+
+
+/*
+	t_token *token;
+	t_token *prev;
+	t_cmd	*cmd;
+	int i;
+
+	i = 0;
+	cmd = shell->cmd_list;
+	token = shell->token_list;
+	prev = token;
+	while (token)
+	{
+		if(token->type == WORD && (prev->type == PIPE || prev->type == WORD))
+		{
+			cmd->cmd = ft_strdup(token->str);
+			if (!cmd->cmd)
+				return ;						//error handling
+			token = token->next;
+			cmd->args = malloc(sizeof(char *) * (arg_count(token) + 1));
+			if (!cmd->args)
+				return ;						//error handling
+			while (token && token->type == WORD)
+			{
+				cmd->args[i] = ft_strdup(token->str);
+				if (!cmd->args[i])
+					return ;					//error handling
+				token = token->next;
+				i++;
+			}
+			cmd->args[i] = NULL;
+			cmd = cmd->next;
+		}
+		if (token)
+		{
+			prev = token;
+			token = token->next;
+		}
+	}
+*/

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/22 18:05:30 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:19:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,59 @@ void	tokens_free(t_token **token_ptr)
 	*token_ptr = NULL;
 }
 
+void	print_cmds(t_minishell *shell)
+{
+	t_cmd *cmd;
+	int i;
+
+	i = 0;
+	cmd = shell->cmd_list;
+	printf("infile :%s\n", shell->in_file);
+	printf("outfile :%s\n", shell->out_file);
+	
+	printf("cmd : %s\n", cmd->cmd);
+	while (cmd->args[i])
+	{
+		printf("arg %i: %s\n", i, cmd->args[i]);
+		i++;
+	}
+	i = 0;
+	cmd = cmd->next;
+	printf("cmd : %s\n", cmd->cmd);
+	while (cmd->args[i])
+	{
+		printf("arg %i: %s\n", i, cmd->args[i]);
+		i++;
+	}
+	i = 0;
+
+	// while(cmd->cmd && cmd)
+	// {
+	// 	printf("cmd : %s\n", cmd->cmd);
+	// 	// while (cmd->args[i])
+	// 	// {
+	// 	// 	printf("arg %i: %s\n", i, cmd->args[i]);
+	// 	// 	i++;
+	// 	// }
+	// 	// i = 0;
+	// 	cmd = cmd->next;
+	// }
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_minishell shell;
 
 	while (1)
 	{
-		signals();
+		//signals();
 		get_promt(&shell.input);
 		lexer(&shell);
 		parser(&shell);
 
-		
+	
 		//print_lexer(shell.token_list);
+		print_cmds(&shell);
 		//tokens_free(&shell.token_list);
 	}
 }

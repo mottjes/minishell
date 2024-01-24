@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/22 16:20:08 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 13:05:36 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 /*
 	- reads token list 
 	- checks syntax
-		- only one in and one out redirection
 	- wrong syntax -> error return and restart the loop
-	- builds the command table
-*/
-/*
 	syntax rules:
 		multiple in and outfiles allowed?????
 */

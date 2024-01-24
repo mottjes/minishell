@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/22 17:54:32 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 14:17:00 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef	struct s_minishell
 	t_cmd		*cmd_list;
 	char		*in_file;
 	char		*out_file;
+	char		**envp;
 	int			error;
 }		t_minishell;
 
