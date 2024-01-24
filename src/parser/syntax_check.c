@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 17:59:34 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:53:40 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 	- reads token list 
 	- checks syntax
 	- wrong syntax -> error return and restart the loop
-	syntax rules:
-		multiple in and outfiles allowed?????
 */
 void	syntax_check(t_token *token)
 {

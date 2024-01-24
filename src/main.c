@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:14:45 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 19:47:01 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_data shell;
 
 	ft_memset(&shell, 0, sizeof(t_data));
+	shell.envp = envp;
 	while (1)
 	{
 		//signals();
@@ -24,7 +25,6 @@ int	main(int argc, char *argv[], char *envp[])
 		lexer(&shell);
 		parser(&shell);
 
-	
 		//print_lexer(shell.token_list);
 		//print_cmds(&shell);
 	}

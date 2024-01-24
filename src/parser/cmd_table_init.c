@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:20:43 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:28:35 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,12 @@ void	get_redirections(t_data *shell)
 	}
 }
 
-void	cmds_str_copy(t_data *shell)
+void	cmds_str_copy(t_token *token, t_cmd *cmds)
 {
-	t_cmd *cmds;
-	t_token *token;
 	t_token *prev;
 	int i;
 
 	i = 0;
-	cmds = shell->cmd_list;
-	token = shell->token_list;
 	prev = token;
 	while (token)
 	{
@@ -150,6 +146,6 @@ void	cmd_table_init(t_data *shell)
 	
 	count = cmds_count(shell->token_list);
 	cmd_list_init(shell, count);
-	cmds_str_copy(shell);
+	cmds_str_copy(shell->token_list, shell->cmd_list);
 	get_redirections(shell);
 }

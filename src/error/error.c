@@ -6,8 +6,8 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 18:06:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:06:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/24 19:09:31 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
