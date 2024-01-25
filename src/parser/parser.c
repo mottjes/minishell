@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/25 15:31:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/25 18:35:28 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	builtin_check(t_cmd *cmd_list)
 	}
 }
 
-void	cmd_get_path(t_cmd *cmds, char **envp)
+void	cmd_get_path(t_cmd *cmds, char **envp, int *restart)
 {
 	char **env_paths;
 	char *cmd_mod;
@@ -73,12 +73,16 @@ void	cmd_get_path(t_cmd *cmds, char **envp)
 					{
 						cmds->path = cmd_path;
 						break ;
-					}	
+					}
 					i++;
 				}
 				i = 0;
 			}
-		
+			if (!cmds->path)
+			{
+				*restart = 1;
+				printf("Command not found : %s\n", cmds->cmd);
+			}
 		}
 		cmds = cmds->next;
 	}
@@ -91,5 +95,5 @@ void	parser(t_data *shell)
 	//syntax_check(shell->token_list);
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
-	cmd_get_path(shell->cmd_list, shell->envp);
+	cmd_get_path(shell->cmd_list, shell->envp, &shell->restart);
 }

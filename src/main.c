@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/25 15:31:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/25 18:48:25 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	print_cmds(t_data *shell)
 	
 }
 
-
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
@@ -56,3 +55,13 @@ int	main(int argc, char *argv[], char *envp[])
 		print_cmds(&shell);
 	}
 }
+
+/*
+quotes " " and ' ' 
+enviromental variables
+working history
+signal handler
+error / free
+
+better promt
+*/
