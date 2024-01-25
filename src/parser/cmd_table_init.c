@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:28:35 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:30:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	cmd_list_init(t_data *shell, int count)
 	first_cmd = malloc(sizeof(t_cmd));
 	if (!first_cmd)
 		return ; 												// error handling
+	first_cmd->builtin = 0;
 	shell->cmd_list = first_cmd;
 	count--;
 	while(count)
@@ -54,6 +55,7 @@ void	cmd_list_init(t_data *shell, int count)
 		next_cmd = malloc(sizeof(t_cmd));
 		if (!next_cmd)
 			return ; 											// error handling
+		next_cmd->builtin = 0;
 		first_cmd->next = next_cmd;
 		first_cmd = next_cmd;
 		count--;
@@ -131,6 +133,7 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds)
 				i++;
 			}
 			cmds = cmds->next;
+			i = 0;
 		}
 		if (token)
 		{

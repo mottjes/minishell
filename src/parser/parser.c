@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 19:47:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:31:14 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,51 @@ void	builtin_check(t_cmd *cmd_list)
 
 void	cmd_get_path(t_cmd *cmds, char **envp)
 {
+	char **env_paths;
+	char *cmd_mod;
 	char *cmd_path;
-	char **envp_paths;
 	int i;
 
 	i = 0;
-	if (cmds->cmd[i] == '/')
+	while (cmds)
 	{
-		cmds->path = ft_strdup(cmds->cmd);
-		if(!cmds->path)
-			return ;									//error handling
-	}
-	else
-	{
-		while (ft_strncmp(envp[i], "PATH=", 5) && envp[i])
-			i++;
-		envp_paths = ft_split(envp[i] + 5, ':');
-		if(!envp_paths)
-			return ;									//error handling
-		i = 0;
-		while (envp_paths[i])
+		if (!cmds->builtin)
 		{
-			cmd_path = ft_strjoin("/", cmds->cmd);
-			if (!cmd_path)
-				return ;								//error handling
-			cmd_path = ft_strjoin(envp_paths[i], cmd_path);
-			if (!cmd_path)
-				return ;								//error handling
-			if (!access(cmd_path, F_OK))
+			if (cmds->cmd[0] == '/')
 			{
-				cmds->path = cmd_path;
-				break ;
-			}	
-			i++;
-		}
-	}
+				cmds->path = ft_strdup(cmds->cmd);
+				if(!cmds->path)
+					return ;								//error handling
+			}
+			else
+			{
+				while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
+					i++;
+				env_paths = ft_split(envp[i] + 5, ':');
+				if(!env_paths)
+					return ;									//error handling
+				cmd_mod = ft_strjoin("/", cmds->cmd);
+				if (!cmd_mod)
+					return ;									//error handling
+				i = 0;
+				while (env_paths[i])
+				{
+					cmd_path = ft_strjoin(env_paths[i], cmd_mod);
+					if (!cmd_path)
+						return ;								//error handling
+					if (!access(cmd_path, F_OK))
+					{
+						cmds->path = cmd_path;
+						break ;
+					}	
+					i++;
+				}
+				i = 0;
+			}
 		
+		}
+		cmds = cmds->next;
+	}
 }
 
 void	parser(t_data *shell)

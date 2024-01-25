@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:56:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:27:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/25 14:34:41 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef	struct s_cmd
 	char			*path;
 	int				builtin;
 	struct s_cmd	*next;
-
 }		t_cmd;
 
 //				parser.c
