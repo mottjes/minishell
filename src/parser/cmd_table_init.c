@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/25 15:30:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:49:09 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ int	arg_count(t_token *token)
 	return (count);
 }
 
-void	cmd_list_init(t_data *shell, int count)
+void	cmd_list_init(t_data *shell, int count, t_error *error)
 {
 	t_cmd *first_cmd;
 	t_cmd *next_cmd;
 
 	first_cmd = malloc(sizeof(t_cmd));
 	if (!first_cmd)
-		return ; 												// error handling
+	{
+		*error = malloc_failed;
+		return ;
+	}
 	first_cmd->builtin = 0;
 	shell->cmd_list = first_cmd;
 	count--;
@@ -54,7 +57,10 @@ void	cmd_list_init(t_data *shell, int count)
 	{
 		next_cmd = malloc(sizeof(t_cmd));
 		if (!next_cmd)
-			return ; 											// error handling
+		{
+			*error = malloc_failed;
+			return ;
+		}
 		next_cmd->builtin = 0;
 		first_cmd->next = next_cmd;
 		first_cmd = next_cmd;
@@ -78,7 +84,10 @@ void	get_redirections(t_data *shell)
 				free(shell->in_file);
 			shell->in_file = ft_strdup(token->next->str);
 			if (!shell->in_file)
+			{
+				shell->error = malloc_failed;
 				return ;
+			}
 		}
 		if (token->type == RE_OUT)
 		{
@@ -86,7 +95,10 @@ void	get_redirections(t_data *shell)
 				free(shell->out_file);
 			shell->out_file = ft_strdup(token->next->str);
 			if (!shell->out_file)
+			{
+				shell->error = malloc_failed;
 				return ;
+			}
 		}
 		if (token->type == RE_APP)
 		{
@@ -94,7 +106,10 @@ void	get_redirections(t_data *shell)
 				free(shell->out_file);
 			shell->out_file = ft_strdup(token->next->str);
 			if (!shell->out_file)
+			{
+				shell->error = malloc_failed;
 				return ;
+			}
 		}
 		if (token->type == HERE_DOC)
 		{
@@ -102,13 +117,16 @@ void	get_redirections(t_data *shell)
 				free(shell->in_file);
 			shell->in_file = ft_strdup(token->next->str);
 			if (!shell->in_file)
+			{
+				shell->error = malloc_failed;
 				return ;
+			}
 		}
 		token = token->next;
 	}
 }
 
-void	cmds_str_copy(t_token *token, t_cmd *cmds)
+void	cmds_str_copy(t_token *token, t_cmd *cmds, t_error *error)
 {
 	t_token *prev;
 	int i;
@@ -121,11 +139,17 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds)
 		{
 			cmds->cmd = ft_strdup(token->str);
 			if (!cmds->cmd)
-				return ; 													//error handling
+			{
+				*error = malloc_failed;
+				return ;
+			}
 			token = token->next;
 			cmds->args = malloc(sizeof(char *) * (arg_count(token) + 1));
 			if (!cmds->args)
-				return ;													//error handling
+			{
+				*error = malloc_failed;
+				return ;
+			}
 			while (token && token->type == WORD)
 			{
 				cmds->args[i] = ft_strdup(token->str);
@@ -148,7 +172,7 @@ void	cmd_table_init(t_data *shell)
 	int count;
 	
 	count = cmds_count(shell->token_list);
-	cmd_list_init(shell, count);
-	cmds_str_copy(shell->token_list, shell->cmd_list);
+	cmd_list_init(shell, count, &shell->error);
+	cmds_str_copy(shell->token_list, shell->cmd_list, &shell->error);
 	get_redirections(shell);
 }

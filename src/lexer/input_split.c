@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:18:42 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:38:25 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	add_space(char **input_ptr, int i)
+void	add_space(char **input_ptr, int i, t_error *error)
 {
 	int		size;
 	char	*input;
@@ -20,7 +20,10 @@ void	add_space(char **input_ptr, int i)
 	size = ft_strlen(*input_ptr) + 2;
 	input = malloc(sizeof(char) * size);
 	if (!input)
-		return ;											//error handling
+	{
+		*error = malloc_failed;
+		return ;
+	}							
 	ft_strlcpy(input, *input_ptr, i + 1);
 	input[i] = ' ';
 	ft_strlcpy(input + i + 1, *input_ptr + i, size - i);
@@ -28,33 +31,33 @@ void	add_space(char **input_ptr, int i)
 	*input_ptr = input;
 }
 
-int	check_before_operator(char **input_ptr, int i)
+int	check_before_operator(char **input_ptr, int i, t_error *error)
 {
 	char *input;
 
 	input = *input_ptr;
 	if (input[i - 1] && !(input[i - 1] == ' '))
 	{
-		add_space(input_ptr, i);
+		add_space(input_ptr, i, error);
 		return (1);
 	}
 	return (0);
 }
 
-int	check_after_operator(char **input_ptr, int i)
+int	check_after_operator(char **input_ptr, int i, t_error *error)
 {
 	char	*input;
 
 	input = *input_ptr;
 	if (input[i + 1] && !(input[i + 1] == ' '))
 	{
-		add_space(input_ptr, i + 1);
+		add_space(input_ptr, i + 1, error);
 		return (1);
 	}
 	return (0);
 }
 
-void	input_split(char **input_ptr)
+void	input_split(char **input_ptr, t_error *error)
 {
 	int i;
 	char *input;
@@ -65,23 +68,23 @@ void	input_split(char **input_ptr)
 	{
 		if(input[i] == '<' && input[i + 1] != '<')
 		{
-			if (check_before_operator(input_ptr, i))
+			if (check_before_operator(input_ptr, i, error))
 				i++;
 		}
 		else if(input[i] == '>' && input[i + 1] != '>')
 		{
-			if (check_before_operator(input_ptr, i))
+			if (check_before_operator(input_ptr, i, error))
 				i++;
 		}
 		else if(input[i] == '<' && input[i + 1] == '<')
 		{
-			if (check_before_operator(input_ptr, i))
+			if (check_before_operator(input_ptr, i, error))
 				i++;
 			i++;
 		}
 		else if(input[i] == '>' && input[i + 1] == '>')
 		{
-			if(check_before_operator(input_ptr, i))
+			if(check_before_operator(input_ptr, i, error))
 				i++;
 			i++;
 		}
@@ -93,23 +96,23 @@ void	input_split(char **input_ptr)
 	{
 		if(input[i] == '<' && input[i + 1] != '<')
 		{
-			if (check_after_operator(input_ptr, i))
+			if (check_after_operator(input_ptr, i, error))
 				i++;
 		}
 		else if(input[i] == '>' && input[i + 1] != '>')
 		{
-			if (check_after_operator(input_ptr, i))
+			if (check_after_operator(input_ptr, i, error))
 					i++;
 		}
 		else if(input[i] == '<' && input[i + 1] == '<')
 		{
-			if (check_after_operator(input_ptr, i + 1))
+			if (check_after_operator(input_ptr, i + 1, error))
 				i++;
 			i++;
 		}
 		else if(input[i] == '>' && input[i + 1] == '>')
 		{
-			if (check_after_operator(input_ptr, i + 1))
+			if (check_after_operator(input_ptr, i + 1, error))
 				i++;
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:19:44 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:59:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@
 #define RESET   "\x1b[0m"
 #define BOLD	"\033[1m"
 
+typedef enum s_error
+{
+	malloc_failed = 1,
+	quotes_not_closed = 2,
+	command_not_found = 3,
+}			t_error;
+
 typedef	struct s_data
 {
 	char		*input;
@@ -45,6 +52,7 @@ typedef	struct s_data
 	char		*out_file;
 	char		**envp;
 	int			restart;
+	t_error		error;
 }		t_data;
 
 //				promt.c

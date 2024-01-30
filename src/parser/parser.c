@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 11:21:42 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 12:01:23 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	builtin_check(t_cmd *cmd_list)
 	}
 }
 
-void	cmd_get_path(t_cmd *cmds, char **envp, int *restart)
+void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 {
 	char **env_paths;
 	char *cmd_mod;
@@ -51,7 +51,10 @@ void	cmd_get_path(t_cmd *cmds, char **envp, int *restart)
 			{
 				cmds->path = ft_strdup(cmds->cmd);
 				if(!cmds->path)
-					return ;								//error handling
+				{
+					*error = malloc_failed;
+					return ;
+				}
 			}
 			else
 			{
@@ -59,16 +62,28 @@ void	cmd_get_path(t_cmd *cmds, char **envp, int *restart)
 					i++;
 				env_paths = ft_split(envp[i] + 5, ':');
 				if(!env_paths)
-					return ;									//error handling
+				if(!cmds->path)
+				{
+					*error = malloc_failed;
+					return ;
+				}
 				cmd_mod = ft_strjoin("/", cmds->cmd);
 				if (!cmd_mod)
-					return ;									//error handling
+				if(!cmds->path)
+				{
+					*error = malloc_failed;
+					return ;
+				}
 				i = 0;
 				while (env_paths[i])
 				{
 					cmd_path = ft_strjoin(env_paths[i], cmd_mod);
 					if (!cmd_path)
-						return ;								//error handling
+					if(!cmds->path)
+					{
+						*error = malloc_failed;
+						return ;
+					}
 					if (!access(cmd_path, F_OK))
 					{
 						cmds->path = cmd_path;
@@ -80,8 +95,7 @@ void	cmd_get_path(t_cmd *cmds, char **envp, int *restart)
 			}
 			if (!cmds->path)
 			{
-				*restart = 1;
-				printf("Command not found : %s\n", cmds->cmd);
+				*error = command_not_found;
 				return ;
 			}
 		}
@@ -96,5 +110,5 @@ void	parser(t_data *shell)
 	//syntax_check(shell->token_list);
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
-	cmd_get_path(shell->cmd_list, shell->envp, &shell->restart);
+	cmd_get_path(shell->cmd_list, shell->envp, &shell->error);
 }

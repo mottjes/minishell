@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 11:24:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 12:03:06 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,20 @@
 // 	}
 // }
 
+void	error_check(t_data *shell)
+{
+	if (shell->error)
+	{
+		shell->restart = 1;
+		if (shell->error == malloc_failed)
+			printf("Error: malloc failed!\n");
+		if (shell->error == quotes_not_closed)
+			printf("Error: quotes not closed!\n");
+		if (shell->error == command_not_found)
+			printf("Error: command not found!\n");
+	}
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
@@ -64,7 +78,8 @@ int	main(int argc, char *argv[], char *envp[])
 		get_promt(&shell);
 		lexer(&shell);
 		parser(&shell);
-
+		error_check(&shell);
+		
 		//executor()
 	}
 	argc = 0;
@@ -74,5 +89,5 @@ int	main(int argc, char *argv[], char *envp[])
 /*
 enviromental variables
 signal handler
-error / free
+free
 */

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:56:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/25 14:34:41 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 12:01:29 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ typedef	struct s_cmd
 }		t_cmd;
 
 //				parser.c
+void	builtin_check(t_cmd *cmd_list);
+void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error);
 void	parser(t_data	*shell);
 
 //				cmd_table_init.c
 void	cmd_table_init(t_data *shell);
-void	cmds_str_copy(t_token *token, t_cmd *cmds);
+void	cmds_str_copy(t_token *token, t_cmd *cmds, t_error *error);
 void	get_redirections(t_data *shell);
-void	cmd_list_init(t_data *shell, int count);
+void	cmd_list_init(t_data *shell, int count, t_error *error);
 int		arg_count(t_token *token);
 int		cmds_count(t_token *token);
 
