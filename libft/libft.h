@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:30:34 by mottjes           #+#    #+#             */
-/*   Updated: 2023/05/26 14:00:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 12:13:42 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <ctype.h>
+# include <fcntl.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
 typedef struct s_list
 {
@@ -68,5 +73,13 @@ int		ft_lstsize(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *newnode);
 void	ft_lstadd_front(t_list **lst, t_list *newnode);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+// 			get_next_line
+char	*get_next_line(int fd);
+char	*read_and_save(int fd, char *save);
+char	*get_line_from_save(char *save);
+char	*delete_line_from_save(char *save);
+
+char	*append_buffer(char *save, char *buff);
 
 #endif

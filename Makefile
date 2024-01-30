@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/01/30 11:23:03 by mottjes          ###   ########.fr        #
+#    Updated: 2024/01/30 12:05:54 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ CFLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a
 
 all:
-	@$(MAKE) -C ./libft
+	@$(MAKE) bonus -C ./libft
 	@$(CC) $(CFLAGS) $(SRC) $(LIBS) -o $(NAME) -I${PWD}/readline/include -L${PWD}/readline/lib -lreadline -lhistory -ltermcap
 	@echo compiled minishell
 	
