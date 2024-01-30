@@ -6,17 +6,12 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:53:40 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 13:06:47 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-	- reads token list 
-	- checks syntax
-	- wrong syntax -> error return and restart the loop
-*/
 void	syntax_check(t_token *token)
 {
 	t_token *token_before;
