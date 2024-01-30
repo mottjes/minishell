@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/25 18:35:28 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:21:42 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	cmd_get_path(t_cmd *cmds, char **envp, int *restart)
 			{
 				*restart = 1;
 				printf("Command not found : %s\n", cmds->cmd);
+				return ;
 			}
 		}
 		cmds = cmds->next;

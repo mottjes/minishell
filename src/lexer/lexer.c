@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/24 18:21:19 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 11:07:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,46 @@ int	tokens_count(char *input)
 {
 	int i;
 	int tokens;
-
+	
 	i = 0;
 	tokens = 0;
 	while(input[i])
 	{
 		while(input[i] == ' ' || input[i] == '\t')
 			i++;
-		if(input[i])
-			tokens++;
-		while(input[i] != ' ' && input [i] != '\t' && input[i])
+		if (input[i] == '\"')
+		{
 			i++;
+			tokens++;
+			while (input[i] && input[i] != '\"')
+				i++;
+			if (input[i] == '\"')
+				i++;
+			else
+				return  (0);						//error handling (quote not closed)
+		}
+		else if (input[i] == '\'')
+		{
+			i++;
+			tokens++;
+			while (input[i] && input[i] != '\'')
+				i++;
+			if (input[i] == '\'')
+				i++;
+			else
+				return  (0);						//error handling (quote not closed)
+		}
+		else if(input[i])
+		{
+			tokens++;
+			while(input[i] != ' ' && input [i] != '\t' && input[i])
+				i++;
+		}
 	}
 	return (tokens);
 }
 
-void token_list_init(char *input, int count, t_token **token_ptr)
+void token_list_init(int count, t_token **token_ptr)
 {
 	t_token *first_token;
 	t_token *next_token;
@@ -74,10 +98,43 @@ void tokens_str_cpy(char *input, t_token **token_ptr)
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 		j = i;
-		while(input[i] != ' ' && input[i] != '\t' && input[i])
+		if (input[i] == '\"')
 		{
 			size++;
 			i++;
+			while (input[i] && input[i] != '\"')
+			{
+				size++;
+				i++;
+			}
+			if (input[i] == '\"')
+			{
+				size++;
+				i++;
+			}
+		}
+		else if(input[i] == '\'')
+		{
+			size++;
+			i++;
+			while (input[i] && input[i] != '\'')
+			{
+				size++;
+				i++;
+			}
+			if (input[i] == '\'')
+			{
+				size++;
+				i++;
+			}
+		}
+		else if(input[i])
+		{
+			while(input[i] != ' ' && input[i] != '\t' && input[i])
+			{
+				size++;
+				i++;
+			}
 		}
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
@@ -130,7 +187,7 @@ void	lexer(t_data *shell)
 		shell->restart = 1;
 		return ;
 	}
-	token_list_init(shell->input, count, &shell->token_list);
-	tokens_str_cpy(shell->input, &shell->token_list);
-	tokens_identify(&shell->token_list);
+ 	token_list_init(count, &shell->token_list);
+ 	tokens_str_cpy(shell->input, &shell->token_list);
+ 	tokens_identify(&shell->token_list);
 }
