@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 13:57:48 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/01/30 17:54:22 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,17 @@ int	main(int argc, char *argv[], char *envp[])
 		//signals();
 		get_promt(&shell);
 		lexer(&shell);
-		parser(&shell);
-		error_check(&shell);
-		executor(&shell);
-		print_cmds(&shell);
+		//parser(&shell);
+		//error_check(&shell);
+		//executor(&shell);
+		//print_cmds(&shell);
 	}
 	argc = 0;
 	argv = NULL;
 }
 
 /*
+promt printf fix
 enviromental variables
 signal handler
 free

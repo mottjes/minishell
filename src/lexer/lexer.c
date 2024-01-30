@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 12:51:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:03:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,13 +183,57 @@ void	tokens_identify(t_token **token_ptr)
 	}
 }
 
+void	get_env_vars(t_data *shell)
+{
+	t_token *token;
+	int		i;
+	int		j;
+	int		k;
+	int		len;
+	char	*str_mod;
+	
+	token = shell->token_list;
+	while (token)
+	{
+		i = 0;
+		j = 0;
+		k = 0;
+		len = 0;
+		while (token->str[i])
+		{
+			if (token->str[i] == '$')
+			{
+				i++;
+				while (token->str[i + j] && token->str[i + j] != ' ')
+					j++;
+				while (shell->envp[k])
+				{
+					if (!ft_strncmp(&token->str[i], shell->envp[k], j))
+					{
+						if (!ft_strncmp("=", shell->envp[k] + j, 1))
+						{
+							printf("%s\n", shell->envp[k]);
+							//create new string with env var inside
+						}
+					}
+					k++;
+				}
+			}
+			else
+				i++;
+		}
+		printf("%s\n", token->str);
+		token = token->next;
+	}
+}
+
 void	lexer(t_data *shell)
 {
 	int count;
 	
 	if (shell->restart)
-		return ;		
-	input_split(&shell->input, &shell->error);
+		return ;
+	input_split(&shell->input, &shell->error);		
 	count = tokens_count(shell->input, &shell->error);
 	if (!count)
 	{
@@ -199,4 +243,5 @@ void	lexer(t_data *shell)
  	token_list_init(count, &shell->token_list, &shell->error);
  	tokens_str_cpy(shell->input, &shell->token_list, &shell->error);
  	tokens_identify(&shell->token_list);
+	get_env_vars(shell);
 }
