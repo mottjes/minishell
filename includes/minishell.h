@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 11:59:15 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/30 14:00:33 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include "../readline/include/readline.h"
 # include "lexer.h"
 # include "parser.h"
+# include "executor.h"
+# include "builtins.h"
 
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
@@ -48,6 +50,7 @@ typedef	struct s_data
 	char		*input;
 	t_token		*token_list;
 	t_cmd		*cmd_list;
+	t_exec		*exec_list;
 	char		*in_file;
 	char		*out_file;
 	char		**envp;
