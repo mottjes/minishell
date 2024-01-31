@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/31 16:46:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:57:06 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,15 @@ void	get_env_vars(t_data *shell)
 		str_mod = NULL;
 		while (token->str[i])
 		{
+			if (token->str[i] == '\'')
+			{
+				i++;
+				while (token->str[i] != '\'' && token->str[i])
+					i++;
+				if (token->str[i] == '\'')
+					i++;
+			}
+			
 			if (token->str[i] == '$')
 			{
 				i++;
