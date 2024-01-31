@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 17:54:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:10:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, char *argv[], char *envp[])
 		shell.envp = envp;
 		//signals();
 		get_promt(&shell);
-		lexer(&shell);
+		//lexer(&shell);
 		//parser(&shell);
 		//error_check(&shell);
 		//executor(&shell);
