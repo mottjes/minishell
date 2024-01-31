@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/31 15:10:43 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/31 17:34:53 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef enum s_error
 	malloc_failed = 1,
 	quotes_not_closed = 2,
 	command_not_found = 3,
+	env_var_not_found = 4,
 }			t_error;
 
 typedef	struct s_data

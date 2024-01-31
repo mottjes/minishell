@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/31 16:58:45 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/01/31 18:13:50 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@
 	
 // }
 
-// void	print_lexer(t_data *shell)
-// {
-// 	t_token *token;
+void	print_lexer(t_data *shell)
+{
+	t_token *token;
 
-// 	token = shell->token_list;
-// 	while(token)
-// 	{
-// 		printf("Str: %s\n", token->str);
-// 		printf("Pos: %i\n", token->pos);
-// 		printf("Type: %i\n", token->type);
-// 		token = token->next;
-// 	}
-// }
+	token = shell->token_list;
+	while(token)
+	{
+		printf("Str: %s\n", token->str);
+		printf("Pos: %i\n", token->pos);
+		printf("Type: %i\n", token->type);
+		token = token->next;
+	}
+}
 
 void	error_check(t_data *shell)
 {
@@ -63,6 +63,8 @@ void	error_check(t_data *shell)
 			printf("Error: quotes not closed!\n");
 		if (shell->error == command_not_found)
 			printf("Error: command not found!\n");
+		if (shell->error == env_var_not_found)
+			printf("Error: environment variable not found!\n");
 	}
 }
 
@@ -77,8 +79,8 @@ int	main(int argc, char *argv[], char *envp[])
 		//signals();
 		get_promt(&shell);
 		lexer(&shell);
-		//parser(&shell);
-		//error_check(&shell);
+		parser(&shell);
+		error_check(&shell);
 		//executor(&shell);
 		//print_cmds(&shell);
 		//print_lexer(&shell);
