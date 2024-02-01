@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 12:37:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:35:21 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,11 @@ void	parser(t_data *shell)
 {
 	if (shell->restart)
 		return ;
-	//syntax_check(shell->token_list);
+	syntax_commands(shell->token_list, &shell->error);
+	syntax_redirections(shell->token_list, &shell->error);
+	syntax_pipe(shell->token_list, &shell->error);
+	if (shell->error)
+		return ;
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
 	cmd_get_path(shell->cmd_list, shell->envp, &shell->error);

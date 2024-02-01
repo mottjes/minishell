@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:56:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 12:01:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:28:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ int		arg_count(t_token *token);
 int		cmds_count(t_token *token);
 
 //				syntax_check.c
-void	syntax_check(t_token *token);
+void	syntax_pipe(t_token *token, t_error *error);
+void	syntax_redirections(t_token *token, t_error *error);
+void	syntax_commands(t_token *token, t_error *error);
+
 
 #endif

@@ -6,42 +6,90 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 13:06:47 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:42:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	syntax_check(t_token *token)
+void	syntax_commands(t_token *token, t_error *error)
 {
-	t_token *token_before;
+	t_token *token_prev;
 	
-	token_before = NULL;
+	token_prev = token;
 	while (token)
 	{
-		if (token->type == RE_IN || token->type == RE_OUT || token->type == RE_APP)
+		if (token->type == WORD)
+		{
+			if (token_prev->type == WORD || token_prev->type == PIPE)
+			{
+				printf("cmd found");
+				return ;
+			}
+		}
+		token_prev = token;
+		token = token->next;
+	}
+	*error = syntax_error;
+	return ;
+}
+
+
+void	syntax_redirections(t_token *token, t_error *error)
+{
+	while (token)
+	{
+		if (token->type == RE_IN || token->type == HERE_DOC || token->type == RE_OUT || token->type == RE_APP)
 		{
 			if (token->next)
 			{
 				if (token->next->type != WORD)
-					printf("Error in Syntax\n");
-				return ;									//error handling
+				{
+					*error = syntax_error;
+					return ;
+				}
 			}
 			else
 			{
-				printf("Error in Syntax\n");
+				*error = syntax_error;
 				return ;
 			}
+			
 		}
+		token = token->next;
+	}
+}
+
+void	syntax_pipe(t_token *token, t_error *error)
+{
+	t_token *token_prev;
+	t_token *token_prev_2;
+	
+	token_prev = token;
+	token_prev_2 = token_prev;
+	while (token)
+	{
 		if (token->type == PIPE)
 		{
-			if (!token_before || token_before != WORD || token->next->type != WORD)
-			{
-				printf("Error in Syntax\n");
+			if (token_prev->type == WORD)
+			{	
+				if (token_prev_2->type == PIPE || token_prev_2->type == WORD)
+				{
+					if (token->next)
+					{
+						if (token->next->type == WORD)
+							return ;
+					}
+					return ;
+				}
+				*error = syntax_error;
 				return ;
 			}
+			*error = syntax_error;
+			return ;
 		}
-		token_before = token;
+		token_prev_2 = token_prev;
+		token_prev = token;
 		token = token->next;
 	}
 }

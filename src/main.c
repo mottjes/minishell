@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/31 18:13:50 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:36:03 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	error_check(t_data *shell)
 			printf("Error: command not found!\n");
 		if (shell->error == env_var_not_found)
 			printf("Error: environment variable not found!\n");
+		if (shell->error == syntax_error)
+			printf("Error: syntax error!\n");
 	}
 }
 
