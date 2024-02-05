@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/01 16:05:47 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:36:22 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	builtin_check(t_cmd *cmd_list)
 
 void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 {
-	char **env_paths;
-	char *cmd_mod;
-	char *cmd_path;
-	int i;
+	char	**env_paths;
+	char	*cmd_mod;
+	char	*cmd_path;
+	int		i;
 
 	i = 0;
 	while (cmds)
@@ -50,11 +50,8 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 			if (cmds->cmd[0] == '/')
 			{
 				cmds->path = ft_strdup(cmds->cmd);
-				if(!cmds->path)
-				{
-					*error = malloc_failed;
-					return ;
-				}
+				if (!cmds->path)
+					malloc_fail(error);
 				if (access(cmds->path, F_OK))
 				{
 					*error = command_not_found;
@@ -66,29 +63,17 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 				while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
 					i++;
 				env_paths = ft_split(envp[i] + 5, ':');
-				if(!env_paths)
-				if(!cmds->path)
-				{
-					*error = malloc_failed;
-					return ;
-				}
+				if (!env_paths)
+					malloc_fail(error);
 				cmd_mod = ft_strjoin("/", cmds->cmd);
 				if (!cmd_mod)
-				if(!cmds->path)
-				{
-					*error = malloc_failed;
-					return ;
-				}
+					malloc_fail(error);
 				i = 0;
 				while (env_paths[i])
 				{
 					cmd_path = ft_strjoin(env_paths[i], cmd_mod);
 					if (!cmd_path)
-					if(!cmds->path)
-					{
-						*error = malloc_failed;
-						return ;
-					}
+						malloc_fail(error);
 					if (!access(cmd_path, F_OK))
 					{
 						cmds->path = cmd_path;
