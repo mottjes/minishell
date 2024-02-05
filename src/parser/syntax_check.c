@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/01 14:42:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/01 15:50:14 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	syntax_commands(t_token *token, t_error *error)
 		if (token->type == WORD)
 		{
 			if (token_prev->type == WORD || token_prev->type == PIPE)
-			{
-				printf("cmd found");
 				return ;
-			}
 		}
 		token_prev = token;
 		token = token->next;

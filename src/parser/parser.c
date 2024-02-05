@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/01 14:35:21 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:05:47 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 				if(!cmds->path)
 				{
 					*error = malloc_failed;
+					return ;
+				}
+				if (access(cmds->path, F_OK))
+				{
+					*error = command_not_found;
 					return ;
 				}
 			}
@@ -115,4 +120,5 @@ void	parser(t_data *shell)
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
 	cmd_get_path(shell->cmd_list, shell->envp, &shell->error);
+	error_check(shell);
 }

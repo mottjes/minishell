@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/01 14:36:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 14:16:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@
 	
 // }
 
-void	print_lexer(t_data *shell)
-{
-	t_token *token;
+// void	print_lexer(t_data *shell)
+// {
+// 	t_token *token;
 
-	token = shell->token_list;
-	while(token)
-	{
-		printf("Str: %s\n", token->str);
-		printf("Pos: %i\n", token->pos);
-		printf("Type: %i\n", token->type);
-		token = token->next;
-	}
-}
+// 	token = shell->token_list;
+// 	while(token)
+// 	{
+// 		printf("Str: %s\n", token->str);
+// 		printf("Pos: %i\n", token->pos);
+// 		printf("Type: %i\n", token->type);
+// 		token = token->next;
+// 	}
+// }
 
 void	error_check(t_data *shell)
 {
@@ -58,15 +58,15 @@ void	error_check(t_data *shell)
 	{
 		shell->restart = 1;
 		if (shell->error == malloc_failed)
-			printf("Error: malloc failed!\n");
+			ft_putstr_fd("minishell: malloc failed\n", 2);
 		if (shell->error == quotes_not_closed)
-			printf("Error: quotes not closed!\n");
+			ft_putstr_fd("minishell: quotes not closed\n", 2);
 		if (shell->error == command_not_found)
-			printf("Error: command not found!\n");
+			ft_putstr_fd("minishell: command not found\n", 2);
 		if (shell->error == env_var_not_found)
-			printf("Error: environment variable not found!\n");
+			ft_putstr_fd("minishell: environment variable not found\n", 2);
 		if (shell->error == syntax_error)
-			printf("Error: syntax error!\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 	}
 }
 
@@ -74,25 +74,33 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
 
+	(void)argc;
+	(void)argv;
 	while (1)
 	{
 		ft_memset(&shell, 0, sizeof(t_data));
 		shell.envp = envp;
 		//signals();
-		get_promt(&shell);
+		input_get(&shell);
 		lexer(&shell);
 		parser(&shell);
-		error_check(&shell);
-		//executor(&shell);
+		
 		//print_cmds(&shell);
+		//executor(&shell);
 		//print_lexer(&shell);
 	}
-	argc = 0;
-	argv = NULL;
 }
 
 /*
+if malloc fails its high risk to get seg fault -> exit shell
+
+check for read rights in input file
+check for write rights in output file
+check for execution rights in commands
+
 enviromental variables
+
 signal handler
-free
+
+free/error/quit
 */

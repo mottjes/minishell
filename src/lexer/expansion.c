@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_split.c                                      :+:      :+:    :+:   */
+/*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 11:38:25 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 14:10:57 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	add_space(char **input_ptr, int i, t_error *error)
 	{
 		*error = malloc_failed;
 		return ;
-	}							
+	}					
 	ft_strlcpy(input, *input_ptr, i + 1);
 	input[i] = ' ';
 	ft_strlcpy(input + i + 1, *input_ptr + i, size - i);
@@ -57,7 +57,7 @@ int	check_after_operator(char **input_ptr, int i, t_error *error)
 	return (0);
 }
 
-void	input_split(char **input_ptr, t_error *error)
+void	input_expansion(char **input_ptr, t_error *error)
 {
 	int i;
 	char *input;
@@ -102,7 +102,7 @@ void	input_split(char **input_ptr, t_error *error)
 		else if(input[i] == '>' && input[i + 1] != '>')
 		{
 			if (check_after_operator(input_ptr, i, error))
-					i++;
+				i++;
 		}
 		else if(input[i] == '<' && input[i + 1] == '<')
 		{

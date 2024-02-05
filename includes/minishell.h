@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/01 13:59:25 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 14:09:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <errno.h>
 # include "../libft/libft.h"
 # define READLINE_LIBRARY
 # include "../readline/include/history.h"
@@ -55,16 +56,15 @@ typedef	struct s_data
 	t_error		error;
 }		t_data;
 
-//				promt.c
-void	get_promt(t_data *shell);
+//				input.c
+void	input_get(t_data *shell);
+char	*promt_get(t_data *shell, char *cwd);
 
 //				signals.c
 void	signals(void);
 void	signal_handler(int signal);
 
-//				builtins.c
-void	env(char *envp[]);
-void	pwd(void);
-void	cd(char *path);
+
+void	error_check(t_data *shell);
 
 #endif
