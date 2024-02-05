@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 14:09:33 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 15:00:58 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ typedef	struct s_data
 	int			restart;
 	t_error		error;
 }		t_data;
+
+
+void	malloc_fail(t_error *error);
 
 //				input.c
 void	input_get(t_data *shell);

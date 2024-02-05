@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/05 13:54:50 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/05 14:33:33 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ SRC =	src/main.c					\
 		src/parser/cmd_table_init.c \
 		src/executor/executor.c		\
 		src/builtins/builtins.c		\
-		src/error/error.c 			\
 		
 CC = gcc
 

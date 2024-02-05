@@ -6,39 +6,38 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:39:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/31 17:40:26 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:19:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*copy_env_var_in_str(char *old_str, int pos_in_str, char *envp, int len_var)
+char	*copy_env_var_in_str(char *old_str, int i, char *envp, int len_var)
 {
-	char 	*new_str;
-	int		len;
+	char	*new_str;
 	int		len_envp;
-	
+	int		len;
+
 	len_envp = ft_strlen(envp + len_var + 1);
-	len = pos_in_str;
+	len = i;
 	len += len_envp;
 	new_str = malloc(sizeof(char) * (len + 1));
 	if (!new_str)
 		return (NULL);
-	ft_strlcpy(new_str, old_str, pos_in_str + 1);
-	ft_strlcpy(new_str + pos_in_str, envp + len_var + 1, len_envp + 1);
+	ft_strlcpy(new_str, old_str, i + 1);
+	ft_strlcpy(new_str + i, envp + len_var + 1, len_envp + 1);
 	return (new_str);
 }
 
 void	get_env_vars(t_data *shell)
 {
-	t_token *token;
+	t_token	*token;
 	char	*str_mod;
 	int		i;
 	int		j;
 	int		len_var;
-	
+
 	token = shell->token_list;
-	
 	while (token)
 	{
 		i = 0;
@@ -55,7 +54,6 @@ void	get_env_vars(t_data *shell)
 				if (token->str[i] == '\'')
 					i++;
 			}
-			
 			if (token->str[i] == '$')
 			{
 				i++;
@@ -82,7 +80,7 @@ void	get_env_vars(t_data *shell)
 				if (!str_mod)
 				{
 					shell->error = env_var_not_found;
-					return ;	
+					return ;
 				}
 			}
 			else

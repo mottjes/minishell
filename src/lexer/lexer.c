@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 14:11:06 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:10:14 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,20 @@ int	tokens_count(char *input, t_error *error)
 {
 	int	tokens;
 	int	i;
+	int	j;
 
+	j = 0;
 	i = 0;
 	tokens = 0;
 	while (input[i])
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
-		if (input[i] == '\"')
+		j = check_for_quotes(input, error, i);
+		if (j)
 		{
-			i++;
+			i += j;
 			tokens++;
-			while (input[i] && input[i] != '\"')
-				i++;
-			if (input[i] == '\"')
-				i++;
-			else
-				return (*error = quotes_not_closed, 0);
-		}
-		else if (input[i] == '\'')
-		{
-			i++;
-			tokens++;
-			while (input[i] && input[i] != '\'')
-				i++;
-			if (input[i] == '\'')
-				i++;
-			else
-				return (*error = quotes_not_closed, 0);
 		}
 		else if (input[i])
 		{
@@ -64,10 +50,7 @@ void	token_list_init(int count, t_token **token_ptr, t_error *error)
 	i = 1;
 	first_token = malloc(sizeof(t_token));
 	if (!first_token)
-	{
-		*error = malloc_failed;
-		return ;
-	}
+		malloc_fail(error);
 	*token_ptr = first_token;
 	first_token->pos = i;
 	count--;
@@ -75,10 +58,7 @@ void	token_list_init(int count, t_token **token_ptr, t_error *error)
 	{
 		next_token = malloc(sizeof(t_token));
 		if (!next_token)
-		{
-			*error = malloc_failed;
-			return ;
-		}
+			malloc_fail(error);
 		first_token->next = next_token;
 		i++;
 		next_token->pos = i;
@@ -97,60 +77,21 @@ void	tokens_str_cpy(char *input, t_token **token_ptr, t_error *error)
 	int		j;
 
 	i = 0;
-	j = 0;
-	size = 0;
 	token = *token_ptr;
 	while (input[i] && token)
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 		j = i;
-		if (input[i] == '\"')
-		{
-			size++;
-			i++;
-			while (input[i] && input[i] != '\"')
-			{
-				size++;
-				i++;
-			}
-			if (input[i] == '\"')
-			{
-				size++;
-				i++;
-			}
-		}
-		else if (input[i] == '\'')
-		{
-			size++;
-			i++;
-			while (input[i] && input[i] != '\'')
-			{
-				size++;
-				i++;
-			}
-			if (input[i] == '\'')
-			{
-				size++;
-				i++;
-			}
-		}
+		size = check_for_quotes(input, error, i);
+		if (size)
+			i += size;
 		else if (input[i])
-		{
-			while (input[i] != ' ' && input[i] != '\t' && input[i])
-			{
-				size++;
-				i++;
-			}
-		}
+			i = get_str_size(input, i, size);
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
-		{
-			*error = malloc_failed;
-			return ;
-		}
+			malloc_fail(error);
 		ft_strlcpy(token->str, input + j, size + 1);
-		size = 0;
 		token = token->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 14:16:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 15:20:41 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@
 	
 // }
 
-// void	print_lexer(t_data *shell)
-// {
-// 	t_token *token;
+void	print_lexer(t_data *shell)
+{
+	t_token *token;
 
-// 	token = shell->token_list;
-// 	while(token)
-// 	{
-// 		printf("Str: %s\n", token->str);
-// 		printf("Pos: %i\n", token->pos);
-// 		printf("Type: %i\n", token->type);
-// 		token = token->next;
-// 	}
-// }
+	token = shell->token_list;
+	while(token)
+	{
+		printf("Str: %s\n", token->str);
+		printf("Pos: %i\n", token->pos);
+		printf("Type: %i\n", token->type);
+		token = token->next;
+	}
+}
 
 void	error_check(t_data *shell)
 {
@@ -70,6 +70,15 @@ void	error_check(t_data *shell)
 	}
 }
 
+void	malloc_fail(t_error *error)
+{
+	*error = malloc_failed;
+	
+	if (*error == malloc_failed)
+		ft_putstr_fd("minishell: malloc failed\n", 2);
+	exit(1);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
@@ -83,11 +92,11 @@ int	main(int argc, char *argv[], char *envp[])
 		//signals();
 		input_get(&shell);
 		lexer(&shell);
-		parser(&shell);
+		//parser(&shell);
 		
 		//print_cmds(&shell);
 		//executor(&shell);
-		//print_lexer(&shell);
+		print_lexer(&shell);
 	}
 }
 
@@ -103,4 +112,5 @@ enviromental variables
 signal handler
 
 free/error/quit
+makefile for linux
 */
