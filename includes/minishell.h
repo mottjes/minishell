@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 15:00:58 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:25:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ typedef	struct s_data
 }		t_data;
 
 
-void	malloc_fail(t_error *error);
-
 //				input.c
 void	input_get(t_data *shell);
 char	*promt_get(t_data *shell, char *cwd);
@@ -67,7 +65,8 @@ char	*promt_get(t_data *shell, char *cwd);
 void	signals(void);
 void	signal_handler(int signal);
 
-
+//
+void	malloc_fail(t_error *error);
 void	error_check(t_data *shell);
 
 #endif

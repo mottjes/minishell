@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:56:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/01 14:28:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:43:55 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,24 @@ typedef	struct s_cmd
 	struct s_cmd	*next;
 }		t_cmd;
 
-//				parser.c
+//			parser.c
 void	builtin_check(t_cmd *cmd_list);
 void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error);
 void	parser(t_data	*shell);
 
-//				cmd_table_init.c
+//			cmd_table_init.c
 void	cmd_table_init(t_data *shell);
 void	cmds_str_copy(t_token *token, t_cmd *cmds, t_error *error);
 void	get_redirections(t_data *shell);
 void	cmd_list_init(t_data *shell, int count, t_error *error);
-int		arg_count(t_token *token);
-int		cmds_count(t_token *token);
 
-//				syntax_check.c
+//			syntax_check.c
 void	syntax_pipe(t_token *token, t_error *error);
 void	syntax_redirections(t_token *token, t_error *error);
 void	syntax_commands(t_token *token, t_error *error);
 
+//			parser_utilc.c
+int		arg_count(t_token *token);
+int		cmds_count(t_token *token);
 
 #endif

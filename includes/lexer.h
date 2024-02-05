@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:10:55 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:24:40 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	tokens_identify(t_token **token_ptr);
 
 //			lexer_utils.c
 int		check_for_quotes(char *input, t_error *error, int i);
-int	get_str_size(char *input, int i, int size)
+int		get_str_size(char *input, int i, int size);
 
 //			expansion.c
 void	input_expansion(char **input_ptr, t_error *error);
