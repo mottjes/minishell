@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:38:52 by mottjes           #+#    #+#             */
-/*   Updated: 2023/05/24 13:24:32 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:02:18 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Negative numbers must be handled.
 #include "libft.h"
 
 static size_t	count_digits(int n)
-{	
+{
 	int	digits;
 
 	digits = 1;

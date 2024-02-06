@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 15:42:35 by mottjes           #+#    #+#             */
-/*   Updated: 2023/05/25 14:53:26 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:02:35 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	{
 		dst[dstlen + i] = src[i];
 		i++;
-	}	
+	}
 	dst[dstlen + i] = '\0';
 	if (dstlen > dstsize)
 		return (srclen + dstsize);

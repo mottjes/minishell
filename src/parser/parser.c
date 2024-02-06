@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:36:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:35:25 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	builtin_check(t_cmd *cmd_list)
 	}
 }
 
-void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
+void	cmd_get_path(t_cmd *cmds, char **envp, t_data *shell)
 {
 	char	**env_paths;
 	char	*cmd_mod;
@@ -51,10 +51,10 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 			{
 				cmds->path = ft_strdup(cmds->cmd);
 				if (!cmds->path)
-					malloc_fail(error);
+					malloc_fail(shell);
 				if (access(cmds->path, F_OK))
 				{
-					*error = command_not_found;
+					shell->error = command_not_found;
 					return ;
 				}
 			}
@@ -64,16 +64,16 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 					i++;
 				env_paths = ft_split(envp[i] + 5, ':');
 				if (!env_paths)
-					malloc_fail(error);
+					malloc_fail(shell);
 				cmd_mod = ft_strjoin("/", cmds->cmd);
 				if (!cmd_mod)
-					malloc_fail(error);
+					malloc_fail(shell);
 				i = 0;
 				while (env_paths[i])
 				{
 					cmd_path = ft_strjoin(env_paths[i], cmd_mod);
 					if (!cmd_path)
-						malloc_fail(error);
+						malloc_fail(shell);
 					if (!access(cmd_path, F_OK))
 					{
 						cmds->path = cmd_path;
@@ -85,7 +85,7 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_error *error)
 			}
 			if (!cmds->path)
 			{
-				*error = command_not_found;
+				shell->error = command_not_found;
 				return ;
 			}
 		}
@@ -101,9 +101,12 @@ void	parser(t_data *shell)
 	syntax_redirections(shell->token_list, &shell->error);
 	syntax_pipe(shell->token_list, &shell->error);
 	if (shell->error)
+	{
+		error_check(shell);
 		return ;
+	}
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
-	cmd_get_path(shell->cmd_list, shell->envp, &shell->error);
+	cmd_get_path(shell->cmd_list, shell->envp, shell);
 	error_check(shell);
 }

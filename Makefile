@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/05 17:43:24 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/06 14:10:54 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 SRC =	src/main.c					\
 		src/signals/signals.c		\
-		src/input/input.c			\
+		src/lexer/input.c			\
 		src/lexer/lexer.c 			\
 		src/lexer/expansion.c		\
 		src/lexer/env_var.c			\
@@ -24,7 +24,8 @@ SRC =	src/main.c					\
 		src/parser/cmd_table_init.c \
 		src/parser/parser_utils.c	\
 		src/executor/executor.c		\
-		src/builtins/builtins.c		\
+		src/executor/builtins.c		\
+		src/error/error.c			\
 		
 CC = gcc
 

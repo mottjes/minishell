@@ -6,10 +6,9 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:25:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:15:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -30,9 +29,9 @@
 # include "executor.h"
 # include "builtins.h"
 
-#define CYAN    "\x1b[36m"
-#define RESET   "\x1b[0m"
-#define BOLD	"\033[1m"
+# define CYAN	"\x1b[36m"
+# define RESET	"\x1b[0m"
+# define BOLD	"\033[1m"
 
 typedef enum s_error
 {
@@ -43,7 +42,7 @@ typedef enum s_error
 	syntax_error = 5,
 }			t_error;
 
-typedef	struct s_data
+typedef struct s_data
 {
 	char		*input;
 	t_token		*token_list;
@@ -56,17 +55,12 @@ typedef	struct s_data
 	t_error		error;
 }		t_data;
 
-
-//				input.c
-void	input_get(t_data *shell);
-char	*promt_get(t_data *shell, char *cwd);
-
 //				signals.c
 void	signals(void);
 void	signal_handler(int signal);
 
-//
-void	malloc_fail(t_error *error);
+//				error.c
+void	malloc_fail(t_data *shell);
 void	error_check(t_data *shell);
 
 #endif

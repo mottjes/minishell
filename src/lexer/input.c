@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:45:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 13:47:21 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:15:55 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ char	*promt_get(t_data *shell, char *cwd)
 	size = ft_strlen(cwd + i);
 	promt = malloc(sizeof(char) * (size + 9 + 3 + 5));
 	if (!promt)
-	{
-		shell->error = malloc_failed;
-		shell->restart = 1;
-		return (NULL);
-	}
+		malloc_fail(shell);
 	ft_strlcpy(promt, CYAN BOLD, 10);
 	ft_strlcpy(promt + 9, cwd + i, size + 1);
 	ft_strlcpy(promt + 9 + size, " % ", 4);
@@ -45,11 +41,7 @@ void	input_get(t_data *shell)
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-	{
-		shell->error = malloc_failed;
-		shell->restart = 1;
-		return ;
-	}
+		malloc_fail(shell);
 	promt = promt_get(shell, cwd);
 	free(cwd);
 	if (!promt)

@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:39:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:19:33 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:40:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*copy_env_var_in_str(char *old_str, int i, char *envp, int len_var)
+char	*copy_env_var(char *old_str, int i, char *envp, int len_var)
 {
 	char	*new_str;
 	int		len_envp;
@@ -65,12 +65,9 @@ void	get_env_vars(t_data *shell)
 					{
 						if (!ft_strncmp(shell->envp[j] + len_var, "=", 1))
 						{
-							str_mod = copy_env_var_in_str(token->str, i - 1, shell->envp[j], len_var);
+							str_mod = copy_env_var(token->str, i - 1, shell->envp[j], len_var);
 							if (!str_mod)
-							{
-								shell->error = malloc_failed;
-								return ;
-							}
+								malloc_fail(shell);
 							free(token->str);
 							token->str = str_mod;
 						}

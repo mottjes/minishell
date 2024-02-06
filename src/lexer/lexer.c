@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:10:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:48:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	tokens_count(char *input, t_error *error)
 	return (tokens);
 }
 
-void	token_list_init(int count, t_token **token_ptr, t_error *error)
+void	token_list_init(int count, t_token **token_ptr, t_data *shell)
 {
 	t_token	*first_token;
 	t_token	*next_token;
@@ -50,7 +50,7 @@ void	token_list_init(int count, t_token **token_ptr, t_error *error)
 	i = 1;
 	first_token = malloc(sizeof(t_token));
 	if (!first_token)
-		malloc_fail(error);
+		malloc_fail(shell);
 	*token_ptr = first_token;
 	first_token->pos = i;
 	count--;
@@ -58,7 +58,7 @@ void	token_list_init(int count, t_token **token_ptr, t_error *error)
 	{
 		next_token = malloc(sizeof(t_token));
 		if (!next_token)
-			malloc_fail(error);
+			malloc_fail(shell);
 		first_token->next = next_token;
 		i++;
 		next_token->pos = i;
@@ -69,7 +69,7 @@ void	token_list_init(int count, t_token **token_ptr, t_error *error)
 	return ;
 }
 
-void	tokens_str_cpy(char *input, t_token **token_ptr, t_error *error)
+void	tokens_str_cpy(char *input, t_token **token_ptr, t_data *shell)
 {
 	t_token	*token;
 	int		size;
@@ -83,14 +83,17 @@ void	tokens_str_cpy(char *input, t_token **token_ptr, t_error *error)
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 		j = i;
-		size = check_for_quotes(input, error, i);
+		size = check_for_quotes(input, &shell->error, i);
 		if (size)
 			i += size;
 		else if (input[i])
-			i = get_str_size(input, i, size);
+		{
+			size = get_str_size(input, i, size);
+			i += size;
+		}
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
-			malloc_fail(error);
+			malloc_fail(shell);
 		ft_strlcpy(token->str, input + j, size + 1);
 		token = token->next;
 	}
@@ -131,15 +134,15 @@ void	lexer(t_data *shell)
 
 	if (shell->restart)
 		return ;
-	input_expansion(&shell->input, &shell->error);
+	input_expansion(&shell->input, shell);
 	count = tokens_count(shell->input, &shell->error);
 	if (!count)
 	{
 		shell->restart = 1;
 		return ;
 	}
-	token_list_init(count, &shell->token_list, &shell->error);
-	tokens_str_cpy(shell->input, &shell->token_list, &shell->error);
+	token_list_init(count, &shell->token_list, shell);
+	tokens_str_cpy(shell->input, &shell->token_list, shell);
 	tokens_identify(&shell->token_list);
 	get_env_vars(shell);
 	error_check(shell);

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:25:24 by mottjes           #+#    #+#             */
-/*   Updated: 2023/05/25 15:06:28 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:02:51 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ not more than len characters are searched
 Return:
 	If needle is an empty string, haystack is returned 
 	If needle occurs nowhere in haystack, NULL is returned 
-	otherwise a pointer to the first character of the first occurrence of needle is
+	otherwise a pointer to the first character of the first 
+	occurrence of needle is
     returned.
 */
 

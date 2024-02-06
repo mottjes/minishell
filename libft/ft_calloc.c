@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:33:03 by mottjes           #+#    #+#             */
-/*   Updated: 2023/05/24 15:31:18 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:01:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	*ft_calloc(size_t count, size_t size)
 	{
 		ptr[i] = 0;
 		i++;
-	}	
+	}
 	return (ptr);
 }
 
