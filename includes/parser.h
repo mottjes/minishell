@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:56:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:36:28 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 18:58:45 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_cmd
 
 //			parser.c
 void	builtin_check(t_cmd *cmd_list);
-void	cmd_get_path(t_cmd *cmds, char **envp, t_data *shell);
+void	cmd_get_path(t_cmd *cmds, t_data *shell);
 void	parser(t_data	*shell);
 
 //			cmd_table_init.c

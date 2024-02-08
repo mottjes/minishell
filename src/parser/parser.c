@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:35:25 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:07:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	builtin_check(t_cmd *cmd_list)
 	}
 }
 
-void	cmd_get_path(t_cmd *cmds, char **envp, t_data *shell)
+void	cmd_get_path(t_cmd *cmds, t_data *shell)
 {
 	char	**env_paths;
 	char	*cmd_mod;
@@ -60,9 +60,9 @@ void	cmd_get_path(t_cmd *cmds, char **envp, t_data *shell)
 			}
 			else
 			{
-				while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
+				while (shell->envp[i] && ft_strncmp(shell->envp[i], "PATH=", 5))
 					i++;
-				env_paths = ft_split(envp[i] + 5, ':');
+				env_paths = ft_split(shell->envp[i] + 5, ':');
 				if (!env_paths)
 					malloc_fail(shell);
 				cmd_mod = ft_strjoin("/", cmds->cmd);
@@ -107,6 +107,6 @@ void	parser(t_data *shell)
 	}
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
-	cmd_get_path(shell->cmd_list, shell->envp, shell);
+	cmd_get_path(shell->cmd_list, shell);
 	error_check(shell);
 }

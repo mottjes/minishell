@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:15:15 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:20:02 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@
 
 typedef enum s_error
 {
-	malloc_failed = 1,
-	quotes_not_closed = 2,
-	command_not_found = 3,
-	env_var_not_found = 4,
-	syntax_error = 5,
+	quotes_not_closed = 1,
+	command_not_found = 2,
+	env_var_not_found = 3,
+	syntax_error = 4,
 }			t_error;
 
 typedef struct s_data
@@ -60,6 +59,7 @@ void	signals(void);
 void	signal_handler(int signal);
 
 //				error.c
+void	free_all(t_data *shell);
 void	malloc_fail(t_data *shell);
 void	error_check(t_data *shell);
 

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:31:44 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:24:23 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	syntax_redirections(t_token *token, t_error *error)
 			}
 			else
 			{
+				//ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 				*error = syntax_error;
 				return ;
 			}
@@ -81,6 +82,7 @@ void	syntax_pipe(t_token *token, t_error *error)
 				*error = syntax_error;
 				return ;
 			}
+			//ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 			*error = syntax_error;
 			return ;
 		}

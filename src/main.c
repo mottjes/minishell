@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:49:02 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:46:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,32 +52,55 @@ void	print_lexer(t_data *shell)
 	}
 }
 
+void	create_env(t_data *shell, char **envp)
+{
+	int	i;
+	
+	i = 0;
+	while (envp[i])
+		i++;
+	shell->envp = malloc(sizeof(char *) * (i + 1));
+	if (!shell->envp)
+		malloc_fail(shell);
+	i = 0;
+	while (envp[i])
+	{
+		shell->envp[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	shell->envp[i] = NULL;
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
 
 	(void)argc;
 	(void)argv;
+	ft_memset(&shell, 0, sizeof(t_data));
+	create_env(&shell, envp);
 	while (1)
 	{
-		ft_memset(&shell, 0, sizeof(t_data));
-		shell.envp = envp;
 		//signals();
 		input_get(&shell);
 		lexer(&shell);
 		parser(&shell);
 		
-		print_cmds(&shell);
-		//executor(&shell);
 		//print_lexer(&shell);
+		print_cmds(&shell);
+
+		//executor(&shell);
+		free_all(&shell);
 	}
 }
 
 /*
-malloc fails-> exit shell
+load env vars before tokenising -> the quotes can be deletet then
 free/error/quit
+exit codes
 
-enviromental variables
+here doc
+
 $?
 
 signal handler

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:39:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:40:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:45:52 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	get_env_vars(t_data *shell)
 		{
 			if (token->str[i] == '\'')
 			{
+				printf("fuck");
 				i++;
 				while (token->str[i] != '\'' && token->str[i])
 					i++;
@@ -57,7 +58,7 @@ void	get_env_vars(t_data *shell)
 			if (token->str[i] == '$')
 			{
 				i++;
-				while (token->str[i + len_var] && token->str[i + len_var] != ' ')
+				while (token->str[i + len_var] && (token->str[i + len_var] != ' ' && token->str[i + len_var] != '\"'))
 					len_var++;
 				while (shell->envp[j])
 				{
