@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:38:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/08 14:44:14 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds, t_data *shell)
 				token = token->next;
 				i++;
 			}
+			cmds->args[i] = NULL;
 			cmds = cmds->next;
 			i = 0;
 		}

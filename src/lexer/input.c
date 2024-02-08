@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:45:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:15:55 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/08 14:06:52 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*promt_get(t_data *shell, char *cwd)
+char	*build_promt(t_data *shell, char *cwd)
 {
 	char	*promt;
 	int		size;
@@ -42,10 +42,8 @@ void	input_get(t_data *shell)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		malloc_fail(shell);
-	promt = promt_get(shell, cwd);
+	promt = build_promt(shell, cwd);
 	free(cwd);
-	if (!promt)
-		return ;
 	shell->input = readline(promt);
 	if (!shell->input)
 		shell->restart = 1;

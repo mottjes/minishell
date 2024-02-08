@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:39:45 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/08 14:06:05 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_token
 
 //				input.c
 void	input_get(t_data *shell);
-char	*promt_get(t_data *shell, char *cwd);
+char	*build_promt(t_data *shell, char *cwd);
 
 //			lexer.c
 void	lexer(t_data *shell);

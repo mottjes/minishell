@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:39:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 19:45:52 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/08 14:25:58 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,61 +29,54 @@ char	*copy_env_var(char *old_str, int i, char *envp, int len_var)
 	return (new_str);
 }
 
+
 void	get_env_vars(t_data *shell)
 {
-	t_token	*token;
 	char	*str_mod;
+	int		len;
 	int		i;
 	int		j;
-	int		len_var;
-
-	token = shell->token_list;
-	while (token)
+	
+	i = 0;
+	j = 0;
+	len = 0;
+	while (shell->input[i])
 	{
-		i = 0;
-		j = 0;
-		len_var = 0;
-		str_mod = NULL;
-		while (token->str[i])
+		if (shell->input[i] == '\'')
 		{
-			if (token->str[i] == '\'')
-			{
-				printf("fuck");
+			i++;
+			while (shell->input[i] != '\'')
 				i++;
-				while (token->str[i] != '\'' && token->str[i])
-					i++;
-				if (token->str[i] == '\'')
-					i++;
-			}
-			if (token->str[i] == '$')
-			{
-				i++;
-				while (token->str[i + len_var] && (token->str[i + len_var] != ' ' && token->str[i + len_var] != '\"'))
-					len_var++;
-				while (shell->envp[j])
-				{
-					if (!ft_strncmp(&token->str[i], shell->envp[j], len_var))
-					{
-						if (!ft_strncmp(shell->envp[j] + len_var, "=", 1))
-						{
-							str_mod = copy_env_var(token->str, i - 1, shell->envp[j], len_var);
-							if (!str_mod)
-								malloc_fail(shell);
-							free(token->str);
-							token->str = str_mod;
-						}
-					}
-					j++;
-				}
-				if (!str_mod)
-				{
-					shell->error = env_var_not_found;
-					return ;
-				}
-			}
-			else
+			if (shell->input[i] == '\'')
 				i++;
 		}
-		token = token->next;
+		if (shell->input[i] == '$')
+		{
+			i++;
+			while (shell->input[i + len] && shell->input[i + len] != ' ' && shell->input[i + len] != '\"')
+				len++;
+			while (shell->envp[j])
+			{
+				if (!ft_strncmp(&shell->input[i], shell->envp[j], len))
+				{
+					if (!ft_strncmp(shell->envp[j] + len, "=", 1))
+					{
+						str_mod = copy_env_var(shell->input, i - 1, shell->envp[j], len);
+						if (!str_mod)
+							malloc_fail(shell);
+						free(shell->input);
+							shell->input = str_mod;
+					}
+				}
+				j++;
+			}
+			if (!str_mod)
+			{
+				shell->error = env_var_not_found;
+				return ;
+			}
+		}
+		else
+			i++;
 	}
 }
