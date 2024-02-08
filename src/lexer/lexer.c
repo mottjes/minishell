@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/08 14:09:57 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/08 15:06:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,12 @@ void	tokens_str_cpy(char *input, t_token **token_ptr, t_data *shell)
 		j = i;
 		size = check_for_quotes(input, &shell->error, i);
 		if (size)
+		{
+			j++;
 			i += size;
+			size--;
+			size--;
+		}
 		else if (input[i])
 		{
 			size = get_str_size(input, i, size);

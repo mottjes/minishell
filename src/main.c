@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 19:46:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/08 15:30:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int argc, char *argv[], char *envp[])
 		parser(&shell);
 		
 		//print_lexer(&shell);
-		print_cmds(&shell);
+		//print_cmds(&shell);
 
 		//executor(&shell);
 		free_all(&shell);
@@ -95,13 +95,13 @@ int	main(int argc, char *argv[], char *envp[])
 }
 
 /*
-load env vars before tokenising -> the quotes can be deletet then
+if env var is not found -> delete var but no error
 free/error/quit
 exit codes
+$?
 
 here doc
 
-$?
 
 signal handler
 
