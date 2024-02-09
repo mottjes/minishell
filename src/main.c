@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 12:49:23 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/09 16:39:13 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,18 @@ void	print_lexer(t_data *shell)
 	}
 }
 
+void	print_env(t_data *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->envp[i])
+	{
+		printf("%s\n", shell->envp[i]);
+		i++;
+	}
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
@@ -60,28 +72,30 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(t_data));
 	create_env(&shell, envp);
+	//print_env(&shell);
+	//signals();
 	while (1)
 	{
-		//signals();
 		input_get(&shell);
 		lexer(&shell);
 		parser(&shell);
 		
 		// print_lexer(&shell);
 		// print_cmds(&shell);
-
 		executor(&shell);
 		free_all(&shell);
 	}
 }
 
 /*
+set enviroment (SHLVL)
+change SHELL=/bin/zsh???
+
 free/error/exit
 exit codes
 $?
 
 here doc
-
 signal handler
 
 makefile for linux

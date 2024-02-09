@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 12:52:29 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/09 13:03:17 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	executor(t_data *shell)
 		dup2(fds[0], STDIN_FILENO);
 		close(fds[0]);
 		close(fds[1]);
-		printf("%s\n", shell->cmd_list->args[0]);
 		execve(shell->cmd_list->path, shell->cmd_list->args, shell->envp);
 		// if (shell->in_file)
 		// {
