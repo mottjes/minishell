@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 11:41:19 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 12:17:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ int	main(int argc, char *argv[], char *envp[])
 		//signals();
 		input_get(&shell);
 		lexer(&shell);
-		//parser(&shell);
+		parser(&shell);
 		
-		print_lexer(&shell);
-		//print_cmds(&shell);
+		//print_lexer(&shell);
+		print_cmds(&shell);
 
 		//executor(&shell);
 		free_all(&shell);
