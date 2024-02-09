@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 16:39:13 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 17:16:07 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int	main(int argc, char *argv[], char *envp[])
 		lexer(&shell);
 		parser(&shell);
 		
-		// print_lexer(&shell);
-		// print_cmds(&shell);
+		//print_lexer(&shell);
+		//print_cmds(&shell);
 		executor(&shell);
 		free_all(&shell);
 	}

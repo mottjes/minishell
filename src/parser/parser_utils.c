@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:42:48 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/05 17:44:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 17:15:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	arg_count(t_token *token)
 {
 	int	count;
 
-	count = 0;
+	count = 1;
 	while (token && token->type == WORD)
 	{
 		token = token->next;
