@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 12:17:08 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 12:49:23 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int	main(int argc, char *argv[], char *envp[])
 		lexer(&shell);
 		parser(&shell);
 		
-		//print_lexer(&shell);
-		print_cmds(&shell);
+		// print_lexer(&shell);
+		// print_cmds(&shell);
 
-		//executor(&shell);
+		executor(&shell);
 		free_all(&shell);
 	}
 }

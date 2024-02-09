@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:48:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/01/30 14:02:16 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/08 14:41:10 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ void	cd(char *path)
 	if (chdir(path))
 		return ;									//error handling
 }
+
+// void	echo(t_data *shell, int flag)
+// {
+// 	if (flag == 1)
+// 		ft_putstr_fd("%s", shell->cmd_list->args[0]);
+// 	if (flag == 0)
+// 		ft_putstr_fd("%s\n", shell->cmd_list->args[1]);
+// }
 
 /*
 ◦ echo with option -n
