@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 19:20:02 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:13:01 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ typedef enum s_error
 {
 	quotes_not_closed = 1,
 	command_not_found = 2,
-	env_var_not_found = 3,
-	syntax_error = 4,
+	syntax_error = 3,
 }			t_error;
 
 typedef struct s_data

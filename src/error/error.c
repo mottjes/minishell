@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 19:18:19 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:13:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	error_check(t_data *shell)
 			ft_putstr_fd("minishell: quotes not closed\n", 2);
 		if (shell->error == command_not_found)
 			ft_putstr_fd("minishell: command not found\n", 2);
-		if (shell->error == env_var_not_found)
-			ft_putstr_fd("minishell: environment variable not found\n", 2);
 		if (shell->error == syntax_error)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 	}

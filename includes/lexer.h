@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 20:29:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/08 14:06:05 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:39:28 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ int		check_before_operator(char **input_ptr, int i, t_data *shell);
 void	add_space(char **input_ptr, int i, t_data *shell);
 
 //			env_var.c
+void	create_env(t_data *shell, char **envp);
 void	get_env_vars(t_data *shell);
 char	*copy_env_var(char *old_str, int i, char *envp, int len_var);
-
+char	*remove_env_var(char *old_str, int i, int len_var);
 
 #endif

@@ -6,11 +6,30 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:39:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/08 15:24:08 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:38:48 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	create_env(t_data *shell, char **envp)
+{
+	int	i;
+	
+	i = 0;
+	while (envp[i])
+		i++;
+	shell->envp = malloc(sizeof(char *) * (i + 1));
+	if (!shell->envp)
+		malloc_fail(shell);
+	i = 0;
+	while (envp[i])
+	{
+		shell->envp[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	shell->envp[i] = NULL;
+}
 
 char	*copy_env_var(char *old_str, int i, char *envp, int len_var)
 {
@@ -31,6 +50,22 @@ char	*copy_env_var(char *old_str, int i, char *envp, int len_var)
 	return (new_str);
 }
 
+
+char	*remove_env_var(char *old_str, int i, int len_var)
+{
+	char	*new_str;
+	int		len;
+
+	len = ft_strlen(old_str) - len_var;
+	new_str = malloc(sizeof(char) * (len));
+	if (!new_str)
+		return (NULL);
+	ft_strlcpy(new_str, old_str, i - 1);
+	printf("1 :%s\n", new_str);
+	ft_strlcpy(new_str + i - 2, old_str + i + len_var, len - i + 1);
+	printf("2 :%s\n", new_str);
+	return (new_str);	
+}
 
 void	get_env_vars(t_data *shell)
 {
@@ -68,15 +103,18 @@ void	get_env_vars(t_data *shell)
 						if (!str_mod)
 							malloc_fail(shell);
 						free(shell->input);
-							shell->input = str_mod;
+						shell->input = str_mod;
 					}
 				}
 				j++;
 			}
 			if (!str_mod)
 			{
-				shell->error = env_var_not_found;
-				return ;
+				str_mod = remove_env_var(shell->input, i, len);
+				if (!str_mod)
+						malloc_fail(shell);
+				free(shell->input);
+				shell->input = str_mod;
 			}
 		}
 		else
