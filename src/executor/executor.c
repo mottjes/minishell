@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 15:44:16 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 17:25:23 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,31 +50,27 @@ void	output_in_out_file(t_data *shell)
 	close(fd);
 }
 
-void	exec_built_in(t_data *shell)
+void	exec_built_in(t_data *shell, t_cmd *cmd)
 {
-	t_cmd	*cmd_list;
-
-	cmd_list = shell->cmd_list;
-	if (!ft_strncmp(cmd_list->cmd, "cd", 2))
-		cd(shell, shell->cmd_list);
-	else if (!ft_strncmp(cmd_list->cmd, "pwd", 5))
+	if (!ft_strncmp(cmd->cmd, "echo", 4))
+	{
+		if (!ft_strncmp(cmd->args[0], "-n", 5))
+			echo(shell, 1);
+		else
+			echo(shell, 0);
+	}
+	else if (!ft_strncmp(cmd->cmd, "cd", 2))
+	{
+		cd(shell, cmd);
+	}
+	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
 		pwd();
-	else if (!ft_strncmp(cmd_list->cmd, "env", 5))
-		env(shell->envp);
-	// if (!ft_strncmp(cmd_list->cmd, "echo", 5))
-	// {
-	// 	if (!ft_strncmp(cmd_list->args[0], "-n", 5))
-	// 		echo(shell, 1);
-	// 	else
-	// 		echo(shell, 0);
-	// }
-	// if (!ft_strncmp(cmd_list->cmd, "pwd", 5))
-	// 	pwd();
 	// if (cmd_list->cmd == "export")
 	// 	export(shell);
 	// if (cmd_list->cmd == "unset")
 	// 	unset(shell);
-	
+	else if (!ft_strncmp(cmd->cmd, "env", 5))
+		env(shell->envp);
 	// if (cmd_list->cmd == "exit")
 	// 	exit(shell);
 }
@@ -82,39 +78,45 @@ void	exec_built_in(t_data *shell)
 void	executor(t_data *shell)
 {
 	pid_t	child_pid;
-	pid_t	wait_pid; //brauchen wir das??
+	pid_t	wait_pid;
+	int		status;
 	int		fds[2];
+	t_cmd	*cmds;
 
-	pipe(fds);
-	if (pipe(fds) == -1)
-		return ; //error
-	child_pid = fork();
-	if (child_pid == -1)
-		return ; //error
-	if (child_pid == 0)
+	cmds = shell->cmd_list;
+	while(cmds)
 	{
-		dup2(fds[0], STDIN_FILENO);
+		// pipe(fds);
+		if (pipe(fds) == -1)
+			return ; //error
+		child_pid = fork();
+		if (child_pid == -1)
+			return ; //error
+		if (child_pid == 0)
+		{
+			dup2(fds[0], STDIN_FILENO);
+			close(fds[0]);
+			close(fds[1]);
+			if (cmds->builtin == 1)
+				exec_built_in(shell, cmds);
+			else
+				execve(cmds->path, cmds->args, shell->envp);
+			// if (shell->in_file)
+			// {
+			// 	input_from_in_file(shell);
+			// }
+			// if (shell->out_file)
+			// {
+			// 	output_in_out_file(shell);
+			// }
+			exit(0);
+		}
 		close(fds[0]);
 		close(fds[1]);
-		if (shell->cmd_list->builtin == 1)
-			exec_built_in(shell);
-		else
-			execve(shell->cmd_list->path, shell->cmd_list->args, shell->envp);
-		// if (shell->in_file)
-		// {
-		// 	input_from_in_file(shell);
-		// }
-        // if (shell->cmd_list->cmd)
-		// 	exec_cmd(shell);
-		// if (shell->out_file)
-		// {
-		// 	output_in_out_file(shell);
-		// }
-		// exit(0);
+		cmds = cmds->next;
 	}
-	int	status;
 	wait_pid = waitpid(child_pid, &status, 0);
 }
 
 //fd[0] - read
-//fd[1] - write
+//fd[1] - write 

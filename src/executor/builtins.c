@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:48:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 16:54:15 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 17:26:11 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	env(char *envp[])
 		env_variable = envp[i];
 	}
 }
+
 void	update_old_pwd(t_data *shell)
 {
 	char	*new_pwd;
