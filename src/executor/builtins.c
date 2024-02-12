@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:48:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 15:33:21 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 16:54:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,14 @@ void	update_pwd(t_data *shell)
 
 void	cd(t_data *shell, t_cmd *cmd)
 {
+	char	*error;
+	
 	if (chdir(cmd->args[1]))
+	{
+		error = ft_strjoin("minishell: cd: ", cmd->args[1]);
+		perror(error);
 		return ;				//error handling
+	}
 	update_old_pwd(shell);
 	update_pwd(shell);
 }
