@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 17:14:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 16:37:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,14 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 					i++;
 				}
 				i = 0;
+				if (!cmds->path)
+				{
+					cmds->path = NULL;
+					shell->error = command_not_found;
+					return ;
+				}
 			}
-			if (!cmds->path)
-			{
-				shell->error = command_not_found;
-				return ;
-			}
+			
 		}
 		cmds = cmds->next;
 	}

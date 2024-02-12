@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 13:03:17 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 15:44:16 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,28 @@ void	output_in_out_file(t_data *shell)
 void	exec_built_in(t_data *shell)
 {
 	t_cmd	*cmd_list;
-	t_exec	*exec_list;
 
 	cmd_list = shell->cmd_list;
-	exec_list = shell->exec_list;
-	if (!ft_strncmp(cmd_list->cmd, "echo", 5))
-	{
-		if (!ft_strncmp(cmd_list->args[0], "-n", 5))
-			echo(shell, 1);
-		else
-			echo(shell, 0);
-	}
-	// if (cmd_list->cmd == "cd")
-	// 	cd(shell->cmd_list->path);
-	if (!ft_strncmp(cmd_list->cmd, "pwd", 5))
+	if (!ft_strncmp(cmd_list->cmd, "cd", 2))
+		cd(shell, shell->cmd_list);
+	else if (!ft_strncmp(cmd_list->cmd, "pwd", 5))
 		pwd();
+	else if (!ft_strncmp(cmd_list->cmd, "env", 5))
+		env(shell->envp);
+	// if (!ft_strncmp(cmd_list->cmd, "echo", 5))
+	// {
+	// 	if (!ft_strncmp(cmd_list->args[0], "-n", 5))
+	// 		echo(shell, 1);
+	// 	else
+	// 		echo(shell, 0);
+	// }
+	// if (!ft_strncmp(cmd_list->cmd, "pwd", 5))
+	// 	pwd();
 	// if (cmd_list->cmd == "export")
 	// 	export(shell);
 	// if (cmd_list->cmd == "unset")
 	// 	unset(shell);
-	if (!ft_strncmp(cmd_list->cmd, "env", 5))
-		env(shell->envp);
+	
 	// if (cmd_list->cmd == "exit")
 	// 	exit(shell);
 }
@@ -95,13 +96,14 @@ void	executor(t_data *shell)
 		dup2(fds[0], STDIN_FILENO);
 		close(fds[0]);
 		close(fds[1]);
-		execve(shell->cmd_list->path, shell->cmd_list->args, shell->envp);
+		if (shell->cmd_list->builtin == 1)
+			exec_built_in(shell);
+		else
+			execve(shell->cmd_list->path, shell->cmd_list->args, shell->envp);
 		// if (shell->in_file)
 		// {
 		// 	input_from_in_file(shell);
 		// }
-		// if (shell->cmd_list->builtin == 1)
-		// 	exec_built_in(shell);
         // if (shell->cmd_list->cmd)
 		// 	exec_cmd(shell);
 		// if (shell->out_file)

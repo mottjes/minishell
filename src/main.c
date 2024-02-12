@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 17:16:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 16:44:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ int	main(int argc, char *argv[], char *envp[])
 }
 
 /*
-set enviroment (SHLVL)
 change SHELL=/bin/zsh???
 
 free/error/exit
+rl_clear_history??
 exit codes
 $?
 
