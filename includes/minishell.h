@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 11:13:01 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:23:25 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@
 # define RESET	"\x1b[0m"
 # define BOLD	"\033[1m"
 
-typedef enum s_error
-{
-	quotes_not_closed = 1,
-	command_not_found = 2,
-	syntax_error = 3,
-}			t_error;
-
 typedef struct s_data
 {
 	char		*input;
@@ -50,7 +43,6 @@ typedef struct s_data
 	char		*out_file;
 	char		**envp;
 	int			restart;
-	t_error		error;
 }		t_data;
 
 //				signals.c
@@ -60,6 +52,5 @@ void	signal_handler(int signal);
 //				error.c
 void	free_all(t_data *shell);
 void	malloc_fail(t_data *shell);
-void	error_check(t_data *shell);
 
 #endif

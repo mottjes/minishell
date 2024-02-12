@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/09 11:28:44 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:25:19 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	tokens_count(char *input, t_error *error)
+int	tokens_count(char *input, int *restart)
 {
 	int	tokens;
 	int	i;
@@ -25,7 +25,7 @@ int	tokens_count(char *input, t_error *error)
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
-		j = check_for_quotes(input, error, i);
+		j = check_for_quotes(input, restart, i);
 		if (j)
 		{
 			i += j;
@@ -83,7 +83,7 @@ void	tokens_str_cpy(char *input, t_token **token_ptr, t_data *shell)
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
 		j = i;
-		size = check_for_quotes(input, &shell->error, i);
+		size = check_for_quotes(input, &shell->restart, i);
 		if (size)
 		{
 			j++;
@@ -141,8 +141,8 @@ void	lexer(t_data *shell)
 		return ;
 	input_expansion(&shell->input, shell);
 	get_env_vars(shell);
-	count = tokens_count(shell->input, &shell->error);
-	if (!count)
+	count = tokens_count(shell->input, &shell->restart);
+	if (!count || shell->restart)
 	{
 		shell->restart = 1;
 		return ;
@@ -150,5 +150,4 @@ void	lexer(t_data *shell)
 	token_list_init(count, &shell->token_list, shell);
 	tokens_str_cpy(shell->input, &shell->token_list, shell);
 	tokens_identify(&shell->token_list);
-	error_check(shell);
 }

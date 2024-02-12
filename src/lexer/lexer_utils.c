@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:01:25 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 14:47:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:16:51 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_for_quotes(char *input, t_error *error, int i)
+int	check_for_quotes(char *input, int *restart, int i)
 {
 	int	j;
 
@@ -25,7 +25,7 @@ int	check_for_quotes(char *input, t_error *error, int i)
 		if (input[i] == '\"')
 			i++;
 		else
-			return (*error = quotes_not_closed, 0);
+			return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = 1, 0);
 	}
 	else if (input[i] == '\'')
 	{
@@ -35,7 +35,7 @@ int	check_for_quotes(char *input, t_error *error, int i)
 		if (input[i] == '\'')
 			i++;
 		else
-			return (*error = quotes_not_closed, 0);
+			return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = 1, 0);
 	}
 	return (i - j);
 }

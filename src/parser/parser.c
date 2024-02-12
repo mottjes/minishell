@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 16:37:15 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:22:20 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 					malloc_fail(shell);
 				if (access(cmds->path, F_OK))
 				{
-					shell->error = command_not_found;
+					shell->restart = 1;
 					return ;
 				}
 			}
@@ -84,12 +84,11 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 				i = 0;
 				if (!cmds->path)
 				{
-					cmds->path = NULL;
-					shell->error = command_not_found;
+					printf("minishell: %s: command not found\n", cmds->cmd);
+					shell->restart = 1;
 					return ;
 				}
 			}
-			
 		}
 		cmds = cmds->next;
 	}
@@ -99,16 +98,12 @@ void	parser(t_data *shell)
 {
 	if (shell->restart)
 		return ;
-	syntax_commands(shell->token_list, &shell->error);
-	syntax_redirections(shell->token_list, &shell->error);
-	syntax_pipe(shell->token_list, &shell->error);
-	if (shell->error)
-	{
-		error_check(shell);
+	syntax_commands(shell->token_list, &shell->restart);
+	syntax_redirections(shell->token_list, &shell->restart);
+	syntax_pipe(shell->token_list, &shell->restart);
+	if (shell->restart)
 		return ;
-	}
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
 	cmd_get_path(shell->cmd_list, shell);
-	error_check(shell);
 }

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 15:35:48 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/02/12 15:33:34 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:05:50 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ typedef struct s_exec t_exec;
 void	echo(t_data *shell, int i);
 void	cd(t_data *shell, t_cmd *cmd);
 void	env(char *envp[]);
-void	pwd(void);
+void	pwd(t_data *shell);
 
 #endif

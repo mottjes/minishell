@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 17:25:23 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:05:59 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->cmd, "echo", 4))
 	{
-		if (!ft_strncmp(cmd->args[0], "-n", 5))
+		if (!ft_strncmp(cmd->args[1], "-n", 2))
 			echo(shell, 1);
 		else
 			echo(shell, 0);
@@ -64,15 +64,15 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 		cd(shell, cmd);
 	}
 	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
-		pwd();
+		pwd(shell);
 	// if (cmd_list->cmd == "export")
 	// 	export(shell);
 	// if (cmd_list->cmd == "unset")
 	// 	unset(shell);
-	else if (!ft_strncmp(cmd->cmd, "env", 5))
+	else if (!ft_strncmp(cmd->cmd, "env", 3))
 		env(shell->envp);
-	// if (cmd_list->cmd == "exit")
-	// 	exit(shell);
+	// else if (!ft_strncmp(cmd->cmd, "exit", 4))
+	// 	exit_shell(shell);
 }
 
 void	executor(t_data *shell)

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 16:44:44 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:38:07 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,16 @@ int	main(int argc, char *argv[], char *envp[])
 		
 		//print_lexer(&shell);
 		//print_cmds(&shell);
-		executor(&shell);
+		//executor(&shell);
 		free_all(&shell);
 	}
 }
 
 /*
-change SHELL=/bin/zsh???
+error msgs
 
-free/error/exit
 rl_clear_history??
+
 exit codes
 $?
 

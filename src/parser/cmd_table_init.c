@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 16:43:01 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:21:10 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds, t_data *shell)
 			cmds->cmd = ft_strdup(token->str);
 			if (!cmds->cmd)
 				malloc_fail(shell);
-			//token = token->next;
 			cmds->args = malloc(sizeof(char *) * (arg_count(token) + 1));
 			if (!cmds->args)
 				malloc_fail(shell);

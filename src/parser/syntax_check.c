@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/06 19:24:23 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:37:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	syntax_commands(t_token *token, t_error *error)
+void	syntax_commands(t_token *token, int *restart)
 {
 	t_token	*token_prev;
 
@@ -27,11 +27,11 @@ void	syntax_commands(t_token *token, t_error *error)
 		token_prev = token;
 		token = token->next;
 	}
-	*error = syntax_error;
+	*restart = 1;
 	return ;
 }
 
-void	syntax_redirections(t_token *token, t_error *error)
+void	syntax_redirections(t_token *token, int *restart)
 {
 	while (token)
 	{
@@ -42,14 +42,15 @@ void	syntax_redirections(t_token *token, t_error *error)
 			{
 				if (token->next->type != WORD)
 				{
-					*error = syntax_error;
+					ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+					*restart = 1;
 					return ;
 				}
 			}
 			else
 			{
-				//ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-				*error = syntax_error;
+				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+				*restart = 1;
 				return ;
 			}
 		}
@@ -57,7 +58,7 @@ void	syntax_redirections(t_token *token, t_error *error)
 	}
 }
 
-void	syntax_pipe(t_token *token, t_error *error)
+void	syntax_pipe(t_token *token, int *restart)
 {
 	t_token	*token_prev;
 	t_token	*token_prev_2;
@@ -79,11 +80,12 @@ void	syntax_pipe(t_token *token, t_error *error)
 					}
 					return ;
 				}
-				*error = syntax_error;
+				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+				*restart = 1;
 				return ;
 			}
-			//ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-			*error = syntax_error;
+			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+			*restart = 1;
 			return ;
 		}
 		token_prev_2 = token_prev;

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 16:32:10 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:22:29 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,6 @@ void	free_all(t_data *shell)
 	if (shell->out_file)
 		free(shell->out_file);
 	shell->restart = 0;
-	shell->error = 0;
-}
-
-
-void	error_check(t_data *shell)
-{
-	if (shell->error)
-	{
-		shell->restart = 1;
-		if (shell->error == quotes_not_closed)
-			ft_putstr_fd("minishell: quotes not closed\n", 2);
-		if (shell->error == command_not_found)
-			ft_putstr_fd("minishell: command not found\n", 2);
-		if (shell->error == syntax_error)
-			ft_putstr_fd("minishell: syntax error\n", 2);
-	}
 }
 
 void	malloc_fail(t_data *shell)
