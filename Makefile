@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/13 14:28:29 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/13 15:38:52 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,23 +32,51 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-LIBS = libft/libft.a
+OBJ = $(SRC:.c=.o)
 
-all:
-	@$(MAKE) bonus -C ./libft
-	@$(CC) $(CFLAGS) $(SRC) $(LIBS) -o $(NAME) -I${PWD}/readline/include -L${PWD}/readline/lib -lreadline -lhistory -ltermcap
-	@echo compiled minishell
+LIBFT = libft/libft.a
+
+READLINE_PATH = $(PWD)/readline
+
+GREEN = "\033[1;32m"
+
+YELLOW = "\033[1;33m"
+
+RED = "\033[1;31m"
+
+NONE = "\033[0m"
+
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+	LIBREADLINE_FLAGS = -lreadline -lhistory
+else ifeq ($(UNAME), Darwin)
+	LIBREADLINE_FLAGS = -I$(READLINE_PATH)/include -L$(READLINE_PATH)/lib -lreadline -lhistory -ltermcap
+endif
+
+all: $(LIBFT) $(NAME)
+
+$(NAME): $(OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT) $(LIBREADLINE_FLAGS)
+	@echo $(GREEN)$(NAME) compiled $(NONE)
 	
+%.o: %.c
+	@$(CC) $(CFLAGS) -I./readline -I./libft -c -o $@ $<
+
+$(LIBFT):
+	@$(MAKE) bonus -C ./libft
+	@echo $(YELLOW)libft compiled$(NONE)
+
 clean:
-	@rm -f $(OBJS)
+	@rm -f $(OBJ)
 	@$(MAKE) -C ./libft clean
-	@echo cleaned minishell
+	@echo $(RED)cleaned $(NAME)$(NONE)
 	
 fclean: clean
 	@rm -f $(NAME)
 	@$(MAKE) -C ./libft fclean
-	@echo fcleaned minishell
+	@echo $(RED)fcleaned $(NAME)$(NONE)
 	
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean re $(LIBFT)

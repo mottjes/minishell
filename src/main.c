@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:50:53 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 15:01:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,9 @@ int	main(int argc, char *argv[], char *envp[])
 }
 
 /*
-expander:
-adds space before and after pipes
-error msgs
-
 here doc
+
+error msgs
 
 makefile for linux
 
