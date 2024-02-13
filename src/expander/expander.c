@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:27:34 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:47:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,26 @@ int	check_after_operator(char **input_ptr, int i, t_data *shell)
 	return (0);
 }
 
+void	expansion_pipe(t_data *shell)
+{
+	char	**input_ptr;
+	int		i;
+
+	i = 0;
+	input_ptr = &shell->input;
+	while (shell->input[i])
+	{
+		if (shell->input[i] == '|')
+		{
+			if (check_before_operator(input_ptr, i, shell))
+				i++;
+			if (check_after_operator(input_ptr, i, shell))
+				i++;
+		}
+		i++;
+	}
+}
+
 void	expander(t_data *shell)
 {
 	char 	**input_ptr;
@@ -65,6 +85,7 @@ void	expander(t_data *shell)
 	input = *input_ptr;
 	if (shell->restart)
 		return ;
+	expansion_pipe(shell);
 	while (input[i])
 	{
 		if (input[i] == '<' && input[i + 1] != '<')

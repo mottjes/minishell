@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:27:57 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:46:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*build_promt(t_data *shell, char *cwd);
 
 //			expander
 void	expander(t_data *shell);
+void	expansion_pipe(t_data *shell);
 int		check_after_operator(char **input_ptr, int i, t_data *shell);
 int		check_before_operator(char **input_ptr, int i, t_data *shell);
 void	add_space(char **input_ptr, int i, t_data *shell);
