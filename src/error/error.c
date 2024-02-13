@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:22:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 12:21:38 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_all(t_data *shell)
 
 void	malloc_fail(t_data *shell)
 {
-	ft_putstr_fd("minishell: malloc failed\n", 2);
+	ft_putstr_fd("minishell: no memory left on device\n", 2);
 	free_all(shell);
 	exit(1);
 }

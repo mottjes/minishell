@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:05:59 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:05:57 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	executor(t_data *shell)
 		// pipe(fds);
 		if (pipe(fds) == -1)
 			return ; //error
+		signals_child();
 		child_pid = fork();
 		if (child_pid == -1)
 			return ; //error

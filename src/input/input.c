@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:45:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 15:42:57 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:21:54 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*build_promt(t_data *shell, char *cwd)
 	return (promt);
 }
 
-void	input_get(t_data *shell)
+void	input(t_data *shell)
 {
 	char	*promt;
 	char	*cwd;

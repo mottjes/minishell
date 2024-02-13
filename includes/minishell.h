@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:23:25 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:27:57 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,27 @@ typedef struct s_data
 	int			restart;
 }		t_data;
 
-//				signals.c
-void	signals(void);
-void	signal_handler(int signal);
+//			environment
+void	create_environment(t_data *shell, char **envp);
+void	get_env_vars(t_data *shell);
 
-//				error.c
+//			input
+void	input(t_data *shell);
+char	*build_promt(t_data *shell, char *cwd);
+
+//			expander
+void	expander(t_data *shell);
+int		check_after_operator(char **input_ptr, int i, t_data *shell);
+int		check_before_operator(char **input_ptr, int i, t_data *shell);
+void	add_space(char **input_ptr, int i, t_data *shell);
+
+//				signals
+void	signals(void);
+void	signals_child(void);
+void	signal_handler(int signal);
+void	signal_handler_child(int signal);
+
+//				error
 void	free_all(t_data *shell);
 void	malloc_fail(t_data *shell);
 

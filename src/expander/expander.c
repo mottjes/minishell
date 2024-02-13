@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion.c                                        :+:      :+:    :+:   */
+/*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/08 14:09:54 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:27:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,17 @@ int	check_after_operator(char **input_ptr, int i, t_data *shell)
 	return (0);
 }
 
-void	input_expansion(char **input_ptr, t_data *shell)
+void	expander(t_data *shell)
 {
+	char 	**input_ptr;
 	char	*input;
 	int		i;
 
 	i = 0;
+	input_ptr = &shell->input;
 	input = *input_ptr;
+	if (shell->restart)
+		return ;
 	while (input[i])
 	{
 		if (input[i] == '<' && input[i + 1] != '<')

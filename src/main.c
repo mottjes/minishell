@@ -6,11 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:38:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:28:07 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int g_status;
 
 void	print_cmds(t_data *shell)
 {
@@ -52,18 +54,6 @@ void	print_lexer(t_data *shell)
 	}
 }
 
-void	print_env(t_data *shell)
-{
-	int	i;
-
-	i = 0;
-	while (shell->envp[i])
-	{
-		printf("%s\n", shell->envp[i]);
-		i++;
-	}
-}
-
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
@@ -71,32 +61,28 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(t_data));
-	create_env(&shell, envp);
-	//print_env(&shell);
-	//signals();
+	create_environment(&shell, envp);
+	signals();
 	while (1)
 	{
-		input_get(&shell);
+		input(&shell);
+		expander(&shell);
 		lexer(&shell);
 		parser(&shell);
 		
 		//print_lexer(&shell);
 		//print_cmds(&shell);
-		//executor(&shell);
+		executor(&shell);
 		free_all(&shell);
 	}
 }
 
 /*
+expander:
+adds space before and after pipes
 error msgs
 
-rl_clear_history??
-
-exit codes
-$?
-
 here doc
-signal handler
 
 makefile for linux
 
@@ -104,4 +90,8 @@ makefile for linux
 check for read rights in input file
 check for write rights in output file
 check for execution rights in commands
+exit:
+rl_clear_history??
+exit codes
+$?
 */

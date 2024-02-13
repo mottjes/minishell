@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:56:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:23:19 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/13 14:22:55 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds, t_data *shell);
 void	get_redirections(t_data *shell);
 void	cmd_list_init(t_data *shell, int count);
 
-//			syntax_check.c
+//			syntax.c
 void	syntax_pipe(t_token *token, int *restart);
 void	syntax_redirections(t_token *token, int *restart);
 void	syntax_commands(t_token *token, int *restart);

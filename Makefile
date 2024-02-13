@@ -6,27 +6,27 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/12 18:00:04 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/13 14:28:29 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC =	src/main.c					\
-		src/signals/signals.c		\
-		src/lexer/input.c			\
-		src/lexer/lexer.c 			\
-		src/lexer/expansion.c		\
-		src/lexer/env_var.c			\
-		src/lexer/lexer_utils.c		\
-		src/parser/parser.c			\
-		src/parser/syntax_check.c	\
-		src/parser/cmd_table_init.c \
-		src/parser/parser_utils.c	\
-		src/executor/executor.c		\
-		src/executor/builtins.c		\
-		src/executor/cd.c			\
-		src/error/error.c			\
+SRC =	src/main.c						\
+		src/environment/environment.c	\
+		src/signals/signals.c			\
+		src/input/input.c				\
+		src/expander/expander.c			\
+		src/lexer/lexer.c 				\
+		src/lexer/lexer_utils.c			\
+		src/parser/parser.c				\
+		src/parser/syntax.c				\
+		src/parser/cmd_table_init.c 	\
+		src/parser/parser_utils.c		\
+		src/executor/executor.c			\
+		src/executor/builtins.c			\
+		src/executor/cd.c				\
+		src/error/error.c				\
 		
 CC = gcc
 
