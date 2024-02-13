@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 16:08:16 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/13 16:35:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	executor(t_data *shell)
 //while(cmds)
 	if (pipe(fds) == -1)
 		return ; //error // close all pipes
+	signals_child();
 	child_pid1 = fork();
 	if (child_pid1   == -1)
 		return ; //error
