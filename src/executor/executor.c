@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 16:35:11 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/21 15:28:37 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,71 +74,185 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 	// if (cmd_list->cmd == "exit")
 	// 	exit(shell);
 }
+int		count_cmds(t_data *shell)
+{
+	t_cmd	*cmds;
+	int count = 0;
 
+	cmds = shell->cmd_list;
+	while(cmds)
+	{
+		count++;
+		cmds = cmds->next;
+	}
+	return(count);
+}
+
+int		**create_fds(int cmd_count)
+{
+	int **ptr;
+	int	i = 0;
+	
+	ptr = malloc(cmd_count * sizeof(int *));
+	if (!ptr)
+		return (NULL);
+	while(i < cmd_count)
+	{
+		ptr[i] = malloc(2 * sizeof(int));
+		if (!ptr[i])
+			return (NULL);
+		i++;
+	}
+	return(ptr);
+}
+
+pid_t		*create_pid(int cmd_count)
+{
+	pid_t *ptr;
+	
+	ptr = malloc(cmd_count * sizeof(pid_t));
+	if (!ptr)
+		return (NULL);
+	return(ptr);
+}
+
+// void	dup2_stdout(t_data *shell, t_cmd *cmds, int *fds)
+// {
+// 	// printf("stdout\n\n");
+// 	dup2(fds[1], STDOUT_FILENO);
+// 	close(fds[0]);
+// 	close(fds[1]);
+// 	execve(cmds->path, cmds->args, shell->envp);
+// 	exit(0);
+// }
+
+// void	dup2_stdin(t_data *shell, t_cmd *cmds, int *fds)
+// {
+// 	// printf("stdin\n\n");
+// 	dup2(fds[0], STDIN_FILENO);
+// 	close(fds[0]);
+// 	close(fds[1]);
+// 	execve(cmds->path, cmds->args, shell->envp);
+// 	exit(0);
+// }
+	
 void	executor(t_data *shell)
 {
-	pid_t	child_pid1;
-	pid_t	child_pid2; 
-	int		status;
-	int		fds[2];
+	int		**fds;
 	t_cmd	*cmds;
+	int		cmd_count;
+	pid_t	*child_pid;
+	int		status;
 
 	// if (cmds->builtin == 1)
 	// 	exec_built_in(shell, cmds);
-//fds [pipe anzahl][2]
-//dementsprechend viele pipes kreieren
+	cmd_count = count_cmds(shell);
+	child_pid = create_pid(cmd_count);
 	cmds = shell->cmd_list;
-//while(cmds)
-	if (pipe(fds) == -1)
-		return ; //error // close all pipes
-	signals_child();
-	child_pid1 = fork();
-	if (child_pid1   == -1)
-		return ; //error
-	if (child_pid1 == 0)
+	int	i = 0;
+	if (cmd_count == 1)
 	{
-		dup2(fds[1], STDOUT_FILENO);
-		//close all fds die dieser aktueller childprocess nicht braucht
-		close(fds[0]);
-		close(fds[1]);
-		execve(cmds->path, cmds->args, shell->envp);
-		// if (shell->in_file)
-		// {
-		// 	input_from_in_file(shell);
-		// }
-		// if (shell->out_file)
-		// {
-		// 	output_in_out_file(shell);
-		// }
-		// close die fds die von diesem childporces benutzt wurden
-		 //oder return
+		child_pid[i] = fork();
+		if (child_pid[i]   == -1)
+			return ; //error
+		if (child_pid[i] == 0)
+		{
+			execve(cmds->path, cmds->args, shell->envp);
+		}
+		waitpid(child_pid[i], &status, 0);
 	}
-	if (cmds->next)
-		cmds = cmds->next;
-	child_pid2 = fork();
-	if (child_pid2 == -1)
-		return ; //error
-	if (child_pid2 == 0)
+	if (cmd_count > 1)
 	{
-		dup2(fds[0], STDIN_FILENO);
-		//close all fds die dieser aktueller childprocess nicht braucht
-		close(fds[0]);
-		close(fds[1]);
-		execve(cmds->path, cmds->args, shell->envp);
+		fds = create_fds(cmd_count);
+		int pipe_count = 0;
+		while (pipe_count < cmd_count)
+		{
+			if (pipe(fds[i]) == -1)
+				return ; //error // close all pipes	
+			pipe_count++;
+		}
+		// if (pipe(fds[i]) == -1)
+		// 	return ; //error // close all pipes	
+		// int pipe_count = cmd_count - 1;
+		while(i < cmd_count)
+		{
+			child_pid[i] = fork();
+			if (child_pid[i] == -1)
+				return ;
+			if (child_pid[i] == 0)
+			{
+				if (i == cmd_count - 1 && i != 0)
+				{
+					dup2(fds[i-1][0], STDIN_FILENO);
+					close(fds[i-1][0]);
+					close(fds[i-1][1]);
+					execve(cmds->path, cmds->args, shell->envp);
+					
+				}
+				if (i < cmd_count - 1)
+				{
+					dup2(fds[i][1], STDOUT_FILENO);
+					close(fds[i][0]);
+					close(fds[i][1]);
+					execve(cmds->path, cmds->args, shell->envp);
+				}
+				// else
+				// 	exit(0);
+				// printf("cmd = %d\n", *fds[i]);
+			}
+			// else
+			// {
+        	// 	close(fds[i][1]);
+			// }
+			// exit(0);
+			if (cmds->next)
+				cmds = cmds->next;
+			else
+				exit(0);
+			i++;
+		}
 		// exit(0);
+		i = 0;
+		while (i < cmd_count)
+		{
+			// printf("i2 = %d\n", i);
+			close(fds[i][0]);
+			close(fds[i][1]);
+			i++;
+		}
+		i = 0;
+		while (i < cmd_count)
+		{
+			// printf("i3 = %d\n", i);
+			waitpid(child_pid[i], &status, 0);
+			i++;
+		}
+		free(child_pid);
+		i = 0;
+		while (i < cmd_count)
+		{
+			free(fds[i]);
+			i++;
+		}
+		// free(*fds);
 	}
-	//danach zum nächsten childprocess
-	// cmds = cmds->next;
-	close(fds[0]);
-	close(fds[1]);
-// }
-//close evry fd that the parent is not using now
-//read stdout vom letzten childprocess 
-//print in parent ??
-//close die restlichen fds
-	waitpid(child_pid1, &status, 0); //für jeden childprocess
-	waitpid(child_pid2, &status, 0);
+
+	// cmds = shell->cmd_list;
+	// if (pipe(fds) == -1)
+	// 	return ; //error // close all pipes
+	
+	// if (cmds->next)
+	// 	cmds = cmds->next;
+	// child_pid2 = fork();
+	// if (child_pid2 == -1)
+	// 	return ; //error
+	// if (child_pid2 == 0)
+	// {
+	// 	dup2(fds[0], STDIN_FILENO);
+	// 	close(fds[0]);
+	// 	close(fds[1]);
+	// 	execve(cmds->path, cmds->args, shell->envp);
+	// }
 }
 
-//fd[0] - read
-//fd[1] - write 
+// grep "h" test1.txt | wc -l
