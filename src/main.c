@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 16:37:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/21 17:56:26 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ void	print_lexer(t_data *shell)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
+	int i = 0;
 
 	(void)argc;
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(t_data));
 	create_environment(&shell, envp);
 	signals();
-	while (1)
+	while (i < 10)
 	{
 		input(&shell);
 		expander(&shell);
@@ -72,8 +73,10 @@ int	main(int argc, char *argv[], char *envp[])
 		
 		//print_lexer(&shell);
 		//print_cmds(&shell);
-		executor(&shell);
+		if (shell.input != NULL)
+			executor(&shell);
 		free_all(&shell);
+		i++;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:01:25 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:18:33 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/21 17:09:57 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	get_env_vars(t_data *shell)
 	int		j;
 	
 	i = 0;
-	while (shell->input[i])
+	while (shell->input && shell->input[i])
 	{
 		str_mod = NULL;
 		len = 0;

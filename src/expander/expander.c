@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:47:33 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/21 17:57:38 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	expansion_pipe(t_data *shell)
 
 	i = 0;
 	input_ptr = &shell->input;
-	while (shell->input[i])
+	while (shell->input && shell->input[i])
 	{
 		if (shell->input[i] == '|')
 		{
@@ -86,7 +86,7 @@ void	expander(t_data *shell)
 	if (shell->restart)
 		return ;
 	expansion_pipe(shell);
-	while (input[i])
+	while (input && input[i])
 	{
 		if (input[i] == '<' && input[i + 1] != '<')
 		{
@@ -114,7 +114,7 @@ void	expander(t_data *shell)
 		input = *input_ptr;
 	}
 	i = 0;
-	while (input[i])
+	while (input && input[i])
 	{
 		if (input[i] == '<' && input[i + 1] != '<')
 		{

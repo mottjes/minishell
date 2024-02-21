@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:14:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/21 17:10:46 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	tokens_count(char *input, int *restart)
 	j = 0;
 	i = 0;
 	tokens = 0;
-	while (input[i])
+	while (input && input[i])
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;

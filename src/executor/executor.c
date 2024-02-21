@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/21 15:28:37 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/21 18:05:17 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	executor(t_data *shell)
 	int		cmd_count;
 	pid_t	*child_pid;
 	int		status;
+	int 	pipe_count = 1;
 
 	// if (cmds->builtin == 1)
 	// 	exec_built_in(shell, cmds);
@@ -164,16 +165,12 @@ void	executor(t_data *shell)
 	if (cmd_count > 1)
 	{
 		fds = create_fds(cmd_count);
-		int pipe_count = 0;
 		while (pipe_count < cmd_count)
 		{
 			if (pipe(fds[i]) == -1)
 				return ; //error // close all pipes	
 			pipe_count++;
 		}
-		// if (pipe(fds[i]) == -1)
-		// 	return ; //error // close all pipes	
-		// int pipe_count = cmd_count - 1;
 		while(i < cmd_count)
 		{
 			child_pid[i] = fork();
@@ -187,7 +184,6 @@ void	executor(t_data *shell)
 					close(fds[i-1][0]);
 					close(fds[i-1][1]);
 					execve(cmds->path, cmds->args, shell->envp);
-					
 				}
 				if (i < cmd_count - 1)
 				{
@@ -196,26 +192,14 @@ void	executor(t_data *shell)
 					close(fds[i][1]);
 					execve(cmds->path, cmds->args, shell->envp);
 				}
-				// else
-				// 	exit(0);
-				// printf("cmd = %d\n", *fds[i]);
 			}
-			// else
-			// {
-        	// 	close(fds[i][1]);
-			// }
-			// exit(0);
 			if (cmds->next)
 				cmds = cmds->next;
-			else
-				exit(0);
 			i++;
 		}
-		// exit(0);
 		i = 0;
-		while (i < cmd_count)
+		while (i < cmd_count - 1)
 		{
-			// printf("i2 = %d\n", i);
 			close(fds[i][0]);
 			close(fds[i][1]);
 			i++;
@@ -223,36 +207,17 @@ void	executor(t_data *shell)
 		i = 0;
 		while (i < cmd_count)
 		{
-			// printf("i3 = %d\n", i);
 			waitpid(child_pid[i], &status, 0);
 			i++;
 		}
 		free(child_pid);
 		i = 0;
-		while (i < cmd_count)
+		while (i < cmd_count - 1)
 		{
 			free(fds[i]);
 			i++;
 		}
-		// free(*fds);
 	}
-
-	// cmds = shell->cmd_list;
-	// if (pipe(fds) == -1)
-	// 	return ; //error // close all pipes
-	
-	// if (cmds->next)
-	// 	cmds = cmds->next;
-	// child_pid2 = fork();
-	// if (child_pid2 == -1)
-	// 	return ; //error
-	// if (child_pid2 == 0)
-	// {
-	// 	dup2(fds[0], STDIN_FILENO);
-	// 	close(fds[0]);
-	// 	close(fds[1]);
-	// 	execve(cmds->path, cmds->args, shell->envp);
-	// }
 }
 
 // grep "h" test1.txt | wc -l
