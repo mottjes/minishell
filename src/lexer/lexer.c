@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/21 17:10:46 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/22 18:14:13 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,11 @@ void	tokens_identify(t_token **token_ptr)
 		}
 		else if (token->str[0] == '>')
 		{
-			if (token->str[1] + 1 == '>')
+			if (token->str[1] == '>')
+			{
 				token->type = RE_APP;
+				printf("ist re_app\n\n\n");
+			}
 			else
 				token->type = RE_OUT;
 		}

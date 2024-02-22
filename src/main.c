@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/21 17:56:26 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/22 18:05:45 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	main(int argc, char *argv[], char *envp[])
 		lexer(&shell);
 		parser(&shell);
 		
-		//print_lexer(&shell);
-		//print_cmds(&shell);
+		print_lexer(&shell);
+		print_cmds(&shell);
 		if (shell.input != NULL)
 			executor(&shell);
 		free_all(&shell);

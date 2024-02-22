@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/21 18:05:17 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/22 18:56:23 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,31 +115,12 @@ pid_t		*create_pid(int cmd_count)
 		return (NULL);
 	return(ptr);
 }
-
-// void	dup2_stdout(t_data *shell, t_cmd *cmds, int *fds)
-// {
-// 	// printf("stdout\n\n");
-// 	dup2(fds[1], STDOUT_FILENO);
-// 	close(fds[0]);
-// 	close(fds[1]);
-// 	execve(cmds->path, cmds->args, shell->envp);
-// 	exit(0);
-// }
-
-// void	dup2_stdin(t_data *shell, t_cmd *cmds, int *fds)
-// {
-// 	// printf("stdin\n\n");
-// 	dup2(fds[0], STDIN_FILENO);
-// 	close(fds[0]);
-// 	close(fds[1]);
-// 	execve(cmds->path, cmds->args, shell->envp);
-// 	exit(0);
-// }
 	
 void	executor(t_data *shell)
 {
 	int		**fds;
 	t_cmd	*cmds;
+	t_token	*token;
 	int		cmd_count;
 	pid_t	*child_pid;
 	int		status;
@@ -149,7 +130,9 @@ void	executor(t_data *shell)
 	// 	exec_built_in(shell, cmds);
 	cmd_count = count_cmds(shell);
 	child_pid = create_pid(cmd_count);
+	signals_child();
 	cmds = shell->cmd_list;
+	token = shell->token_list;
 	int	i = 0;
 	if (cmd_count == 1)
 	{
@@ -158,6 +141,39 @@ void	executor(t_data *shell)
 			return ; //error
 		if (child_pid[i] == 0)
 		{
+			if (shell->in_file != (void *)0 && i == 0)
+			{
+				int fdin = open(shell->in_file, O_RDONLY, 0644);
+				dup2(fdin, STDIN_FILENO);
+				close(fdin);
+			}
+			if (shell->out_file != (void *)0)
+			{				
+				int fdout;
+				int	flag = 0;
+				while(token->next)
+				{
+					if (token->type == 4)
+						flag = 1;
+					if (token->type == 3)
+						flag = 0;
+					token = token->next;
+				}
+				if (flag == 1)
+				{
+					printf("macht append\n");
+					fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+					dup2(fdout, STDOUT_FILENO);
+					close(fdout);
+				}
+				else
+				{
+					printf("macht kein append\n");
+					fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					dup2(fdout, STDOUT_FILENO);
+					close(fdout);
+				}
+			}
 			execve(cmds->path, cmds->args, shell->envp);
 		}
 		waitpid(child_pid[i], &status, 0);
@@ -183,10 +199,43 @@ void	executor(t_data *shell)
 					dup2(fds[i-1][0], STDIN_FILENO);
 					close(fds[i-1][0]);
 					close(fds[i-1][1]);
+					if (shell->out_file != (void *)0)
+					{
+						int fdout;
+						int	flag = 0;
+						while(token->next)
+						{
+							if (token->type == 4)
+								flag = 1;
+							if (token->type == 3)
+								flag = 0;
+							token = token->next;
+						}
+						if (flag == 1)
+						{
+							printf("macht append\n");
+							fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+							dup2(fdout, STDOUT_FILENO);
+							close(fdout);
+						}
+						else
+						{
+							printf("macht kein append\n");
+							fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+							dup2(fdout, STDOUT_FILENO);
+							close(fdout);
+						}
+					}
 					execve(cmds->path, cmds->args, shell->envp);
 				}
 				if (i < cmd_count - 1)
 				{
+					if (shell->in_file != (void *)0 && i == 0)
+					{
+						int fdin = open(shell->in_file, O_RDONLY, 0644);
+						dup2(fdin, STDIN_FILENO);
+						close(fdin);
+					}
 					dup2(fds[i][1], STDOUT_FILENO);
 					close(fds[i][0]);
 					close(fds[i][1]);
@@ -221,3 +270,8 @@ void	executor(t_data *shell)
 }
 
 // grep "h" test1.txt | wc -l
+// < test1.txt cat > test_output.txt > test_output2.txt 
+// < test1.txt wc -l | cat > test_output2.txt 
+// < test1.txt cat | wc -l >> test_output2.txt
+// < test1.txt cat | wc -l >> test_output2.txt > test_output3.txt
+// < test1.txt wc -l >> test_output2.txt > test_output3.txt
