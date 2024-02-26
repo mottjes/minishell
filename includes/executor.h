@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 12:52:05 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/01/29 15:38:58 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:19:00 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,15 @@ typedef struct s_exec
 }   t_exec;
 
 void	executor(t_data *shell);
+
+
+//          builtins
+void	echo(t_data *shell, int i);
+void	cd(t_data *shell, t_cmd *cmd);
+void	env(char *envp[]);
+void	pwd(t_data *shell);
+void	ft_exit(t_data *shell);
+void	unset(t_data *shell, char *var);
+void	export(t_data *shell, char *var);
 
 #endif

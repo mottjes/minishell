@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+         #
+#    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/21 17:03:16 by frbeyer          ###   ########.fr        #
+#    Updated: 2024/02/26 15:17:33 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,15 +17,20 @@ SRC =	src/main.c						\
 		src/signals/signals.c			\
 		src/input/input.c				\
 		src/expander/expander.c			\
-		src/lexer/lexer.c 				\
+		src/lexer/lexer.c				\
 		src/lexer/lexer_utils.c			\
 		src/parser/parser.c				\
 		src/parser/syntax.c				\
-		src/parser/cmd_table_init.c 	\
+		src/parser/cmd_table_init.c		\
 		src/parser/parser_utils.c		\
 		src/executor/executor.c			\
-		src/executor/builtins.c			\
-		src/executor/cd.c				\
+		src/builtins/cd.c				\
+		src/builtins/echo.c				\
+		src/builtins/env.c				\
+		src/builtins/exit.c				\
+		src/builtins/export.c			\
+		src/builtins/pwd.c				\
+		src/builtins/unset.c			\
 		src/error/error.c				\
 		
 CC = gcc

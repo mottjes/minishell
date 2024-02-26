@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 14:46:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:19:35 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include "lexer.h"
 # include "parser.h"
 # include "executor.h"
-# include "builtins.h"
 
 # define CYAN	"\x1b[36m"
 # define RESET	"\x1b[0m"

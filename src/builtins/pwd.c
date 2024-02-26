@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 15:35:48 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/02/26 14:20:58 by mottjes          ###   ########.fr       */
+/*   Created: 2024/02/26 15:14:22 by mottjes           #+#    #+#             */
+/*   Updated: 2024/02/26 15:14:57 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "../../includes/minishell.h"
 
-typedef struct s_data t_data;
-typedef	struct s_cmd t_cmd;
-typedef struct s_exec t_exec;
-
-void	echo(t_data *shell, int i);
-void	cd(t_data *shell, t_cmd *cmd);
-void	env(char *envp[]);
-void	pwd(t_data *shell);
-void	ft_exit(t_data *shell);
-void	unset(t_data *shell, char *var);
-
-
-#endif
+void	pwd(t_data *shell)
+{
+	char *cwd;
+	
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		malloc_fail(shell);
+	printf("%s\n", cwd);
+	free(cwd);
+}
