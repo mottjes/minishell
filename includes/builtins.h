@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 15:35:48 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/02/12 18:05:50 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/23 20:32:39 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ void	echo(t_data *shell, int i);
 void	cd(t_data *shell, t_cmd *cmd);
 void	env(char *envp[]);
 void	pwd(t_data *shell);
+void	ft_exit(t_data *shell);
 
 #endif

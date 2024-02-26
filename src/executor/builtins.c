@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:48:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:05:37 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/23 20:34:27 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,29 @@ void	env(char *envp[])
 	}
 }
 
-// void	echo(t_data *shell, int flag)
+void	echo(t_data *shell, int flag)
+{
+	if (flag == 0)
+		ft_putstr_fd(shell->cmd_list->args[2], 1);
+	if (flag == 1)
+	{
+		ft_putstr_fd(shell->cmd_list->args[1], 1);
+		ft_putstr_fd("\n", 1);
+	}
+}
+
+// void	export(t_data *shell)
 // {
-// 	if (flag == 1)
-// 		ft_putstr_fd("%s", shell->cmd_list->args[0]);
-// 	if (flag == 0)
-// 		ft_putstr_fd("%s\n", shell->cmd_list->args[1]);
+	
 // }
 
+void	ft_exit(t_data *shell)
+{
+	free_all(shell);
+	exit(0);
+}
+
 /*
-◦ echo with option -n
-◦ cd with only a relative or absolute path
-◦ export with no options
-◦ unset with no options
-◦ exit with no options
+◦ export with no options - neue vriable ins env speichern, alphabetische reihenfolge beachten, wird in bash in subshell ausgeführt
+◦ unset with no options - löscht variable aus env, wird in bash in subshell ausgeführt
 */

@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/22 18:56:23 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/23 20:33:03 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 	// 	unset(shell);
 	else if (!ft_strncmp(cmd->cmd, "env", 5))
 		env(shell->envp);
-	// if (cmd_list->cmd == "exit")
-	// 	exit(shell);
+	if (!ft_strncmp(cmd->cmd, "exit", 5))
+		ft_exit(shell);
 }
 int		count_cmds(t_data *shell)
 {
@@ -126,12 +126,12 @@ void	executor(t_data *shell)
 	int		status;
 	int 	pipe_count = 1;
 
-	// if (cmds->builtin == 1)
-	// 	exec_built_in(shell, cmds);
+	cmds = shell->cmd_list;
+	if (cmds->builtin == 1)
+		exec_built_in(shell, cmds);
 	cmd_count = count_cmds(shell);
 	child_pid = create_pid(cmd_count);
 	signals_child();
-	cmds = shell->cmd_list;
 	token = shell->token_list;
 	int	i = 0;
 	if (cmd_count == 1)
@@ -236,9 +236,18 @@ void	executor(t_data *shell)
 						dup2(fdin, STDIN_FILENO);
 						close(fdin);
 					}
-					dup2(fds[i][1], STDOUT_FILENO);
-					close(fds[i][0]);
-					close(fds[i][1]);
+					if (i > 0)
+					{
+						dup2(fds[i-1][0], STDIN_FILENO);
+						close(fds[i-1][0]);
+						close(fds[i-1][1]);
+					}
+					if (i == 0)
+					{
+						dup2(fds[i][1], STDOUT_FILENO);
+						close(fds[i][0]);
+						close(fds[i][1]);
+					}
 					execve(cmds->path, cmds->args, shell->envp);
 				}
 			}
@@ -246,13 +255,8 @@ void	executor(t_data *shell)
 				cmds = cmds->next;
 			i++;
 		}
-		i = 0;
-		while (i < cmd_count - 1)
-		{
-			close(fds[i][0]);
-			close(fds[i][1]);
-			i++;
-		}
+		close(fds[0][0]);
+		close(fds[0][1]);
 		i = 0;
 		while (i < cmd_count)
 		{
@@ -275,3 +279,5 @@ void	executor(t_data *shell)
 // < test1.txt cat | wc -l >> test_output2.txt
 // < test1.txt cat | wc -l >> test_output2.txt > test_output3.txt
 // < test1.txt wc -l >> test_output2.txt > test_output3.txt
+// grep "h" test1.txt | grep "a" test1.txt | wc -l
+// grep "h" test1.txt | grep "a" test1.txt | grep "s" test1.txt | grep "b" test1.txt
