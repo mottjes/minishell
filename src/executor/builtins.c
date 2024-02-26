@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:48:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/23 20:34:27 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/26 14:31:54 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,50 @@ void	echo(t_data *shell, int flag)
 	{
 		ft_putstr_fd(shell->cmd_list->args[1], 1);
 		ft_putstr_fd("\n", 1);
+	}
+}
+
+void	unset(t_data *shell, char *var)
+{
+	char	**new_envp;
+	int		size;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	size = 0;
+	while (shell->envp[size])
+		size++;
+	while (shell->envp[i])
+	{
+		if (!ft_strncmp(var, shell->envp[i], ft_strlen(var)))
+		{
+			printf("\n\n\n found envvar %i \n\n\n", i);
+			new_envp = malloc(sizeof(char *) * size + 1);
+			if (!shell->envp)
+				malloc_fail(shell);
+			while (j < i)
+			{
+				new_envp[j] = ft_strdup(shell->envp[j]);
+				j++;
+			}
+			while (j < size - 1)
+			{
+				new_envp[j] = ft_strdup(shell->envp[j + 1]);
+				j++;
+			}
+			new_envp[j] = NULL;
+			i = 0;
+			while (shell->envp[i])
+			{
+				free(shell->envp[i]);
+				i++;
+			}
+			shell->envp = new_envp;
+			break ;
+		}
+		i++;
 	}
 }
 
