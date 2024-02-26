@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 16:20:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/26 17:35:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define BOLD	"\033[1m"
 
 typedef struct s_token	t_token;
-typedef struct s_cmd	t_cmd;
+typedef struct s_cmd 	t_cmd;
 
 //----------------- Main data-structure -----------------//
 
