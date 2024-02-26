@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:20 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 15:15:38 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:58:07 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	unset(t_data *shell, char *var)
 				free(shell->envp[i]);
 				i++;
 			}
+			free(shell->envp);
 			shell->envp = new_envp;
 			break ;
 		}
