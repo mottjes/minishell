@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 15:00:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/26 15:21:14 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ int	main(int argc, char *argv[], char *envp[])
 		expander(&shell);
 		lexer(&shell);
 		parser(&shell);
-		env(shell.envp);
-		export(&shell, "TEST=hallo");
-		env(shell.envp);
 
 		// print_lexer(&shell);
 		// print_cmds(&shell);
