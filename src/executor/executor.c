@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/23 20:33:03 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:21:26 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 	// if (cmd_list->cmd == "unset")
 	// 	unset(shell);
 	else if (!ft_strncmp(cmd->cmd, "env", 5))
-		env(shell->envp);
+		env(shell);
 	if (!ft_strncmp(cmd->cmd, "exit", 5))
 		ft_exit(shell);
 }
