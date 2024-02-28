@@ -6,42 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 11:32:08 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:35:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	tokens_count(char *input, int *restart)
-{
-	int	tokens;
-	int	i;
-	int	j;
-
-	j = 0;
-	i = 0;
-	tokens = 0;
-	while (input && input[i])
-	{
-		while (input[i] == ' ' || input[i] == '\t')
-			i++;
-		j = check_for_quotes(input, restart, i);
-		if (j)
-		{
-			i += j;
-			tokens++;
-		}
-		else if (input[i])
-		{
-			tokens++;
-			while (input[i] != ' ' && input [i] != '\t' && input[i])
-				i++;
-		}
-	}
-	return (tokens);
-}
-
-void	token_list_init(int count, t_token **token_ptr, t_data *shell)
+void	token_list_init(t_data *shell, int count)
 {
 	t_token	*first_token;
 	t_token	*next_token;
@@ -51,7 +22,7 @@ void	token_list_init(int count, t_token **token_ptr, t_data *shell)
 	first_token = malloc(sizeof(t_token));
 	if (!first_token)
 		malloc_fail(shell);
-	*token_ptr = first_token;
+	shell->token_list = first_token;
 	first_token->pos = i;
 	count--;
 	while (count)
@@ -69,46 +40,40 @@ void	token_list_init(int count, t_token **token_ptr, t_data *shell)
 	return ;
 }
 
-void	tokens_str_cpy(char *input, t_token **token_ptr, t_data *shell)
+void	tokens_str_cpy(t_data *shell)
 {
 	t_token	*token;
-	int		size;
 	int		i;
+	int		size;
 	int		j;
 
 	i = 0;
-	token = *token_ptr;
-	while (input[i] && token)
+	token = shell->token_list;
+	while (shell->input[i] && token)
 	{
-		while (input[i] == ' ' || input[i] == '\t')
+		while (shell->input[i] == ' ' || shell->input[i] == '\t')
 			i++;
 		j = i;
-		size = check_for_quotes(input, &shell->restart, i);
-		if (size)
+		size = get_str_size(shell, i);
+		if (shell->input[i] == '\"' || shell->input[i] == '\'')
 		{
+			i++;
 			j++;
-			i += size;
-			size--;
-			size--;
 		}
-		else if (input[i])
-		{
-			size = get_str_size(input, i, size);
-			i += size;
-		}
+		i += size;
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
 			malloc_fail(shell);
-		ft_strlcpy(token->str, input + j, size + 1);
+		ft_strlcpy(token->str, shell->input + j, size + 1);
 		token = token->next;
 	}
 }
 
-void	tokens_identify(t_token **token_ptr)
+void	tokens_identify(t_token *token_list)
 {
 	t_token	*token;
 
-	token = *token_ptr;
+	token = token_list;
 	while (token)
 	{
 		if (token->str[0] == '<')
@@ -121,10 +86,7 @@ void	tokens_identify(t_token **token_ptr)
 		else if (token->str[0] == '>')
 		{
 			if (token->str[1] == '>')
-			{
 				token->type = RE_APP;
-				printf("ist re_app\n\n\n");
-			}
 			else
 				token->type = RE_OUT;
 		}
@@ -148,7 +110,7 @@ void	lexer(t_data *shell)
 		shell->restart = 1;
 		return ;
 	}
-	token_list_init(count, &shell->token_list, shell);
-	tokens_str_cpy(shell->input, &shell->token_list, shell);
-	tokens_identify(&shell->token_list);
+	token_list_init(shell, count);
+	tokens_str_cpy(shell);
+	tokens_identify(shell->token_list);
 }

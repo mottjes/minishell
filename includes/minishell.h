@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 13:50:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:31:40 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,14 @@ char	*remove_env_var(t_data *shell, int i, int len_var);
 
 //			lexer.c
 void	lexer(t_data *shell);
-int		tokens_count(char *input, int *restart);
-void	token_list_init(int count, t_token **token_ptr, t_data *shell);
-void	tokens_str_cpy(char *input, t_token **token_ptr, t_data *shell);
-void	tokens_identify(t_token **token_ptr);
+void	token_list_init(t_data *shell, int count);
+void	tokens_str_cpy(t_data *shell);
+void	tokens_identify(t_token *token_list);
 
 //			lexer_utils.c
+int		tokens_count(char *input, int *restart);
 int		check_for_quotes(char *input, int *restart, int i);
-int		get_str_size(char *input, int i, int size);
+int	get_str_size(t_data *shell, int i);
 
 //-----------------	 		Parser 		-----------------//
 
