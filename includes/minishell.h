@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 17:35:33 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:20:35 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_cmd
 
 // 			environment.c
 void	create_environment(t_data *shell, char **envp);
-void	get_env_vars(t_data *shell);
+void	set_shlvl(t_data *shell);
 
 //			input.c
 void	input(t_data *shell);
@@ -88,10 +88,18 @@ char	*build_promt(t_data *shell, char *cwd);
 
 //			expander.c
 void	expander(t_data *shell);
-void	expansion_pipe(t_data *shell);
-int		check_after_operator(char **input_ptr, int i, t_data *shell);
-int		check_before_operator(char **input_ptr, int i, t_data *shell);
-void	add_space(char **input_ptr, int i, t_data *shell);
+void	expansion_pipes(t_data *shell);
+void	expansion_before_redirections(t_data *shell);
+void	expansion_after_redirections(t_data *shell);
+void	expansion_env_vars(t_data *shell);
+
+//			expander_utils.c
+char	*copy_env_var(char *old_str, int i, char *envp, int len_var);
+char	*remove_env_var(char *old_str, int i, int len_var);
+void	add_space(t_data *shell, int i);
+int		check_before_operator(t_data *shell, int i);
+int		check_after_operator(t_data *shell, int i);
+
 
 //			signals.c
 void	signals(void);
@@ -115,9 +123,6 @@ void	tokens_identify(t_token **token_ptr);
 //			lexer_utils.c
 int		check_for_quotes(char *input, int *restart, int i);
 int		get_str_size(char *input, int i, int size);
-void	set_shlvl(t_data *shell);
-char	*copy_env_var(char *old_str, int i, char *envp, int len_var);
-char	*remove_env_var(char *old_str, int i, int len_var);
 
 //-----------------	 		Parser 		-----------------//
 

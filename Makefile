@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/26 16:25:03 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/28 11:54:11 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC =	src/main.c						\
 		src/signals/signals.c			\
 		src/input/input.c				\
 		src/expander/expander.c			\
+		src/expander/expander_utils.c	\
 		src/lexer/lexer.c				\
 		src/lexer/lexer_utils.c			\
 		src/parser/parser.c				\

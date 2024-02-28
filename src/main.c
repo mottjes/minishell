@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 17:30:43 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:03:06 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,26 +57,23 @@ void	print_lexer(t_data *shell)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data shell;
-	int i = 0;
 
 	(void)argc;
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(t_data));
 	create_environment(&shell, envp);
 	signals();
-	while (i < 10)
+	while (1)
 	{
 		input(&shell);
 		expander(&shell);
-		lexer(&shell);
-		parser(&shell);
-		
+		//lexer(&shell);
+		//parser(&shell);
+		printf("%s\n", shell.input);
 		// print_lexer(&shell);
 		// print_cmds(&shell);
-		if (shell.input != NULL)
 		//	executor(&shell);
 		free_all(&shell);
-		i++;
 	}
 }
 
@@ -88,6 +85,7 @@ error msgs
 makefile for linux
 
 // executor
+if restart -> return
 check for read rights in input file
 check for write rights in output file
 check for execution rights in commands

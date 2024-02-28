@@ -6,68 +6,127 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 17:36:00 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:23:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	add_space(char **input_ptr, int i, t_data *shell)
+void	expansion_env_vars(t_data *shell)
 {
-	int		size;
-	char	*input;
-
-	size = ft_strlen(*input_ptr) + 2;
-	input = malloc(sizeof(char) * size);
-	if (!input)
-		malloc_fail(shell);
-	ft_strlcpy(input, *input_ptr, i + 1);
-	input[i] = ' ';
-	ft_strlcpy(input + i + 1, *input_ptr + i, size - i);
-	free(*input_ptr);
-	*input_ptr = input;
-}
-
-int	check_before_operator(char **input_ptr, int i, t_data *shell)
-{
-	char	*input;
-
-	input = *input_ptr;
-	if (input[i - 1] && !(input[i - 1] == ' '))
-	{
-		add_space(input_ptr, i, shell);
-		return (1);
-	}
-	return (0);
-}
-
-int	check_after_operator(char **input_ptr, int i, t_data *shell)
-{
-	char	*input;
-
-	input = *input_ptr;
-	if (input[i + 1] && !(input[i + 1] == ' '))
-	{
-		add_space(input_ptr, i + 1, shell);
-		return (1);
-	}
-	return (0);
-}
-
-void	expansion_pipe(t_data *shell)
-{
-	char	**input_ptr;
+	char	*str_mod;
+	int		len;
 	int		i;
+	int		j;
 
 	i = 0;
-	input_ptr = &shell->input;
 	while (shell->input && shell->input[i])
+	{
+		str_mod = NULL;
+		len = 0;
+		j = 0;
+		if (shell->input[i] == '\'')
+		{
+			i++;
+			while (shell->input[i] != '\'')
+				i++;
+			if (shell->input[i] == '\'')
+				i++;
+		}
+		if (shell->input[i] == '$')
+		{
+			i++;
+			while (shell->input[i + len] && shell->input[i + len] != ' ' && shell->input[i + len] != '\"')
+				len++;
+			while (shell->envp[j])
+			{
+				if (!ft_strncmp(&shell->input[i], shell->envp[j], len))
+				{
+					if (!ft_strncmp(shell->envp[j] + len, "=", 1))
+					{
+						str_mod = copy_env_var(shell->input, i - 1, shell->envp[j], len);
+						if (!str_mod)
+							malloc_fail(shell);
+						free(shell->input);
+						shell->input = str_mod;
+					}
+				}
+				j++;
+			}
+			if (!str_mod)
+			{
+				str_mod = remove_env_var(shell->input, i, len);
+				if (!str_mod)
+					malloc_fail(shell);
+				free(shell->input);
+				shell->input = str_mod;
+			}
+		}
+		else
+			i++;
+	}
+}
+
+void	expansion_before_redirections(t_data *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->input && shell->input[i])
+	{
+		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
+			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
+		{
+			if (check_before_operator(shell, i))
+				i++;
+		}
+		else if ((shell->input[i] == '<' && shell->input[i + 1] == '<')
+			|| (shell->input[i] == '>' && shell->input[i + 1] == '>'))
+		{
+			if (check_before_operator(shell, i))
+				i++;
+			i++;
+		}
+		i++;
+	}
+}
+
+void	expansion_after_redirections(t_data *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->input && shell->input[i])
+	{
+		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
+			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
+		{
+			if (check_after_operator(shell, i))
+				i++;
+		}
+		else if ((shell->input[i] == '<' && shell->input[i + 1] == '<')
+			|| (shell->input[i] == '>' && shell->input[i + 1] == '>'))
+		{
+			if (check_after_operator(shell, i + 1))
+				i++;
+			i++;
+		}
+		i++;
+	}
+}
+
+void	expansion_pipes(t_data *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->input[i])
 	{
 		if (shell->input[i] == '|')
 		{
-			if (check_before_operator(input_ptr, i, shell))
+			if (check_before_operator(shell, i))
 				i++;
-			if (check_after_operator(input_ptr, i, shell))
+			if (check_after_operator(shell, i))
 				i++;
 		}
 		i++;
@@ -76,69 +135,10 @@ void	expansion_pipe(t_data *shell)
 
 void	expander(t_data *shell)
 {
-	char 	**input_ptr;
-	char	*input;
-	int		i;
-
-	i = 0;
-	input_ptr = &shell->input;
-	input = *input_ptr;
 	if (shell->restart)
 		return ;
-	expansion_pipe(shell);
-	while (input && input[i])
-	{
-		if (input[i] == '<' && input[i + 1] != '<')
-		{
-			if (check_before_operator(input_ptr, i, shell))
-				i++;
-		}
-		else if (input[i] == '>' && input[i + 1] != '>')
-		{
-			if (check_before_operator(input_ptr, i, shell))
-				i++;
-		}
-		else if (input[i] == '<' && input[i + 1] == '<')
-		{
-			if (check_before_operator(input_ptr, i, shell))
-				i++;
-			i++;
-		}
-		else if (input[i] == '>' && input[i + 1] == '>')
-		{
-			if (check_before_operator(input_ptr, i, shell))
-				i++;
-			i++;
-		}
-		i++;
-		input = *input_ptr;
-	}
-	i = 0;
-	while (input && input[i])
-	{
-		if (input[i] == '<' && input[i + 1] != '<')
-		{
-			if (check_after_operator(input_ptr, i, shell))
-				i++;
-		}
-		else if (input[i] == '>' && input[i + 1] != '>')
-		{
-			if (check_after_operator(input_ptr, i, shell))
-				i++;
-		}
-		else if (input[i] == '<' && input[i + 1] == '<')
-		{
-			if (check_after_operator(input_ptr, i + 1, shell))
-				i++;
-			i++;
-		}
-		else if (input[i] == '>' && input[i + 1] == '>')
-		{
-			if (check_after_operator(input_ptr, i + 1, shell))
-				i++;
-			i++;
-		}
-		i++;
-		input = *input_ptr;
-	}
+	expansion_pipes(shell);
+	expansion_before_redirections(shell);
+	expansion_after_redirections(shell);
+	expansion_env_vars(shell);
 }
