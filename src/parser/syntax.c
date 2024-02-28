@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_check.c                                     :+:      :+:    :+:   */
+/*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:37:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:10:00 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	syntax_error(int i, int *restart)
+{
+	if (i)
+		*restart = 1;
+	if (i == 1)
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+	else if (i == 2)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+	}
+}
 
 void	syntax_commands(t_token *token, int *restart)
 {
@@ -42,20 +55,34 @@ void	syntax_redirections(t_token *token, int *restart)
 			{
 				if (token->next->type != WORD)
 				{
-					ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-					*restart = 1;
+					syntax_error(1, restart);
 					return ;
 				}
 			}
 			else
 			{
-				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-				*restart = 1;
+				syntax_error(2, restart);
 				return ;
 			}
 		}
 		token = token->next;
 	}
+}
+
+void	check_before(t_token *token_prev_2, t_token *token, int *restart)
+{
+	if (token_prev_2->type == PIPE || token_prev_2->type == WORD)
+	{
+		if (token->next)
+		{
+			if (token->next->type == WORD)
+				return ;
+			syntax_error(1, restart);
+		}
+		return ;
+	}
+	syntax_error(1, restart);
+	return ;
 }
 
 void	syntax_pipe(t_token *token, int *restart)
@@ -71,21 +98,10 @@ void	syntax_pipe(t_token *token, int *restart)
 		{
 			if (token_prev->type == WORD)
 			{
-				if (token_prev_2->type == PIPE || token_prev_2->type == WORD)
-				{
-					if (token->next)
-					{
-						if (token->next->type == WORD)
-							return ;
-					}
-					return ;
-				}
-				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-				*restart = 1;
+				check_before(token_prev_2, token, restart);
 				return ;
 			}
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-			*restart = 1;
+			syntax_error(1, restart);
 			return ;
 		}
 		token_prev_2 = token_prev;

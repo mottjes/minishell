@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 15:31:40 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:26:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define BOLD	"\033[1m"
 
 typedef struct s_token	t_token;
-typedef struct s_cmd 	t_cmd;
+typedef struct s_cmd	t_cmd;
 
 //----------------- Main data-structure -----------------//
 
@@ -116,9 +116,7 @@ char	*search_env_var(t_data *shell, int i, int len);
 char	*copy_env_var(char *old_str, int i, char *envp, int len_var);
 char	*remove_env_var(t_data *shell, int i, int len_var);
 
-
-
-//-----------------	 		Lexer 		-----------------//
+//-----------------		 Lexer 			-----------------//
 
 //			lexer.c
 void	lexer(t_data *shell);
@@ -129,12 +127,14 @@ void	tokens_identify(t_token *token_list);
 //			lexer_utils.c
 int		tokens_count(char *input, int *restart);
 int		check_for_quotes(char *input, int *restart, int i);
-int	get_str_size(t_data *shell, int i);
+int		get_str_size(t_data *shell, int i);
 
-//-----------------	 		Parser 		-----------------//
+//-----------------	 	 Parser 		-----------------//
 
 //			parser.c
 void	builtin_check(t_cmd *cmd_list);
+void	search_path(t_data *shell, t_cmd *cmds);
+int		path_given(t_data *shell, t_cmd *cmds);
 void	cmd_get_path(t_cmd *cmds, t_data *shell);
 void	parser(t_data	*shell);
 
@@ -146,14 +146,16 @@ void	cmd_list_init(t_data *shell, int count);
 
 //			syntax.c
 void	syntax_pipe(t_token *token, int *restart);
+void	check_before(t_token *token_prev_2, t_token *token, int *restart);
 void	syntax_redirections(t_token *token, int *restart);
 void	syntax_commands(t_token *token, int *restart);
+void	syntax_error(int i, int *restart);
 
 //			parser_utilc.c
 int		arg_count(t_token *token);
 int		cmds_count(t_token *token);
 
-//-----------------	 		Executor 		-----------------//
+//-----------------	 	 Executor 		-----------------//
 
 //			executor.c
 void	executor(t_data *shell);

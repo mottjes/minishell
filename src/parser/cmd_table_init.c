@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 18:21:10 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:57:42 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,26 @@ void	get_redirections(t_data *shell)
 			if (!shell->in_file)
 				malloc_fail(shell);
 		}
-		if (token->type == RE_OUT)
+		if (token->type == RE_OUT || token->type == RE_APP)
 		{
 			if (shell->out_file)
 				free(shell->out_file);
 			shell->out_file = ft_strdup(token->next->str);
 			if (!shell->out_file)
-				malloc_fail(shell);
-		}
-		if (token->type == RE_APP)
-		{
-			if (shell->out_file)
-				free(shell->out_file);
-			shell->out_file = ft_strdup(token->next->str);
-			if (!shell->out_file)
-				malloc_fail(shell);
-		}
-		if (token->type == HERE_DOC)
-		{
-			if (shell->in_file)
-				free(shell->in_file);
-			shell->in_file = ft_strdup(token->next->str);
-			if (!shell->in_file)
 				malloc_fail(shell);
 		}
 		token = token->next;
 	}
+}
+
+void	malloc_for_args(t_data *shell, t_cmd *cmds, t_token *token)
+{
+	cmds->cmd = ft_strdup(token->str);
+	if (!cmds->cmd)
+		malloc_fail(shell);
+	cmds->args = malloc(sizeof(char *) * (arg_count(token) + 1));
+	if (!cmds->args)
+		malloc_fail(shell);
 }
 
 void	cmds_str_copy(t_token *token, t_cmd *cmds, t_data *shell)
@@ -94,17 +88,11 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds, t_data *shell)
 	{
 		if (token->type == WORD && (prev->type == WORD || prev->type == PIPE))
 		{
-			cmds->cmd = ft_strdup(token->str);
-			if (!cmds->cmd)
-				malloc_fail(shell);
-			cmds->args = malloc(sizeof(char *) * (arg_count(token) + 1));
-			if (!cmds->args)
-				malloc_fail(shell);
+			malloc_for_args(shell, cmds, token);
 			while (token && token->type == WORD)
 			{
-				cmds->args[i] = ft_strdup(token->str);
+				cmds->args[i++] = ft_strdup(token->str);
 				token = token->next;
-				i++;
 			}
 			cmds->args[i] = NULL;
 			cmds = cmds->next;

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 13:48:48 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:27:36 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,24 @@ void	builtin_check(t_cmd *cmd_list)
 	}
 }
 
-void	cmd_get_path(t_cmd *cmds, t_data *shell)
+int	path_given(t_data *shell, t_cmd *cmds)
+{
+	if (cmds->cmd[0] == '/')
+	{
+		cmds->path = ft_strdup(cmds->cmd);
+		if (!cmds->path)
+			malloc_fail(shell);
+		if (access(cmds->path, F_OK))
+		{
+			printf("minishell: %s: No such file or directory\n", cmds->cmd);
+			shell->restart = 1;
+			return (1);
+		}
+	}
+	return (0);
+}
+
+void	search_path(t_data *shell, t_cmd *cmds)
 {
 	char	**env_paths;
 	char	*cmd_mod;
@@ -43,45 +60,38 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 	int		i;
 
 	i = 0;
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], "PATH=", 5))
+		i++;
+	env_paths = ft_split(shell->envp[i] + 5, ':');
+	cmd_mod = ft_strjoin("/", cmds->cmd);
+	if (!cmd_mod || !env_paths)
+		malloc_fail(shell);
+	i = 0;
+	while (env_paths[i])
+	{
+		cmd_path = ft_strjoin(env_paths[i], cmd_mod);
+		if (!cmd_path)
+			malloc_fail(shell);
+		if (!access(cmd_path, F_OK))
+		{
+			cmds->path = cmd_path;
+			break ;
+		}
+		i++;
+	}
+}
+
+void	cmd_get_path(t_cmd *cmds, t_data *shell)
+{
 	while (cmds)
 	{
 		if (!cmds->builtin)
 		{
-			if (cmds->cmd[0] == '/')
-			{
-				cmds->path = ft_strdup(cmds->cmd);
-				if (!cmds->path)
-					malloc_fail(shell);
-				if (access(cmds->path, F_OK))
-				{
-					shell->restart = 1;
-					return ;
-				}
-			}
+			if (path_given(shell, cmds))
+				return ;
 			else
 			{
-				while (shell->envp[i] && ft_strncmp(shell->envp[i], "PATH=", 5))
-					i++;
-				env_paths = ft_split(shell->envp[i] + 5, ':');
-				if (!env_paths)
-					malloc_fail(shell);
-				cmd_mod = ft_strjoin("/", cmds->cmd);
-				if (!cmd_mod)
-					malloc_fail(shell);
-				i = 0;
-				while (env_paths[i])
-				{
-					cmd_path = ft_strjoin(env_paths[i], cmd_mod);
-					if (!cmd_path)
-						malloc_fail(shell);
-					if (!access(cmd_path, F_OK))
-					{
-						cmds->path = cmd_path;
-						break ;
-					}
-					i++;
-				}
-				i = 0;
+				search_path(shell, cmds);
 				if (!cmds->path)
 				{
 					printf("minishell: %s: command not found\n", cmds->cmd);
