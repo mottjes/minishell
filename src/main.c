@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 15:58:25 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:43:40 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char *argv[], char *envp[])
 		
 		//print_lexer(&shell);
 		//print_cmds(&shell);
-		//	executor(&shell);
+		executor(&shell);
 		free_all(&shell);
 	}
 }
@@ -80,17 +80,17 @@ int	main(int argc, char *argv[], char *envp[])
 /*
 here doc
 
-error msgs
-
-makefile for linux
-
 // executor
 if restart -> return
 check for read rights in input file
 check for write rights in output file
 check for execution rights in commands
+
 exit:
 rl_clear_history??
-exit codes
-$?
+exit status
+expansion for $?
+
+free_all
+
 */

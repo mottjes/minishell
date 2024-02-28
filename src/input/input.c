@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:45:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 17:35:47 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:35:50 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	input(t_data *shell)
 		malloc_fail(shell);
 	promt = build_promt(shell, cwd);
 	free(cwd);
+	shell->restart = 0;
 	shell->input = readline(promt);
 	if (!shell->input)
 		shell->restart = 1;

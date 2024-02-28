@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:28 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 15:56:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:42:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	env(t_data *shell)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = 0;
-	while(shell->envp[i])
-	{	
+	while (shell->envp[i])
+	{
 		j = 0;
 		while (shell->envp[i][j] != '=' && shell->envp[i][j] != '\0')
 			j++;

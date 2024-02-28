@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:59:22 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/12 17:59:38 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:42:36 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	update_pwd(t_data *shell)
 	char	*new_pwd;
 	int		size;
 	int		i;
-	
+
 	i = 0;
 	while (shell->envp[i])
 	{
@@ -75,12 +75,12 @@ void	update_pwd(t_data *shell)
 void	cd(t_data *shell, t_cmd *cmd)
 {
 	char	*error;
-	
+
 	if (chdir(cmd->args[1]))
 	{
 		error = ft_strjoin("minishell: cd: ", cmd->args[1]);
 		perror(error);
-		return ;				//error handling
+		return ;
 	}
 	update_old_pwd(shell);
 	update_pwd(shell);

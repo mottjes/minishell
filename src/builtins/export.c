@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 17:30:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:42:00 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static void	print_export(t_data *shell)
 		j = 0;
 		while (j < size - i - 1)
 		{
-			if (ft_strncmp(shell->envp[j], shell->envp[j + 1], ft_strlen(shell->envp[j] + 1)) > 0)
+			if (ft_strncmp(shell->envp[j], shell->envp[j + 1],
+					ft_strlen(shell->envp[j] + 1)) > 0)
 			{
 				temp = shell->envp[j];
 				shell->envp[j] = shell->envp[j + 1];
@@ -64,15 +65,15 @@ static	int	valid_argument(char *var)
 		}
 		i++;
 	}
-	return (1);	
+	return (1);
 }
 
 void	export(t_data *shell, char *var)
 {
 	char	**new_envp;
 	int		i;
-	
-	i = 0;	
+
+	i = 0;
 	if (!var)
 		return (print_export(shell));
 	if (!valid_argument(var))

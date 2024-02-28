@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/13 12:21:38 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:35:37 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	free_all(t_data *shell)
 		free(shell->in_file);
 	if (shell->out_file)
 		free(shell->out_file);
-	shell->restart = 0;
 }
 
 void	malloc_fail(t_data *shell)
