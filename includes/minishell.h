@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 13:20:35 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:50:22 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,6 @@ void	set_shlvl(t_data *shell);
 void	input(t_data *shell);
 char	*build_promt(t_data *shell, char *cwd);
 
-//			expander.c
-void	expander(t_data *shell);
-void	expansion_pipes(t_data *shell);
-void	expansion_before_redirections(t_data *shell);
-void	expansion_after_redirections(t_data *shell);
-void	expansion_env_vars(t_data *shell);
-
-//			expander_utils.c
-char	*copy_env_var(char *old_str, int i, char *envp, int len_var);
-char	*remove_env_var(char *old_str, int i, int len_var);
-void	add_space(t_data *shell, int i);
-int		check_before_operator(t_data *shell, int i);
-int		check_after_operator(t_data *shell, int i);
-
-
 //			signals.c
 void	signals(void);
 void	signals_child(void);
@@ -110,6 +95,28 @@ void	signal_handler_child(int signal);
 //				error
 void	free_all(t_data *shell);
 void	malloc_fail(t_data *shell);
+
+//-----------------	 	Expander 		-----------------//
+
+//			expander.c
+void	expander(t_data *shell);
+void	expansion_pipes(t_data *shell);
+void	expansion_before_redirections(t_data *shell);
+void	expansion_after_redirections(t_data *shell);
+void	expansion_env_vars(t_data *shell);
+
+//			expander_utils.c
+void	add_space(t_data *shell, int i);
+int		check_before_operator(t_data *shell, int i);
+int		check_after_operator(t_data *shell, int i);
+
+//			expander_utils2.c
+int		skip_single_quotes(t_data *shell, int i);
+char	*search_env_var(t_data *shell, int i, int len);
+char	*copy_env_var(char *old_str, int i, char *envp, int len_var);
+char	*remove_env_var(t_data *shell, int i, int len_var);
+
+
 
 //-----------------	 		Lexer 		-----------------//
 

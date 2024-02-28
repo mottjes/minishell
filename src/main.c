@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 13:03:06 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:55:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		input(&shell);
 		expander(&shell);
-		//lexer(&shell);
-		//parser(&shell);
-		printf("%s\n", shell.input);
+		lexer(&shell);
+		parser(&shell);
+		
 		// print_lexer(&shell);
 		// print_cmds(&shell);
 		//	executor(&shell);
