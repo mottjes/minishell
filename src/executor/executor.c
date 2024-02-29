@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 15:45:43 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/02/29 17:51:31 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	executor(t_data *shell)
 	pid_t	child_pid;
 	int		status;
 
+	if (shell->restart)
+		return ;
 	cmds = shell->cmd_list;
 	if (cmds->builtin == 1)
 		exec_built_in(shell, cmds);

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:59:22 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 16:42:36 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/29 18:10:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	cd(t_data *shell, t_cmd *cmd)
 {
 	char	*error;
 
+	if (cmd->args[2])
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2));
 	if (chdir(cmd->args[1]))
 	{
 		error = ft_strjoin("minishell: cd: ", cmd->args[1]);
