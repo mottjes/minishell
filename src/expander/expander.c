@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 13:54:06 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/29 15:46:09 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,35 @@ void	expansion_pipes(t_data *shell)
 	}
 }
 
+// void	expansion_exit_status(+)
+// {
+// 	char *str_mod;
+// 	int	i;
+
+// 	i = 0;
+// 	while (shell->input[i])
+// 	{
+// 		if (shell->input[i] == '\'')
+// 		{
+// 			i++;
+// 			while (shell->input[i] != '\'')
+// 				i++;
+// 			if (shell->input[i] == '\'')
+// 				i++;
+// 		}
+// 		if (shell->input[i] == '$' && shell->input[i] == '?')
+// 		{
+// 			char *
+
+
+
+
+			
+// 		}
+// 		i++;
+// 	}
+// }
+
 void	expander(t_data *shell)
 {
 	if (shell->restart)
@@ -115,4 +144,6 @@ void	expander(t_data *shell)
 	expansion_before_redirections(shell);
 	expansion_after_redirections(shell);
 	expansion_env_vars(shell);
+	//expansion_exit_status(shell);
+	
 }

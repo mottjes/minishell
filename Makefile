@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/02/28 13:54:30 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/29 15:22:08 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,7 @@ UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
 	LIBREADLINE_FLAGS = -lreadline -lhistory
+	CFLAGS += -no-pie
 else ifeq ($(UNAME), Darwin)
 	LIBREADLINE_FLAGS = -I$(READLINE_PATH)/include -L$(READLINE_PATH)/lib -lreadline -lhistory -ltermcap
 endif

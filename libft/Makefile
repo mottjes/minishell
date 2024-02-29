@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 11:39:18 by mottjes           #+#    #+#              #
-#    Updated: 2024/01/30 12:12:57 by mottjes          ###   ########.fr        #
+#    Updated: 2024/02/29 15:14:39 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ OBJS = $(SRC:.c=.o)
 
 B_OBJS = $(B_SRC:.c=.o)
 
-HDR = libft.H
+HDR = libft.h
 
 all: $(NAME)
 
