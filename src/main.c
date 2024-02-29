@@ -72,7 +72,7 @@ int	main(int argc, char *argv[], char *envp[])
 		
 		// print_lexer(&shell);
 		// print_cmds(&shell);
-		//executor(&shell);
+		executor(&shell);
 		free_all(&shell);
 	}
 }

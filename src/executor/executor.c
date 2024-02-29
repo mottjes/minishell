@@ -3,52 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 16:21:26 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:45:43 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../includes/minishell.h"
-
-void	input_from_in_file(t_data *shell)
-{
-	char	*string;
-	int		i;
-	int		fd;
-
-	i = 0;
-	fd = open(shell->in_file, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("ERROR WITH OPENING FILE");
-		return ;
-	}
-	string = get_next_line(fd);
-	while (shell->cmd_list->args[i] != (void *)0)
-		i++;
-	shell->cmd_list->args[i] = ft_strdup(string);
-	free(string);
-	close(fd);
-}
-
-void	output_in_out_file(t_data *shell)
-{
-	int fd;
-
-	// close(1);
-	fd = open(shell->out_file, O_CREAT | O_WRONLY);
-	if (fd == -1)
-	{
-		perror("ERROR WITH OPENING FILE");
-		return ;
-	}
-	// while ()
-	write (fd, "l", 1);
-	close(fd);
-}
 
 void	exec_built_in(t_data *shell, t_cmd *cmd)
 {
@@ -65,10 +27,10 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 	}
 	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
 		pwd(shell);
-	// if (cmd_list->cmd == "export")
-	// 	export(shell);
-	// if (cmd_list->cmd == "unset")
-	// 	unset(shell);
+	if (!ft_strncmp(cmd->cmd, "export", 6))
+		export(shell, cmd->args[1]);
+	if (!ft_strncmp(cmd->cmd, "unset", 3))
+		unset(shell, cmd->args[1]);
 	else if (!ft_strncmp(cmd->cmd, "env", 5))
 		env(shell);
 	if (!ft_strncmp(cmd->cmd, "exit", 5))
@@ -87,59 +49,28 @@ int		count_cmds(t_data *shell)
 	}
 	return(count);
 }
-
-int		**create_fds(int cmd_count)
-{
-	int **ptr;
-	int	i = 0;
-	
-	ptr = malloc(cmd_count * sizeof(int *));
-	if (!ptr)
-		return (NULL);
-	while(i < cmd_count)
-	{
-		ptr[i] = malloc(2 * sizeof(int));
-		if (!ptr[i])
-			return (NULL);
-		i++;
-	}
-	return(ptr);
-}
-
-pid_t		*create_pid(int cmd_count)
-{
-	pid_t *ptr;
-	
-	ptr = malloc(cmd_count * sizeof(pid_t));
-	if (!ptr)
-		return (NULL);
-	return(ptr);
-}
 	
 void	executor(t_data *shell)
 {
-	int		**fds;
 	t_cmd	*cmds;
 	t_token	*token;
 	int		cmd_count;
-	pid_t	*child_pid;
+	pid_t	child_pid;
 	int		status;
-	int 	pipe_count = 1;
 
 	cmds = shell->cmd_list;
 	if (cmds->builtin == 1)
 		exec_built_in(shell, cmds);
 	cmd_count = count_cmds(shell);
-	child_pid = create_pid(cmd_count);
 	signals_child();
 	token = shell->token_list;
 	int	i = 0;
 	if (cmd_count == 1)
 	{
-		child_pid[i] = fork();
-		if (child_pid[i]   == -1)
+		child_pid = fork();
+		if (child_pid == -1)
 			return ; //error
-		if (child_pid[i] == 0)
+		if (child_pid == 0)
 		{
 			if (shell->in_file != (void *)0 && i == 0)
 			{
@@ -161,7 +92,7 @@ void	executor(t_data *shell)
 				}
 				if (flag == 1)
 				{
-					printf("macht append\n");
+					printf("macht append\n");\
 					fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 					dup2(fdout, STDOUT_FILENO);
 					close(fdout);
@@ -176,104 +107,88 @@ void	executor(t_data *shell)
 			}
 			execve(cmds->path, cmds->args, shell->envp);
 		}
-		waitpid(child_pid[i], &status, 0);
+		waitpid(child_pid, &status, 0);
 	}
 	if (cmd_count > 1)
 	{
-		fds = create_fds(cmd_count);
-		while (pipe_count < cmd_count)
+		int input_fd;
+		int next_input_fd;
+		int output_fd;
+
+		if (shell->in_file != (void *)0 && i == 0)
 		{
-			if (pipe(fds[i]) == -1)
-				return ; //error // close all pipes	
-			pipe_count++;
+			input_fd = open(shell->in_file, O_RDONLY, 0644);
 		}
+		else
+			input_fd = STDIN_FILENO;
 		while(i < cmd_count)
 		{
-			child_pid[i] = fork();
-			if (child_pid[i] == -1)
-				return ;
-			if (child_pid[i] == 0)
+			int fd[2];
+
+			if (i < cmd_count - 1)
 			{
-				if (i == cmd_count - 1 && i != 0)
-				{
-					dup2(fds[i-1][0], STDIN_FILENO);
-					close(fds[i-1][0]);
-					close(fds[i-1][1]);
-					if (shell->out_file != (void *)0)
-					{
-						int fdout;
-						int	flag = 0;
-						while(token->next)
-						{
-							if (token->type == 4)
-								flag = 1;
-							if (token->type == 3)
-								flag = 0;
-							token = token->next;
-						}
-						if (flag == 1)
-						{
-							printf("macht append\n");
-							fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-							dup2(fdout, STDOUT_FILENO);
-							close(fdout);
-						}
-						else
-						{
-							printf("macht kein append\n");
-							fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-							dup2(fdout, STDOUT_FILENO);
-							close(fdout);
-						}
-					}
-					execve(cmds->path, cmds->args, shell->envp);
-				}
-				if (i < cmd_count - 1)
-				{
-					if (shell->in_file != (void *)0 && i == 0)
-					{
-						int fdin = open(shell->in_file, O_RDONLY, 0644);
-						dup2(fdin, STDIN_FILENO);
-						close(fdin);
-					}
-					if (i > 0)
-					{
-						dup2(fds[i-1][0], STDIN_FILENO);
-						close(fds[i-1][0]);
-						close(fds[i-1][1]);
-					}
-					if (i == 0)
-					{
-						dup2(fds[i][1], STDOUT_FILENO);
-						close(fds[i][0]);
-						close(fds[i][1]);
-					}
-					execve(cmds->path, cmds->args, shell->envp);
-				}
+				if (pipe(fd) == -1)
+					return;
+				next_input_fd = fd[0];
+				output_fd = fd[1];
 			}
+			else
+			{
+				if (shell->out_file != (void *)0)
+				{
+					int	flag = 0;
+					while(token->next)
+					{
+						if (token->type == 4)
+							flag = 1;
+						if (token->type == 3)
+							flag = 0;
+						token = token->next;
+					}
+					if (flag == 1)
+					{
+						printf("macht append\n");
+						output_fd = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+					}
+					else
+					{
+						printf("macht kein append\n");
+						output_fd = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					}
+				}
+				else
+					output_fd = STDOUT_FILENO;
+			}
+    		child_pid = fork();
+    		if (child_pid == 0) 
+    		{
+				if (dup2(output_fd, STDOUT_FILENO) >= 0 && dup2(input_fd, STDIN_FILENO) >= 0)
+    		    	execve(cmds->path, cmds->args, shell->envp);
+				exit(1);
+    		}
+			cmds->pid = child_pid;
 			if (cmds->next)
 				cmds = cmds->next;
 			i++;
-		}
-		close(fds[0][0]);
-		close(fds[0][1]);
-		i = 0;
-		while (i < cmd_count)
-		{
-			waitpid(child_pid[i], &status, 0);
-			i++;
-		}
-		free(child_pid);
-		i = 0;
-		while (i < cmd_count - 1)
-		{
-			free(fds[i]);
-			i++;
+			if (input_fd != STDIN_FILENO)
+				close(input_fd);
+			if (output_fd != STDOUT_FILENO)
+				close(output_fd);
+			input_fd = next_input_fd;
 		}
 	}
+	cmds = shell->cmd_list;
+	while (cmds)
+	{
+		waitpid(cmds->pid, &status, 0);
+		(void)status;
+		cmds = cmds->next;
+	}
+	// free cmds (vielleicht woanders)
 }
 
 // grep "h" test1.txt | wc -l
+// < test1.txt cat | wc -l
 // < test1.txt cat > test_output.txt > test_output2.txt 
 // < test1.txt wc -l | cat > test_output2.txt 
 // < test1.txt cat | wc -l >> test_output2.txt
