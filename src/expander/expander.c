@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 15:46:09 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/29 16:02:31 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	expansion_env_vars(t_data *shell)
 		len = 0;
 		str_mod = NULL;
 		i = skip_single_quotes(shell, i);
-		if (shell->input[i] == '$')
+		if (shell->input[i] == '$' && shell->input[i + 1] != '?')
 		{
 			i++;
 			while (shell->input[i + len] && shell->input[i + len] != ' '
@@ -107,35 +107,6 @@ void	expansion_pipes(t_data *shell)
 	}
 }
 
-// void	expansion_exit_status(+)
-// {
-// 	char *str_mod;
-// 	int	i;
-
-// 	i = 0;
-// 	while (shell->input[i])
-// 	{
-// 		if (shell->input[i] == '\'')
-// 		{
-// 			i++;
-// 			while (shell->input[i] != '\'')
-// 				i++;
-// 			if (shell->input[i] == '\'')
-// 				i++;
-// 		}
-// 		if (shell->input[i] == '$' && shell->input[i] == '?')
-// 		{
-// 			char *
-
-
-
-
-			
-// 		}
-// 		i++;
-// 	}
-// }
-
 void	expander(t_data *shell)
 {
 	if (shell->restart)
@@ -144,6 +115,5 @@ void	expander(t_data *shell)
 	expansion_before_redirections(shell);
 	expansion_after_redirections(shell);
 	expansion_env_vars(shell);
-	//expansion_exit_status(shell);
-	
+	expansion_exit_status(shell);
 }

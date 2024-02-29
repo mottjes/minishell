@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 16:33:50 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/29 16:36:40 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void	expansion_env_vars(t_data *shell);
 void	add_space(t_data *shell, int i);
 int		check_before_operator(t_data *shell, int i);
 int		check_after_operator(t_data *shell, int i);
+void	exit_status_copy(t_data *shell, int i);
+void	expansion_exit_status(t_data *shell);
 
 //			expander_utils2.c
 int		skip_single_quotes(t_data *shell, int i);

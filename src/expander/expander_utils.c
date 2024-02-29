@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 11:33:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 13:48:13 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/29 16:38:22 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,46 @@ int	check_after_operator(t_data *shell, int i)
 		return (1);
 	}
 	return (0);
+}
+
+void	exit_status_copy(t_data *shell, int i)
+{
+	char	*str_mod;
+	char	*nbr;
+	int		nbr_len;
+	int		len;
+
+	nbr = ft_itoa(shell->exit_status);
+	nbr_len = ft_strlen(nbr);
+	len = ft_strlen(shell->input);
+	str_mod = malloc(sizeof(char) * (len + nbr_len + 1));
+	if (!str_mod)
+		malloc_fail(shell);
+	ft_strlcpy(str_mod, shell->input, i + 1);
+	ft_strlcpy(str_mod + i, nbr, nbr_len + 1);
+	ft_strlcpy(str_mod + i + nbr_len, shell->input + i + 2,
+		len - i - nbr_len + 1);
+	free(shell->input);
+	shell->input = str_mod;
+}
+
+void	expansion_exit_status(t_data *shell)
+{
+	int		i;
+
+	i = 0;
+	while (shell->input[i])
+	{
+		if (shell->input[i] == '\'')
+		{
+			i++;
+			while (shell->input[i] != '\'')
+				i++;
+			if (shell->input[i] == '\'')
+				i++;
+		}
+		if (shell->input[i] == '$' && shell->input[i + 1] == '?')
+			exit_status_copy(shell, i);
+		i++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 15:35:08 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/02/29 16:33:19 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	tokens_str_cpy(t_data *shell)
 		size = get_str_size(shell, i);
 		if (shell->input[i] == '\"' || shell->input[i] == '\'')
 		{
-			i++;
+			i += 2;
 			j++;
 		}
 		i += size;
