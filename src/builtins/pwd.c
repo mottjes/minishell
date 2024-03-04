@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:22 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 16:36:57 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 15:22:15 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@ void	pwd(t_data *shell)
 		malloc_fail(shell);
 	printf("%s\n", cwd);
 	free(cwd);
+	shell->exit_status = 0;
 }

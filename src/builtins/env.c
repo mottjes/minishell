@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:28 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 13:38:24 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 16:06:39 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	env(t_data *shell, t_cmd *cmd)
 		ft_putstr_fd("env: ‘", 2);
 		ft_putstr_fd(cmd->args[1], 2);
 		ft_putstr_fd("’: No such file or directory\n", 2);
+		shell->exit_status = 127;
 		return ;
 	}
 	while (shell->envp[i])
@@ -34,4 +35,5 @@ void	env(t_data *shell, t_cmd *cmd)
 			printf("%s\n", shell->envp[i]);
 		i++;
 	}
+	shell->exit_status = 0;
 }

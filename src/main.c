@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 14:24:54 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 17:13:54 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(t_data));
 	create_environment(&shell, envp);
-	signals();
+	// signals();
 	while (1)
 	{
 		input(&shell);
@@ -73,32 +73,33 @@ int	main(int argc, char *argv[], char *envp[])
 		// print_lexer(&shell);
 		// print_cmds(&shell);
 		executor(&shell);
-		free_all(&shell);
+		// free_all(&shell);
 	}
 }
 
 /*
-here doc
-
 // executor
-check for read rights in input file
-check for write rights in output file
-check for execution rights in commands
+	check for read rights in input file
+	check for write rights in output file
+	check for execution rights in commands
+	multiple builtins with pipes
+		-> exit status = 1
 
-signals:
-use signal() not sigaction
+	if exit code > 255
+		-> exit code - 256
 
-builtins:
-check for right arg count
-export:	put multiple vars in env and check if there are there -> update 
-same for unset
-put cmd instead of var in the functions
-check for args pwd -> error
+	errno
 
-exit:
-rl_clear_history??
-exit status
+// signals:
+	use signal() not sigaction
+	-> exit status = 130
 
+// builtins:
+	export: free envp
 
-promt
+//	here doc
+
+// free all
+	exit
+
 */

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 16:42:00 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 16:56:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static	int	valid_argument(char *var)
 	i = 1;
 	if ((var[0] < 'A' || var[0] > 'Z') && (var[0] < 'a' || var[0] > 'z'))
 		return (0);
-	while (var[i] != '=')
+	while (var[i] != '=' && var[i])
 	{
 		if ((var[i] < 'A' || var[i] > 'Z') && (var[i] < 'a' || var[i] > 'z'))
 		{
@@ -68,45 +68,54 @@ static	int	valid_argument(char *var)
 	return (1);
 }
 
-void	export(t_data *shell, char *var)
+void	export(t_data *shell, t_cmd *cmd)
 {
 	char	**new_envp;
 	int		i;
+	int		j;
 
-	i = 0;
-	if (!var)
+	j = 1;
+	if (!cmd->args[1])
 		return (print_export(shell));
-	if (!valid_argument(var))
+	while (cmd->args[j])
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", var);
-		return ;
-	}
-	while (shell->envp[i])
-	{
-		if (!ft_strncmp(var, shell->envp[i], ft_strlen(var)))
+		i = 0;
+		new_envp = NULL;
+		if (!valid_argument(cmd->args[j]))
+		{
+			printf("minishell: export: `%s': not a valid identifier\n", cmd->args[j]);
+			shell->exit_status = 1;
 			return ;
-		i++;
+		}
+		while (shell->envp[i])
+		{
+			if (!ft_strncmp(cmd->args[j], shell->envp[i], ft_strlen(cmd->args[j])))
+				return ;
+			i++;
+		}
+		i = 0;
+		while (shell->envp[i])
+			i++;
+		new_envp = malloc(sizeof(char *) * i + 2);
+		if (!new_envp)
+			malloc_fail(shell);
+		i = 0;
+		while (shell->envp[i])
+		{
+			new_envp[i] = ft_strdup(shell->envp[i]);
+			i++;
+		}
+		new_envp[i] = ft_strdup(cmd->args[j]);
+		new_envp[i + 1] = NULL;
+		i = 0;
+		// while (shell->envp[i])
+		// {
+		// 	free(shell->envp[i]);
+		// 	i++;
+		// }
+		free(shell->envp);
+		shell->envp = new_envp;
+		j++;
 	}
-	i = 0;
-	while (shell->envp[i])
-		i++;
-	new_envp = malloc(sizeof(char *) * i + 2);
-	if (!new_envp)
-		malloc_fail(shell);
-	i = 0;
-	while (shell->envp[i])
-	{
-		new_envp[i] = ft_strdup(shell->envp[i]);
-		i++;
-	}
-	new_envp[i] = ft_strdup(var);
-	new_envp[i + 1] = NULL;
-	i = 0;
-	while (shell->envp[i])
-	{
-		free(shell->envp[i]);
-		i++;
-	}
-	free(shell->envp);
-	shell->envp = new_envp;
+	shell->exit_status = 0;
 }

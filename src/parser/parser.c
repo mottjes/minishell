@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 16:27:36 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 15:08:06 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	path_given(t_data *shell, t_cmd *cmds)
 		if (access(cmds->path, F_OK))
 		{
 			printf("minishell: %s: No such file or directory\n", cmds->cmd);
+			shell->exit_status = 127;
 			shell->restart = 1;
 			return (1);
 		}
@@ -95,6 +96,7 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 				if (!cmds->path)
 				{
 					printf("minishell: %s: command not found\n", cmds->cmd);
+					shell->exit_status = 127;
 					shell->restart = 1;
 					return ;
 				}
@@ -112,7 +114,10 @@ void	parser(t_data *shell)
 	syntax_redirections(shell->token_list, &shell->restart);
 	syntax_pipe(shell->token_list, &shell->restart);
 	if (shell->restart)
+	{
+		shell->exit_status = 2;
 		return ;
+	}
 	cmd_table_init(shell);
 	builtin_check(shell->cmd_list);
 	cmd_get_path(shell->cmd_list, shell);

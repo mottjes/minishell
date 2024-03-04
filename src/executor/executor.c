@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 15:45:43 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/04 17:00:23 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,19 @@
 void	exec_built_in(t_data *shell, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->cmd, "echo", 4))
-	{
-		if (!ft_strncmp(cmd->args[0], "-n", 5))
-			echo(shell, 0);
-		else
-			echo(shell, 1);
-	}
+		echo(shell, cmd);
 	else if (!ft_strncmp(cmd->cmd, "cd", 2))
-	{
 		cd(shell, cmd);
-	}
 	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
 		pwd(shell);
-	if (!ft_strncmp(cmd->cmd, "export", 6))
-		export(shell, cmd->args[1]);
-	if (!ft_strncmp(cmd->cmd, "unset", 3))
-		unset(shell, cmd->args[1]);
+	else if (!ft_strncmp(cmd->cmd, "export", 6))
+		export(shell, cmd);
+	else if (!ft_strncmp(cmd->cmd, "unset", 3))
+		unset(shell, cmd);
 	else if (!ft_strncmp(cmd->cmd, "env", 5))
 		env(shell, cmd);
-	if (!ft_strncmp(cmd->cmd, "exit", 5))
-		ft_exit(shell);
+	else if (!ft_strncmp(cmd->cmd, "exit", 5))
+		ft_exit(shell, cmd);
 }
 
 int		count_cmds(t_data *shell)
@@ -95,6 +88,7 @@ static void	execute_one_cmd(t_data *shell, t_cmd *cmds, pid_t child_pid)
 				close(fdout);
 			}
 		}
+		shell->exit_status = 0;
 		execve(cmds->path, cmds->args, shell->envp);
 	}
 }
@@ -169,26 +163,37 @@ void	executor(t_data *shell)
 	int		status;
 	pid_t	child_pid;
 
+	if (shell->restart)
+		return ;
 	cmds = shell->cmd_list;
-	if (cmds->builtin == 1)
-		exec_built_in(shell, cmds);
+	
 	cmd_count = count_cmds(shell);
-	signals_child();
+	// signals_child();
 	if (cmd_count == 1)
 	{
-		child_pid = fork();
-		execute_one_cmd(shell, cmds, child_pid);
-		waitpid(child_pid, &status, 0);
+		if (cmds->builtin == 1)
+			exec_built_in(shell, cmds);
+		else
+		{
+			child_pid = fork();
+			execute_one_cmd(shell, cmds, child_pid);
+			waitpid(child_pid, &status, 0);
+		}
 	}
 	if (cmd_count > 1)
 	{
-		execute_more_cmds(shell, cmds, cmd_count, child_pid);
-		cmds = shell->cmd_list;
-		while (cmds)
+		if (cmds->builtin == 1)
+			exec_built_in(shell, cmds);
+		else
 		{
-			waitpid(cmds->pid, &status, 0);
-			(void)status;
-			cmds = cmds->next;
+			execute_more_cmds(shell, cmds, cmd_count, child_pid);
+			cmds = shell->cmd_list;
+			while (cmds)
+			{
+				waitpid(cmds->pid, &status, 0);
+				(void)status;
+				cmds = cmds->next;
+			}
 		}
 	}
 }

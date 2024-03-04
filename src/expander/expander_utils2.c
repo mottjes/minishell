@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 13:48:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 13:52:56 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 16:02:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,11 @@ char	*remove_env_var(t_data *shell, int i, int len_var)
 	int		len;
 
 	len = ft_strlen(shell->input) - len_var;
-	new_str = malloc(sizeof(char) * (len));
+	new_str = malloc(sizeof(char) * (len + 2));
 	if (!new_str)
 		malloc_fail(shell);
 	ft_strlcpy(new_str, shell->input, i);
-	ft_strlcpy(new_str + i - 1, shell->input + i + len_var, len - i + 1);
+	ft_strlcpy(new_str + i - 1, "\"\"", 3);
+	ft_strlcpy(new_str + i + 1, shell->input + i + len_var, len - i + 1);
 	return (new_str);
 }
