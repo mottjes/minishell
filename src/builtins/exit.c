@@ -15,5 +15,6 @@
 void	ft_exit(t_data *shell)
 {
 	free_all(shell);
+	ft_putstr_fd("exit", 1);
 	exit(0);
 }
