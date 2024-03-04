@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 18:14:25 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 14:24:54 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,12 @@ check for right arg count
 export:	put multiple vars in env and check if there are there -> update 
 same for unset
 put cmd instead of var in the functions
-env: check for arguments: ->error
-same for pwd
+check for args pwd -> error
 
 exit:
 rl_clear_history??
 exit status
+
+
+promt
 */

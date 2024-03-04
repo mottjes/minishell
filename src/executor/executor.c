@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 17:51:31 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 13:40:51 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 	if (!ft_strncmp(cmd->cmd, "unset", 3))
 		unset(shell, cmd->args[1]);
 	else if (!ft_strncmp(cmd->cmd, "env", 5))
-		env(shell);
+		env(shell, cmd);
 	if (!ft_strncmp(cmd->cmd, "exit", 5))
 		ft_exit(shell);
 }

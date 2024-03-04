@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 16:36:40 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/04 13:40:31 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	executor(t_data *shell);
 //          builtins
 void	echo(t_data *shell, int i);
 void	cd(t_data *shell, t_cmd *cmd);
-void	env(t_data *shell);
+void	env(t_data *shell, t_cmd *cmd);
 void	pwd(t_data *shell);
 void	ft_exit(t_data *shell);
 void	unset(t_data *shell, char *var);
