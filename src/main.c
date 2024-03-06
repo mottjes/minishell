@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 17:17:47 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 17:54:27 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,13 @@ int	main(int argc, char *argv[], char *envp[])
 
 /*
 // executor
-	check for read rights in input file - done
-	check for write rights in output file - done
+	print: minishell: %s: Permission denied
 	check for execution rights in commands - done
 	multiple builtins with pipes
 		-> exit status = 1
-
 	errno
 
 //	here doc
 
-// free all
-	exit
-
+// 	norm
 */
