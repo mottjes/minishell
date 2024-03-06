@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:37:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 17:55:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 15:18:32 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@ extern int g_status;
 
 void	signal_handler(int signal)
 {
-	// if (signal == SIGQUIT)
-	// {
-	// 	return ;
-	// }
 	if (signal == SIGINT)
 	{
 		g_status = signal;
@@ -32,10 +28,6 @@ void	signal_handler(int signal)
 
 void	signal_handler_child(int signal)
 {
-	// if (signal == SIGQUIT)
-	// {
-	// 	return ;
-	// }
 	if (signal == SIGINT)
 	{
 		g_status = signal;
@@ -46,44 +38,19 @@ void	signal_handler_child(int signal)
 
 void	signals_child(void)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = &signal_handler_child;
-	if (sigaction(SIGINT, &sa, NULL) == - 1)
-		return ;									//error handling
-	if (sigaction(SIGQUIT, &sa, NULL) == - 1)
-		return ;									//error handling	
+	signal(SIGINT, &signal_handler_child);
+	signal(SIGQUIT, SIG_IGN);								//error handling	
 }
 
 void	signals(void)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = &signal_handler;
-	if (sigaction(SIGINT, &sa, NULL) == - 1)
-		return ;									//error handling
-	if (sigaction(SIGQUIT, &sa, NULL) == - 1)
-		return ;									//error handling	
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 /*
-readline functions:
-readline, -> reads line puts promt
-rl_clear_history, -> clears input history
-rl_on_new_line,	-> Tell the update functions that we have moved onto a new (empty) line, usually after outputting a newline.
-rl_replace_line, -> Replace the contents of rl_line_buffer with text. The point and mark are preserved, if possible. If clear_undo is non-zero, the undo list associated with the current line is cleared.
-rl_redisplay, -> Change what’s displayed on the screen to reflect the current contents of rl_line_buffer.
-add_history, ->adds history
-*/
-/*
-	ctrl-C displays a new prompt on a new line. (SIGINT)
-◦ ctrl-D exits the shell.
-◦ ctrl-\ does nothing
 
-signal,
-sigaction, 
-sigemptyset, 
-sigaddset, 
-kill, 
-exit
+ctrl-C displays a new prompt on a new line. (SIGINT)
+ctrl-D exits the shell.
+ctrl-\ does nothing
 */
