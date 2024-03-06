@@ -23,7 +23,7 @@ void	echo(t_data *shell, t_cmd *cmd)
 		i++;
 		while (cmd->args[i])
 		{
-			ft_putstr_fd(shell->cmd_list->args[i], shell->fd_built_in);
+			ft_putstr_fd(cmd->args[i], shell->fd_built_in);
 			if (cmd->args[i + 1])
 				ft_putstr_fd(" ", shell->fd_built_in);
 			i++;

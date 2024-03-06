@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
+#    By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/04 15:06:39 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/06 16:29:03 by frbeyer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC =	src/main.c						\
 		src/parser/cmd_table_init.c		\
 		src/parser/parser_utils.c		\
 		src/executor/executor.c			\
+		src/executor/redirections.c		\
 		src/builtins/cd.c				\
 		src/builtins/echo.c				\
 		src/builtins/env.c				\
@@ -37,7 +38,7 @@ SRC =	src/main.c						\
 		
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 OBJ = $(SRC:.c=.o)
 

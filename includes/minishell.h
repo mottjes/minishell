@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 17:12:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 16:18:32 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,9 @@ void	pwd(t_data *shell);
 void	ft_exit(t_data *shell, t_cmd *cmd);
 void	unset(t_data *shell, t_cmd *cmd);
 void	export(t_data *shell, t_cmd *cmd);
+
+// redirections
+
+int	re_output(t_data *shell);
 
 #endif

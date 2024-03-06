@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 17:00:23 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 17:41:34 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,50 +46,37 @@ int		count_cmds(t_data *shell)
 
 static void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 {
-	t_token	*token;
-	int	i = 0;
 	int fdin;
 	int fdout;
-	int	flag = 0;
 
-	token = shell->token_list;
-	if (shell->in_file != (void *)0 && i == 0)
+	if (cmds->builtin == 1)
 	{
-		if (access(shell->in_file, R_OK) == -1)
-			return ; //error
-		if (access(shell->in_file, X_OK) == -1)
-			return ; //error
-		fdin = open(shell->in_file, O_RDONLY, 0644);
-		dup2(fdin, STDIN_FILENO);
-		close(fdin);
+		shell->fd_built_in = 1;
+		if (shell->out_file != (void *)0)
+			shell->fd_built_in = re_output(shell);
+		exec_built_in(shell, cmds);
 	}
-	if (shell->out_file != (void *)0)
+	else
 	{
-		if (access(shell->out_file, W_OK) == -1)
-			return ; //error
-		while (token->next)
+		if (shell->in_file != (void *)0)
 		{
-			if (token->type == 4)
-				flag = 1;
-			if (token->type == 3)
-				flag = 0;
-			token = token->next;
+			if (access(shell->in_file, R_OK) == -1)
+				return ; //error
+			fdin = open(shell->in_file, O_RDONLY, 0644);
+			dup2(fdin, STDIN_FILENO);
+			close(fdin);
 		}
-		if (flag == 1)
+		if (shell->out_file != (void *)0)
 		{
-			fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (access(shell->out_file, W_OK) == -1)
+				return ; //error
+			fdout = re_output(shell);
 			dup2(fdout, STDOUT_FILENO);
 			close(fdout);
 		}
-		else
-		{
-			fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(fdout, STDOUT_FILENO);
-			close(fdout);
-		}
+		execve(cmds->path, cmds->args, shell->envp);
 	}
 	shell->exit_status = 0;
-	execve(cmds->path, cmds->args, shell->envp);
 }
 
 static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t child_pid)
@@ -98,16 +85,11 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 	int next_input_fd;
 	int output_fd;
 	int	i = 0;
-	t_token	*token;
 	int fd[2];
-	int	flag = 0;
 
-	token = shell->token_list;
 	if (shell->in_file != (void *)0 && i == 0)
 	{
 		if (access(shell->in_file, R_OK) == -1)
-			return ; //error
-		if (access(shell->in_file, X_OK) == -1)
 			return ; //error
 		input_fd = open(shell->in_file, O_RDONLY, 0644);
 	}
@@ -125,22 +107,7 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 		else
 		{
 			if (shell->out_file != (void *)0)
-			{
-				if (access(shell->out_file, W_OK) == -1)
-					return ; //error
-				while(token->next)
-				{
-					if (token->type == 4)
-						flag = 1;
-					if (token->type == 3)
-						flag = 0;
-					token = token->next;
-				}
-				if (flag == 1)
-					output_fd = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				else
-					output_fd = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			}
+				output_fd = re_output(shell);
 			else
 				output_fd = STDOUT_FILENO;
 		}
@@ -151,14 +118,19 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 		{
 			if (cmds->builtin == 1)
 			{
-				printf("%i\n", i);
 				if (i == cmd_count - 1)
-					shell->fd_built_in = STDOUT_FILENO;
+				{
+					shell->fd_built_in = 1;
+					if (shell->out_file != (void *)0)
+						shell->fd_built_in = re_output(shell);
+				}
 				else
 					shell->fd_built_in = fd[1];
 				exec_built_in(shell, cmds);
 				next_input_fd = shell->fd_built_in;
 			}
+			// if (access(cmds->path, X_OK) == -1)
+			// 	return ; //error
 			else if (dup2(output_fd, STDOUT_FILENO) >= 0 && dup2(input_fd, STDIN_FILENO) >= 0)
 				execve(cmds->path, cmds->args, shell->envp);
 			exit(1);
@@ -190,18 +162,13 @@ void	executor(t_data *shell)
 	// signals_child();
 	if (cmd_count == 1)
 	{
-		shell->fd_built_in = 1;
-		if (cmds->builtin == 1)
-			exec_built_in(shell, cmds);
-		else
-		{
-			child_pid = fork();
-			if (child_pid == -1)
-				return ; //error
-			if (child_pid == 0)
-				execute_one_cmd(shell, cmds);
-			waitpid(child_pid, &status, 0);
-		}
+		child_pid = fork();
+		if (child_pid == -1)
+			return ; //error
+		if (child_pid == 0)
+			execute_one_cmd(shell, cmds);
+		waitpid(child_pid, &status, 0);
+
 	}
 	if (cmd_count > 1)
 	{
