@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 15:18:05 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 17:17:47 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// print_lexer(&shell);
 		// print_cmds(&shell);
 		executor(&shell);
-		// free_all(&shell);
+		free_all(&shell);
 	}
 }
 
@@ -85,17 +85,7 @@ int	main(int argc, char *argv[], char *envp[])
 	multiple builtins with pipes
 		-> exit status = 1
 
-	if exit code > 255
-		-> exit code - 256
-
 	errno
-
-// signals:
-	use signal() not sigaction
-	-> exit status = 130
-
-// builtins:
-	export: free envp
 
 //	here doc
 

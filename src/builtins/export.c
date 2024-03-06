@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 18:26:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 16:09:16 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static	void	delete_env_var(t_data *shell, int i)
 {
 	char	**new_envp;
 	int		j;
-	int		k;
 	
 	j = 0;
 	while (shell->envp[j])
@@ -83,22 +82,27 @@ static	void	delete_env_var(t_data *shell, int i)
 	j = 0;
 	while (j < i)
 	{
-		new_envp[k] = ft_strdup(shell->envp[j]);
-		if (!new_envp[k])
+		new_envp[j] = ft_strdup(shell->envp[j]);
+		if (!new_envp[j])
 			malloc_fail(shell);
-		k++;
 		j++;
 	}
 	j++;
 	while (shell->envp[j])
 	{
-		new_envp[k] = ft_strdup(shell->envp[j]);
-		if (!new_envp[k])
+		new_envp[j - 1] = ft_strdup(shell->envp[j]);
+		if (!new_envp[j - 1])
 			malloc_fail(shell);
-		k++;
 		j++;
 	}
-	shell->envp[k] = NULL;
+	new_envp[j - 1] = NULL;
+	while (shell->envp[i])
+	{
+		free(shell->envp[i]);
+		i++;
+	}
+	free(shell->envp);
+	shell->envp = new_envp;
 }
 
 void	export(t_data *shell, t_cmd *cmd)

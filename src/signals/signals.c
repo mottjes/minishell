@@ -6,14 +6,14 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:37:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 15:18:32 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 16:54:20 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int g_status;
-
+	   
 void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -38,19 +38,24 @@ void	signal_handler_child(int signal)
 
 void	signals_child(void)
 {
-	signal(SIGINT, &signal_handler_child);
-	signal(SIGQUIT, SIG_IGN);								//error handling	
+	struct sigaction sa = {0};
+	
+    sa.sa_handler = &signal_handler;
+    if (sigaction(SIGINT, &sa, NULL) == -1) {
+        exit(1);
+    }
+	// signal(SIGINT, &signal_handler_child);
+	// signal(SIGQUIT, SIG_IGN);
 }
 
 void	signals(void)
 {
-	signal(SIGINT, &signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	struct sigaction sa = {0};
+	
+    sa.sa_handler = &signal_handler;
+    if (sigaction(SIGINT, &sa, NULL) == -1) {
+        exit(1);
+    }
+	// signal(SIGINT, &signal_handler);
+	// signal(SIGQUIT, SIG_IGN);
 }
-
-/*
-
-ctrl-C displays a new prompt on a new line. (SIGINT)
-ctrl-D exits the shell.
-ctrl-\ does nothing
-*/

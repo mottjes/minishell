@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 15:05:48 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/06 16:23:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	syntax_pipe(t_token *token, int *restart)
 	{
 		if (token->type == PIPE)
 		{
+			if (!token->next || token->next->type != WORD)
+				return (syntax_error(2, restart));
 			if (token_prev->type == WORD)
 			{
 				check_before(token_prev_2, token, restart);

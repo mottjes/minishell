@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 16:18:32 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/06 17:46:42 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	signal_handler_child(int signal);
 
 //				error
 void	free_all(t_data *shell);
+void	free_environment(t_data *shell);
 void	malloc_fail(t_data *shell);
 
 //-----------------	 	Expander 		-----------------//
