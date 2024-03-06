@@ -42,6 +42,7 @@ typedef struct s_data
 	t_cmd		*cmd_list;
 	char		*in_file;
 	char		*out_file;
+	int			fd_built_in;
 	int			exit_status;
 	int			restart;
 }		t_data;

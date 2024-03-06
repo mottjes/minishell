@@ -21,12 +21,12 @@ void	echo(t_data *shell, t_cmd *cmd)
 		i++;
 	while (cmd->args[i])
 	{
-		ft_putstr_fd(shell->cmd_list->args[i], 1);
+		ft_putstr_fd(shell->cmd_list->args[i], shell->fd_built_in);
 		if (cmd->args[i + 1])
-			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(" ", shell->fd_built_in);
 		i++;
 	}
 	if (ft_strncmp(cmd->args[1], "-n", 5))
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", shell->fd_built_in);
 	shell->exit_status = 0;
 }

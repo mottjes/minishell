@@ -79,9 +79,9 @@ int	main(int argc, char *argv[], char *envp[])
 
 /*
 // executor
-	check for read rights in input file
-	check for write rights in output file
-	check for execution rights in commands
+	check for read rights in input file - done
+	check for write rights in output file - done
+	check for execution rights in commands - done
 	multiple builtins with pipes
 		-> exit status = 1
 

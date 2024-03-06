@@ -44,7 +44,7 @@ int		count_cmds(t_data *shell)
 	return(count);
 }
 
-static void	execute_one_cmd(t_data *shell, t_cmd *cmds, pid_t child_pid)
+static void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 {
 	t_token	*token;
 	int	i = 0;
@@ -53,44 +53,43 @@ static void	execute_one_cmd(t_data *shell, t_cmd *cmds, pid_t child_pid)
 	int	flag = 0;
 
 	token = shell->token_list;
-	if (child_pid == -1)
-		return ; //error
-	if (child_pid == 0)
+	if (shell->in_file != (void *)0 && i == 0)
 	{
-		if (shell->in_file != (void *)0 && i == 0)
-		{
-			fdin = open(shell->in_file, O_RDONLY, 0644);
-			dup2(fdin, STDIN_FILENO);
-			close(fdin);
-		}
-		if (shell->out_file != (void *)0)
-		{
-			while(token->next)
-			{
-				if (token->type == 4)
-					flag = 1;
-				if (token->type == 3)
-					flag = 0;
-				token = token->next;
-			}
-			if (flag == 1)
-			{
-				// printf("macht append\n");
-				fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				dup2(fdout, STDOUT_FILENO);
-				close(fdout);
-			}
-			else
-			{
-				// printf("macht kein append\n");
-				fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				dup2(fdout, STDOUT_FILENO);
-				close(fdout);
-			}
-		}
-		shell->exit_status = 0;
-		execve(cmds->path, cmds->args, shell->envp);
+		if (access(shell->in_file, R_OK) == -1)
+			return ; //error
+		if (access(shell->in_file, X_OK) == -1)
+			return ; //error
+		fdin = open(shell->in_file, O_RDONLY, 0644);
+		dup2(fdin, STDIN_FILENO);
+		close(fdin);
 	}
+	if (shell->out_file != (void *)0)
+	{
+		if (access(shell->out_file, W_OK) == -1)
+			return ; //error
+		while (token->next)
+		{
+			if (token->type == 4)
+				flag = 1;
+			if (token->type == 3)
+				flag = 0;
+			token = token->next;
+		}
+		if (flag == 1)
+		{
+			fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			dup2(fdout, STDOUT_FILENO);
+			close(fdout);
+		}
+		else
+		{
+			fdout = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			dup2(fdout, STDOUT_FILENO);
+			close(fdout);
+		}
+	}
+	shell->exit_status = 0;
+	execve(cmds->path, cmds->args, shell->envp);
 }
 
 static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t child_pid)
@@ -105,9 +104,15 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 
 	token = shell->token_list;
 	if (shell->in_file != (void *)0 && i == 0)
+	{
+		if (access(shell->in_file, R_OK) == -1)
+			return ; //error
+		if (access(shell->in_file, X_OK) == -1)
+			return ; //error
 		input_fd = open(shell->in_file, O_RDONLY, 0644);
+	}
 	else
-		input_fd = STDIN_FILENO;
+			input_fd = STDIN_FILENO;
 	while(i < cmd_count)
 	{
 		if (i < cmd_count - 1)
@@ -121,6 +126,8 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 		{
 			if (shell->out_file != (void *)0)
 			{
+				if (access(shell->out_file, W_OK) == -1)
+					return ; //error
 				while(token->next)
 				{
 					if (token->type == 4)
@@ -137,13 +144,25 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 			else
 				output_fd = STDOUT_FILENO;
 		}
-    	child_pid = fork();
-    	if (child_pid == 0) 
-    	{
-			if (dup2(output_fd, STDOUT_FILENO) >= 0 && dup2(input_fd, STDIN_FILENO) >= 0)
-    	    	execve(cmds->path, cmds->args, shell->envp);
+		child_pid = fork();
+		if (child_pid == -1)
+				return ; //error
+		if (child_pid == 0)
+		{
+			if (cmds->builtin == 1)
+			{
+				printf("%i\n", i);
+				if (i == cmd_count - 1)
+					shell->fd_built_in = STDOUT_FILENO;
+				else
+					shell->fd_built_in = fd[1];
+				exec_built_in(shell, cmds);
+				next_input_fd = shell->fd_built_in;
+			}
+			else if (dup2(output_fd, STDOUT_FILENO) >= 0 && dup2(input_fd, STDIN_FILENO) >= 0)
+				execve(cmds->path, cmds->args, shell->envp);
 			exit(1);
-    	}
+		}
 		cmds->pid = child_pid;
 		if (cmds->next)
 			cmds = cmds->next;
@@ -166,34 +185,33 @@ void	executor(t_data *shell)
 	if (shell->restart)
 		return ;
 	cmds = shell->cmd_list;
-	
 	cmd_count = count_cmds(shell);
+	// printf("%d\n", cmd_count);
 	// signals_child();
 	if (cmd_count == 1)
 	{
+		shell->fd_built_in = 1;
 		if (cmds->builtin == 1)
 			exec_built_in(shell, cmds);
 		else
 		{
 			child_pid = fork();
-			execute_one_cmd(shell, cmds, child_pid);
+			if (child_pid == -1)
+				return ; //error
+			if (child_pid == 0)
+				execute_one_cmd(shell, cmds);
 			waitpid(child_pid, &status, 0);
 		}
 	}
 	if (cmd_count > 1)
 	{
-		if (cmds->builtin == 1)
-			exec_built_in(shell, cmds);
-		else
+		execute_more_cmds(shell, cmds, cmd_count, child_pid);
+		cmds = shell->cmd_list;
+		while (cmds)
 		{
-			execute_more_cmds(shell, cmds, cmd_count, child_pid);
-			cmds = shell->cmd_list;
-			while (cmds)
-			{
-				waitpid(cmds->pid, &status, 0);
-				(void)status;
-				cmds = cmds->next;
-			}
+			waitpid(cmds->pid, &status, 0);
+			(void)status;
+			cmds = cmds->next;
 		}
 	}
 }
