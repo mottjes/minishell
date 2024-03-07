@@ -6,35 +6,35 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/07 18:50:04 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/07 18:51:52 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC =	src/main.c						\
+SRC =	src/main.c								\
 		src/environment/environment.c			\
-		src/signals/signals.c				\
-		src/input/input.c				\
-		src/expander/expander.c				\
+		src/signals/signals.c					\
+		src/input/input.c						\
+		src/expander/expander.c					\
 		src/expander/expander_utils.c			\
 		src/expander/expander_utils2.c			\
-		src/lexer/lexer.c				\
-		src/lexer/lexer_utils.c				\
-		src/parser/parser.c				\
-		src/parser/syntax.c				\
-		src/parser/cmd_table_init.c			\
-		src/parser/parser_utils.c			\
-		src/executor/executor.c				\
-		src/executor/redirections.c			\
-		src/builtins/cd.c				\
-		src/builtins/echo.c				\
-		src/builtins/env.c				\
-		src/builtins/exit.c				\
-		src/builtins/export.c				\
-		src/builtins/pwd.c				\
-		src/builtins/unset.c				\
-		src/error/error.c				\
+		src/lexer/lexer.c						\
+		src/lexer/lexer_utils.c					\
+		src/parser/parser.c						\
+		src/parser/syntax.c						\
+		src/parser/cmd_table_init.c				\
+		src/parser/parser_utils.c				\
+		src/executor/executor.c					\
+		src/executor/redirections.c				\
+		src/builtins/cd.c						\
+		src/builtins/echo.c						\
+		src/builtins/env.c						\
+		src/builtins/exit.c						\
+		src/builtins/export.c					\
+		src/builtins/pwd.c						\
+		src/builtins/unset.c					\
+		src/error/error.c						\
 		
 CC = gcc
 
