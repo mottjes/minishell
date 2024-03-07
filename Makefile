@@ -6,13 +6,13 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/07 18:54:23 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/07 18:56:21 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC =	src/main.c                       \
+SRC =   src/main.c                       \
 		src/environment/environme        \
 		src/signals/signals.c            \
 		src/input/input.c                \
