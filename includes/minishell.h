@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 17:46:42 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 14:41:06 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_data
 	char		*in_file;
 	char		*out_file;
 	int			fd_built_in;
+	int			fd_heredoc;
 	int			exit_status;
 	int			restart;
 }		t_data;

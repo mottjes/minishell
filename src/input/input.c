@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:45:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 17:23:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 13:55:57 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,5 @@ void	input(t_data *shell)
 		shell->exit_status = g_status + 128;
 		g_status = 0;
 	}
-	// has here doc
-		// capture heredoc
 	add_history(shell->input);
 }
