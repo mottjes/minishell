@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/07 16:05:30 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/07 18:50:04 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRC =	src/main.c						\
 		
 CC = gcc
 
-CFLAGS = #-Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g
 
 OBJ = $(SRC:.c=.o)
 
