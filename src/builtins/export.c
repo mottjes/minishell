@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 16:09:16 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:32:37 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static	void	delete_env_var(t_data *shell, int i)
 {
 	char	**new_envp;
 	int		j;
-	
+
 	j = 0;
 	while (shell->envp[j])
 		j++;
@@ -121,7 +121,8 @@ void	export(t_data *shell, t_cmd *cmd)
 		new_envp = NULL;
 		if (!valid_argument(cmd->args[j]))
 		{
-			printf("minishell: export: `%s': not a valid identifier\n", cmd->args[j]);
+			printf("minishell: export: `%s': not a valid identifier\n",
+				cmd->args[j]);
 			shell->exit_status = 1;
 			return ;
 		}

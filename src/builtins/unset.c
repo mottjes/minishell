@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:20 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 17:00:01 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:32:47 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	unset(t_data *shell, t_cmd *cmd)
 	int		i;
 	int		j;
 	int		k;
-	
+
 	k = 0;
 	while (cmd->args[k])
 	{
@@ -30,7 +30,8 @@ void	unset(t_data *shell, t_cmd *cmd)
 			size++;
 		while (shell->envp[i])
 		{
-			if (!ft_strncmp(cmd->args[k], shell->envp[i], ft_strlen(cmd->args[k])))
+			if (!ft_strncmp(cmd->args[k], shell->envp[i],
+					ft_strlen(cmd->args[k])))
 			{
 				new_envp = malloc(sizeof(char *) * size + 1);
 				if (!shell->envp)

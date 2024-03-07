@@ -6,18 +6,18 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:03:43 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:48:09 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int g_status;
+int	g_status;
 
 void	print_cmds(t_data *shell)
 {
-	t_cmd *cmds;
-	int i;
+	t_cmd	*cmds;
+	int		i;
 
 	i = 0;
 	cmds = shell->cmd_list;
@@ -37,15 +37,14 @@ void	print_cmds(t_data *shell)
 			printf("path : %s\n", cmds->path);
 		cmds = cmds->next;
 	}
-	
 }
 
 void	print_lexer(t_data *shell)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = shell->token_list;
-	while(token)
+	while (token)
 	{
 		printf("Str: %s\n", token->str);
 		printf("Pos: %i\n", token->pos);
@@ -56,7 +55,7 @@ void	print_lexer(t_data *shell)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_data shell;
+	t_data	shell;
 
 	(void)argc;
 	(void)argv;
@@ -69,7 +68,6 @@ int	main(int argc, char *argv[], char *envp[])
 		expander(&shell);
 		lexer(&shell);
 		parser(&shell);
-		
 		// print_lexer(&shell);
 		// print_cmds(&shell);
 		executor(&shell);

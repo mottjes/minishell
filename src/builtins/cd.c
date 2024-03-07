@@ -6,29 +6,17 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:59:22 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 15:17:59 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:23:18 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	update_old_pwd(t_data *shell)
+static void	copy_old_pwd(t_data *shell, char *new_pwd)
 {
-	char	*new_pwd;
-	int		size;
-	int		i;
+	int	i;
+	int	size;
 
-	i = 0;
-	while (shell->envp[i])
-	{
-		if (!ft_strncmp("PWD=", shell->envp[i], 4))
-		{
-			new_pwd = ft_strdup(shell->envp[i] + 4);
-			if (!new_pwd)
-				malloc_fail(shell);
-		}
-		i++;
-	}
 	i = 0;
 	while (shell->envp[i])
 	{
@@ -47,7 +35,26 @@ void	update_old_pwd(t_data *shell)
 	}
 }
 
-void	update_pwd(t_data *shell)
+static void	update_old_pwd(t_data *shell)
+{
+	char	*new_pwd;
+	int		i;
+
+	i = 0;
+	while (shell->envp[i])
+	{
+		if (!ft_strncmp("PWD=", shell->envp[i], 4))
+		{
+			new_pwd = ft_strdup(shell->envp[i] + 4);
+			if (!new_pwd)
+				malloc_fail(shell);
+		}
+		i++;
+	}
+	copy_old_pwd(shell, new_pwd);
+}
+
+static void	update_pwd(t_data *shell)
 {
 	char	*new_pwd;
 	int		size;

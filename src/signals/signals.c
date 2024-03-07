@@ -6,14 +6,14 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:37:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 16:54:20 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:45:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int g_status;
-	   
+extern int	g_status;
+
 void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -36,26 +36,34 @@ void	signal_handler_child(int signal)
 	}
 }
 
-void	signals_child(void)
+// void	signals_child(void)
+// {
+// 	struct sigaction	sa = {0};
+// 
+//     sa.sa_handler = &signal_handler;
+//     if (sigaction(SIGINT, &sa, NULL) == -1) {
+//         exit(1);
+//     }
+// }
+
+// void	signals_child(void)
+// {
+// 	struct sigaction	sa = {0};
+// 
+//     sa.sa_handler = &signal_handler;
+//     if (sigaction(SIGINT, &sa, NULL) == -1) {
+//         exit(1);
+//     }
+// }
+
+void	signals(void)
 {
-	struct sigaction sa = {0};
-	
-    sa.sa_handler = &signal_handler;
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
-        exit(1);
-    }
-	// signal(SIGINT, &signal_handler_child);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	signals(void)
 {
-	struct sigaction sa = {0};
-	
-    sa.sa_handler = &signal_handler;
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
-        exit(1);
-    }
-	// signal(SIGINT, &signal_handler);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

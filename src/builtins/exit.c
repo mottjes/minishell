@@ -6,19 +6,17 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 17:43:52 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:38:32 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_exit(t_data *shell, t_cmd *cmd)
+void	check_arguments(t_data *shell, t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
-	shell->exit_status = 0;
-	ft_putstr_fd("exit\n", 1);
 	if (cmd->args[1])
 	{
 		i = ft_atoi(cmd->args[1]);
@@ -33,12 +31,19 @@ void	ft_exit(t_data *shell, t_cmd *cmd)
 			}
 			i++;
 		}
+		if (!cmd->args[1][i] && cmd->args[2])
+		{
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			shell->exit_status = 1;
+		}
 	}
-	if (!cmd->args[1][i] && cmd->args[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		shell->exit_status = 1;
-	}
+}
+
+void	ft_exit(t_data *shell, t_cmd *cmd)
+{
+	shell->exit_status = 0;
+	ft_putstr_fd("exit\n", 1);
+	check_arguments(shell, cmd);
 	rl_clear_history();
 	free_all(shell);
 	free_environment(shell);

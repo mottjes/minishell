@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:45:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 13:55:57 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:41:23 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int g_status;
+extern int	g_status;
 
 void	input(t_data *shell)
 {

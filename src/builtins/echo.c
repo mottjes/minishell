@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:30 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 15:13:01 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:30:41 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	echo(t_data *shell, t_cmd *cmd)
 	if (cmd->args[1])
 	{
 		if (!ft_strncmp(cmd->args[1], "-n", 5))
-		i++;
+			i++;
 		while (cmd->args[i])
 		{
 			ft_putstr_fd(cmd->args[i], shell->fd_built_in);
