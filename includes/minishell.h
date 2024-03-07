@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 14:41:06 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:55:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,6 @@ void	export(t_data *shell, t_cmd *cmd);
 
 // redirections
 
-int	re_output(t_data *shell);
+int		re_output(t_data *shell);
 
 #endif
