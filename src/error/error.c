@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:35:39 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/08 18:15:46 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ static void	free_cmd_list(t_data *shell)
 void	free_all(t_data *shell)
 {
 	t_token	*next_token;
-	int		i;
 
-	i = 0;
 	if (shell->input)
 		free(shell->input);
 	if (shell->token_list)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:55:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/08 19:05:47 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_data
 	int			fd_built_in;
 	int			fd_heredoc;
 	int			exit_status;
+	int			count_heredoc;
 	int			restart;
 }		t_data;
 
@@ -165,6 +166,8 @@ int		cmds_count(t_token *token);
 
 //			executor.c
 void	executor(t_data *shell);
+void	exec_built_in(t_data *shell, t_cmd *cmd);
+int		count_cmds(t_data *shell);
 
 //          builtins
 void	echo(t_data *shell, t_cmd *cmd);

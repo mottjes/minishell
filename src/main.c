@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:33:44 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:48:09 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/08 19:34:48 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	print_lexer(t_data *shell)
 		printf("Str: %s\n", token->str);
 		printf("Pos: %i\n", token->pos);
 		printf("Type: %i\n", token->type);
+		printf("\n");
 		token = token->next;
 	}
 }
@@ -68,8 +69,11 @@ int	main(int argc, char *argv[], char *envp[])
 		expander(&shell);
 		lexer(&shell);
 		parser(&shell);
+		// printf("\n");
 		// print_lexer(&shell);
+		// printf("\n");
 		// print_cmds(&shell);
+		// printf("\n");
 		executor(&shell);
 		free_all(&shell);
 	}

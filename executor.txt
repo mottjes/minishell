@@ -6,92 +6,50 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/08 19:39:06 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/06 18:41:57 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	has_heredoc(t_data *shell)
+void	exec_built_in(t_data *shell, t_cmd *cmd)
 {
-	t_token *token;
-	t_token *heredoc;
-
-	
-	heredoc = NULL;
-	token = shell->token_list;
-	while (token)
-	{
-		if (token->type == HERE_DOC)
-		{
-			heredoc = token;
-			shell->count_heredoc += 1;
-		}
-		token = token->next;
-	}
-	// printf("%d heredocs\n", shell->count_heredoc );
-	if (heredoc)
-	{
-		while (heredoc->next)
-		{
-			heredoc = heredoc->next;
-			if (heredoc->type == RE_IN)
-				return (0);
-		}
-		return (1);
-	}
-	return (0);
+	if (!ft_strncmp(cmd->cmd, "echo", 4))
+		echo(shell, cmd);
+	else if (!ft_strncmp(cmd->cmd, "cd", 2))
+		cd(shell, cmd);
+	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
+		pwd(shell);
+	else if (!ft_strncmp(cmd->cmd, "export", 6))
+		export(shell, cmd);
+	else if (!ft_strncmp(cmd->cmd, "unset", 3))
+		unset(shell, cmd);
+	else if (!ft_strncmp(cmd->cmd, "env", 5))
+		env(shell, cmd);
+	else if (!ft_strncmp(cmd->cmd, "exit", 5))
+		ft_exit(shell, cmd);
 }
 
-void	capture_heredoc(t_data *shell)
+int		count_cmds(t_data *shell)
 {
-	t_token *token;
-	char	*line;
-	int		fd[2];
-	int		i = 0;
+	t_cmd	*cmds;
+	int count = 0;
 
-	if (pipe(fd) == -1)
-		return;
-	shell->fd_heredoc = fd[0];	
-	token = shell->token_list;
-	while (i < shell->count_heredoc)
+	cmds = shell->cmd_list;
+	while(cmds)
 	{
-		while (token)
-		{
-			if (token->type == HERE_DOC)
-			{
-				while (1)
-				{
-					line = readline("> ");
-					if (!ft_strncmp(line, token->next->str, ft_strlen(token->next->str)))
-						break ;
-					ft_putendl_fd(line, fd[1]); // need to overwrite it
-					free(line);
-				}
-				token = token->next;
-				break;
-			}
-			else
-				token = token->next;
-		}
-		i++;
+		count++;
+		cmds = cmds->next;
 	}
-	close (fd[1]);
+	return(count);
 }
-
 
 static void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 {
 	int fdin;
 	int fdout;
-	
-	if (has_heredoc(shell))
-	{
-		fdin = shell->fd_heredoc;
-		dup2(fdin, STDIN_FILENO);
-		close(fdin);
-	}
-	else if (shell->in_file != (void *)0)
+
+	if (shell->in_file != (void *)0)
 	{
 		if (access(shell->in_file, R_OK) == -1)
 			return ; //error
@@ -107,8 +65,8 @@ static void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 		dup2(fdout, STDOUT_FILENO);
 		close(fdout);
 	}
+	execve(cmds->path, cmds->args, shell->envp);	
 	shell->exit_status = 0;
-	execve(cmds->path, cmds->args, shell->envp);
 }
 
 static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t child_pid)
@@ -126,9 +84,7 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 		input_fd = open(shell->in_file, O_RDONLY, 0644);
 	}
 	else
-		input_fd = STDIN_FILENO;
-	if (has_heredoc(shell))
-		input_fd = shell->fd_heredoc;
+			input_fd = STDIN_FILENO;
 	while(i < cmd_count)
 	{
 		if (i < cmd_count - 1)
@@ -150,6 +106,8 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 				return ; //error
 		if (child_pid == 0)
 		{
+			// if (access(cmds->path, X_OK) == -1)
+			// 	return ; //error
 			if (cmds->builtin == 1)
 			{
 				if (i == cmd_count - 1)
@@ -163,8 +121,6 @@ static void	execute_more_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t c
 				exec_built_in(shell, cmds);
 				next_input_fd = shell->fd_built_in;
 			}
-			// if (access(cmds->path, X_OK) == -1)
-			// 	return ; //error
 			if (dup2(output_fd, STDOUT_FILENO) >= 0 && dup2(input_fd, STDIN_FILENO) >= 0)
 				execve(cmds->path, cmds->args, shell->envp);
 			exit(1);
@@ -188,11 +144,8 @@ void	executor(t_data *shell)
 	int		status;
 	pid_t	child_pid;
 
-
 	if (shell->restart)
 		return ;
-	if (has_heredoc(shell))
-			capture_heredoc(shell);
 	cmds = shell->cmd_list;
 	cmd_count = count_cmds(shell);
 	// printf("%d\n", cmd_count);
@@ -219,6 +172,7 @@ void	executor(t_data *shell)
 				execute_one_cmd(shell, cmds);
 			waitpid(child_pid, &status, 0);
 		}
+
 	}
 	if (cmd_count > 1)
 	{

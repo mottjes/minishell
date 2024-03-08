@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:37:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:45:08 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/08 18:14:43 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	signals(void)
-{
-	signal(SIGINT, &signal_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
+// void	signals(void)
+// {
+// 	signal(SIGINT, &signal_handler);
+// 	signal(SIGQUIT, SIG_IGN);
+// }
