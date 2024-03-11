@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:37:54 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:46:46 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	executor(t_data *shell)
 			{
 				if (access(shell->out_file, W_OK) == -1)
 				{
-					ft_putstr_fd("minishell: NO WRITING RIGHTS\n", 2);
+					ft_putstr_fd("minishell: Permission denied\n", 2);
 					return ;
 				}
 				shell->fd_built_in = re_output(shell);

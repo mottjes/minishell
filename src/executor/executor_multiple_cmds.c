@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:39:42 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:44:47 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t chil
 	{
 		if (access(shell->in_file, R_OK) == -1)
 		{
-			ft_putstr_fd("minishell: NO READING RIGHTS\n", 2);
+			ft_putstr_fd("minishell: Permission denied\n", 2);
 			return ;
 		}
 		input_fd = open(shell->in_file, O_RDONLY, 0644);

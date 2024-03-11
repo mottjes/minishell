@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/11 15:39:18 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:45:01 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	re_output(t_data *shell)
     token = shell->token_list;
 	if (access(shell->out_file, W_OK) == -1)
 	{
-		ft_putstr_fd("minishell: NO WRITING RIGHTS\n", 2);
+		ft_putstr_fd("minishell: Permission denied\n", 2);
 		return(-1);
 	}
 	while(token->next)
