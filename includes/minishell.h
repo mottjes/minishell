@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:35:16 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:51:17 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	signals_child(void);
 void	signal_handler(int signal);
 void	signal_handler_child(int signal);
 
-//				error
+//				error.c
 void	free_all(t_data *shell);
 void	free_environment(t_data *shell);
 
