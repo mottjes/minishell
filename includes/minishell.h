@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:55:35 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:26:06 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_data
 	int			fd_built_in;
 	int			fd_heredoc;
 	int			exit_status;
+	int			cmd_count;
 	int			count_heredoc;
 	int			restart;
 }		t_data;
@@ -175,12 +176,13 @@ void	executor(t_data *shell);
 void	execute_one_cmd(t_data *shell, t_cmd *cmds);
 
 //			executor_multiple_cmds.c
-void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t child_pid);
+void	execute_multiple_cmds(t_data *shell, t_cmd *cmds);
 
 // 			executor_utils.c
 int		re_output(t_data *shell);
 void	exec_built_in(t_data *shell, t_cmd *cmd);
 int		count_cmds(t_data *shell);
+int		check_rights(t_data *shell);
 
 //			heredoc.c
 int		has_heredoc(t_data *shell);

@@ -1,41 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*   executor_builtin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/11 17:29:24 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:10:13 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	re_output(t_data *shell)
-{
-	t_token	*token;
-	int		flag;
-	int		fd;
-
-	flag = 0;
-	token = shell->token_list;
-	while (token->next)
-	{
-		if (token->type == 4)
-			flag = 1;
-		if (token->type == 3)
-			flag = 0;
-		token = token->next;
-	}
-	if (flag == 1)
-		fd = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	return (fd);
-}
-
-void	exec_built_in(t_data *shell, t_cmd *cmd)
+static void	get_built_in(t_data *shell, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->cmd, "echo", 4))
 		echo(shell, cmd);
@@ -53,38 +30,17 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 		ft_exit(shell, cmd);
 }
 
-int	count_cmds(t_data *shell)
+void	exec_built_in(t_data *shell, t_cmd *cmds)
 {
-	t_cmd	*cmds;
-	int		count;
-
-	count = 0;
-	cmds = shell->cmd_list;
-	while (cmds)
-	{
-		count++;
-		cmds = cmds->next;
-	}
-	return (count);
-}
-
-int	check_rights(t_data *shell)
-{
-	if (shell->in_file != (void *)0)
-	{
-		if (access(shell->in_file, R_OK) == -1)
-		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-			return (1);
-		}
-	}
+	shell->fd_built_in = 1;
 	if (shell->out_file != (void *)0)
 	{
 		if (access(shell->out_file, W_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
-			return (1);
+			return ;
 		}
+		shell->fd_built_in = re_output(shell);
 	}
-	return (0);
+	get_built_in(shell, cmds);
 }

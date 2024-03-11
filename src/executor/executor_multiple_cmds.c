@@ -6,36 +6,32 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:44:47 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:30:07 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t child_pid)
+void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
 {
-	int input_fd;
-	int next_input_fd;
-	int output_fd;
+	int	input_fd;
+	int	next_input_fd;
+	int	output_fd;
 	int	i = 0;
-	int fd[2];
+	int	fd[2];
+	pid_t	child_pid;
 
+	if (check_rights(shell))
+		return ;
 	if (shell->in_file != (void *)0 && i == 0)
-	{
-		if (access(shell->in_file, R_OK) == -1)
-		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-			return ;
-		}
 		input_fd = open(shell->in_file, O_RDONLY, 0644);
-	}
 	else
 		input_fd = STDIN_FILENO;
 	if (has_heredoc(shell))
 		input_fd = shell->fd_heredoc;
-	while(i < cmd_count)
+	while (i < shell->cmd_count)
 	{
-		if (i < cmd_count - 1)
+		if (i < shell->cmd_count - 1)
 		{
 			if (pipe(fd) == -1)
 				pipe_fail(shell);
@@ -60,7 +56,7 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t chil
 		{
 			if (cmds->builtin == 1)
 			{
-				if (i == cmd_count - 1)
+				if (i == shell->cmd_count - 1)
 				{
 					shell->fd_built_in = 1;
 					if (shell->out_file != (void *)0)
@@ -68,12 +64,11 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t chil
 				}
 				else
 					shell->fd_built_in = fd[1];
-				exec_built_in(shell, cmds); //exit
+				exec_built_in(shell, cmds);
 				next_input_fd = shell->fd_built_in;
 			}
-			// if (access(cmds->path, X_OK) == -1)
-			// 	return ; //error
-			if (dup2(output_fd, STDOUT_FILENO) >= 0 && dup2(input_fd, STDIN_FILENO) >= 0)
+			if (dup2(output_fd, STDOUT_FILENO) >= 0
+				&& dup2(input_fd, STDIN_FILENO) >= 0)
 				execve(cmds->path, cmds->args, shell->envp);
 			exit(1);
 		}

@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:46:28 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:26:16 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 {
-	int fdin;
-	int fdout;
-	
+	int	fdin;
+	int	fdout;
+
+	if (check_rights(shell))
+		return ;
 	if (has_heredoc(shell))
 	{
 		fdin = shell->fd_heredoc;
@@ -25,22 +27,12 @@ void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 	}
 	else if (shell->in_file != (void *)0)
 	{
-		if (access(shell->in_file, R_OK) == -1)
-		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-			return ;
-		}
 		fdin = open(shell->in_file, O_RDONLY, 0644);
 		dup2(fdin, STDIN_FILENO);
 		close(fdin);
 	}
 	if (shell->out_file != (void *)0)
 	{
-		if (access(shell->out_file, W_OK) == -1)
-		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-			return ;
-		}
 		fdout = re_output(shell);
 		dup2(fdout, STDOUT_FILENO);
 		close(fdout);

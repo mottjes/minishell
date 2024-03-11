@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:08:40 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:53:10 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 int	has_heredoc(t_data *shell)
 {
-	t_token *token;
-	t_token *heredoc;
+	t_token	*token;
+	t_token	*heredoc;
 
-	
 	heredoc = NULL;
 	token = shell->token_list;
 	while (token)
@@ -44,11 +43,12 @@ int	has_heredoc(t_data *shell)
 
 void	capture_heredoc(t_data *shell)
 {
-	t_token *token;
+	t_token	*token;
 	char	*line;
 	int		fd[2];
-	int		i = 0;
-	
+	int		i;
+
+	i = 0;
 	token = shell->token_list;
 	while (i < shell->count_heredoc)
 	{
@@ -62,13 +62,14 @@ void	capture_heredoc(t_data *shell)
 				while (1)
 				{
 					line = readline("> ");
-					if (!ft_strncmp(line, token->next->str, ft_strlen(token->next->str)))
+					if (!ft_strncmp(line, token->next->str,
+							ft_strlen(token->next->str)))
 						break ;
 					ft_putendl_fd(line, fd[1]); // need to overwrite it
 					free(line);
 				}
 				token = token->next;
-				break;
+				break ;
 			}
 			else
 				token = token->next;

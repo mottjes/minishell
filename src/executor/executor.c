@@ -6,66 +6,66 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:48:32 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:09:21 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+static void	exec_one(t_data *shell, t_cmd *cmds)
+{
+	pid_t	child_pid;
+	int		status;
+
+	if (cmds->builtin == 1)
+	{
+		exec_built_in(shell, cmds);
+	}
+	else
+	{
+		child_pid = fork();
+		if (child_pid == -1)
+			child_fail(shell);
+		if (child_pid == 0)
+			execute_one_cmd(shell, cmds);
+		waitpid(child_pid, &status, 0);
+		shell->exit_status = status;
+	}
+}
+
+static void	exec_multiple(t_data *shell, t_cmd *cmds)
+{
+	int	status;
+
+	execute_multiple_cmds(shell, cmds);
+	cmds = shell->cmd_list;
+	while (cmds)
+	{
+		waitpid(cmds->pid, &status, 0);
+		shell->exit_status = status;
+		(void)status;
+		cmds = cmds->next;
+	}
+}
+
 void	executor(t_data *shell)
 {
 	t_cmd	*cmds;
-	int		cmd_count;
-	int		status;
-	pid_t	child_pid;
-
 
 	if (shell->restart)
 		return ;
 	if (has_heredoc(shell))
 		capture_heredoc(shell);
 	cmds = shell->cmd_list;
-	cmd_count = count_cmds(shell);
+	shell->cmd_count = count_cmds(shell);
 	signals();
-	if (cmd_count == 1)
+	if (shell->cmd_count == 1)
+		exec_one(shell, cmds);
+	if (shell->cmd_count > 1)
 	{
-		if (cmds->builtin == 1)
-		{
-			shell->fd_built_in = 1;
-			if (shell->out_file != (void *)0)
-			{
-				if (access(shell->out_file, W_OK) == -1)
-				{
-					ft_putstr_fd("minishell: Permission denied\n", 2);
-					return ;
-				}
-				shell->fd_built_in = re_output(shell);
-			}
-			exec_built_in(shell, cmds); //return(exec_b..);
-		}
-		else
-		{
-			child_pid = fork();
-			if (child_pid == -1)
-				child_fail(shell);
-			if (child_pid == 0)
-				execute_one_cmd(shell, cmds);
-			waitpid(child_pid, &status, 0); ///return(WIFEXit(status))
-			shell->exit_status = status;
-		}
+		exec_multiple(shell, cmds);
 	}
-	if (cmd_count > 1)
-	{
-		execute_multiple_cmds(shell, cmds, cmd_count, child_pid);
-		cmds = shell->cmd_list;
-		while (cmds)
-		{
-			waitpid(cmds->pid, &status, 0);
-			shell->exit_status = status;
-			(void)status;
-			cmds = cmds->next; //return(WIFEXit(status))
-		}
-	}
+	shell->cmd_count = 0;
 }
 
 // grep "h" test1.txt | wc -l
@@ -76,4 +76,4 @@ void	executor(t_data *shell)
 // < test1.txt cat | wc -l >> test_output2.txt > test_output3.txt
 // < test1.txt wc -l >> test_output2.txt > test_output3.txt
 // grep "h" test1.txt | grep "a" test1.txt | wc -l
-// grep "h" test1.txt | grep "a" test1.txt | grep "s" test1.txt | grep "b" test1.txt
+// grep "h" test1.txt | grep "a" test1.txt | grep "s" test1.txt
