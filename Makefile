@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/11 18:44:43 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/11 19:08:17 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC =	src/main.c									\
 		src/builtins/env.c							\
 		src/builtins/exit.c							\
 		src/builtins/export.c						\
-		src/builtins/export_builtins.c				\
+		src/builtins/export_utils.c					\
 		src/builtins/pwd.c							\
 		src/builtins/unset.c						\
 		src/error/error.c							\
