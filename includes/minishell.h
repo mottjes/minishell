@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 17:26:06 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 18:45:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,12 +190,34 @@ void	capture_heredoc(t_data *shell);
 
 //-----------------	 	 Builtins 		-----------------//
 
-void	echo(t_data *shell, t_cmd *cmd);
-void	cd(t_data *shell, t_cmd *cmd);
-void	env(t_data *shell, t_cmd *cmd);
-void	pwd(t_data *shell);
-void	ft_exit(t_data *shell, t_cmd *cmd);
-void	unset(t_data *shell, t_cmd *cmd);
+//			export.c
 void	export(t_data *shell, t_cmd *cmd);
+void	compare_to_env_vars(t_data *shell, t_cmd *cmd, int i);
+void	add_env_var(t_data *shell, t_cmd *cmd, int j);
+void	print_export(t_data *shell);
+int		valid_argument(char *var);
+
+//			export_utils.c
+void	sort_envp(t_data *shell, int size);
+void	delete_env_var(t_data *shell, int j);
+void	create_new_envp(t_data *shell, char ***ptr, int j);
+
+//			echo.c
+void	echo(t_data *shell, t_cmd *cmd);
+
+//			cd.c
+void	cd(t_data *shell, t_cmd *cmd);
+
+//			env.c
+void	env(t_data *shell, t_cmd *cmd);
+
+//			pwd.c
+void	pwd(t_data *shell);
+
+//			exit.c
+void	ft_exit(t_data *shell, t_cmd *cmd);
+
+//			unset.c
+void	unset(t_data *shell, t_cmd *cmd);
 
 #endif

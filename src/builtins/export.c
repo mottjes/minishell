@@ -6,50 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:32:37 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/11 18:42:56 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	print_export(t_data *shell)
-{
-	char	*temp;
-	int		size;
-	int		i;
-	int		j;
-
-	i = 0;
-	size = 0;
-	if (shell->envp == NULL)
-		return ;
-	while (shell->envp[size])
-		size++;
-	while (i < size -1)
-	{
-		j = 0;
-		while (j < size - i - 1)
-		{
-			if (ft_strncmp(shell->envp[j], shell->envp[j + 1],
-					ft_strlen(shell->envp[j] + 1)) > 0)
-			{
-				temp = shell->envp[j];
-				shell->envp[j] = shell->envp[j + 1];
-				shell->envp[j + 1] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while (shell->envp[i])
-	{
-		printf("declare -x %s\n", shell->envp[i]);
-		i++;
-	}
-}
-
-static	int	valid_argument(char *var)
+int	valid_argument(char *var)
 {
 	int	i;
 
@@ -68,104 +31,92 @@ static	int	valid_argument(char *var)
 	return (1);
 }
 
-static	void	delete_env_var(t_data *shell, int i)
+void	print_export(t_data *shell)
+{
+	int		size;
+	int		i;
+
+	i = 0;
+	size = 0;
+	if (!shell->envp)
+		return ;
+	while (shell->envp[size])
+		size++;
+	sort_envp(shell, size);
+	while (shell->envp[i])
+	{
+		printf("declare -x %s\n", shell->envp[i]);
+		i++;
+	}
+}
+
+void	add_env_var(t_data *shell, t_cmd *cmd, int j)
 {
 	char	**new_envp;
-	int		j;
+	int		i;
+
+	i = 0;
+	while (shell->envp[i])
+		i++;
+	new_envp = malloc(sizeof(char *) * (i + 2));
+	if (!new_envp)
+		malloc_fail(shell);
+	i = 0;
+	while (shell->envp[i])
+	{
+		new_envp[i] = ft_strdup(shell->envp[i]);
+		i++;
+	}
+	new_envp[i] = ft_strdup(cmd->args[j]);
+	new_envp[i + 1] = NULL;
+	free_environment(shell);
+	shell->envp = new_envp;
+}
+
+void	compare_to_env_vars(t_data *shell, t_cmd *cmd, int i)
+{
+	int	j;
+	int	k;
 
 	j = 0;
 	while (shell->envp[j])
-		j++;
-	new_envp = malloc(sizeof(char *) * j);
-	if (!new_envp)
-		malloc_fail(shell);
-	j = 0;
-	while (j < i)
 	{
-		new_envp[j] = ft_strdup(shell->envp[j]);
-		if (!new_envp[j])
-			malloc_fail(shell);
-		j++;
-	}
-	j++;
-	while (shell->envp[j])
-	{
-		new_envp[j - 1] = ft_strdup(shell->envp[j]);
-		if (!new_envp[j - 1])
-			malloc_fail(shell);
+		k = 0;
+		while (cmd->args[i][k])
+		{
+			if (cmd->args[i][k] == shell->envp[j][k])
+				k++;
+			else
+				break ;
+			if (cmd->args[i][k] == '=' || cmd->args[i][k] == '\0')
+			{
+				delete_env_var(shell, j);
+				break ;
+			}
+		}
 		j++;
 	}
-	new_envp[j - 1] = NULL;
-	while (shell->envp[i])
-	{
-		free(shell->envp[i]);
-		i++;
-	}
-	free(shell->envp);
-	shell->envp = new_envp;
 }
 
 void	export(t_data *shell, t_cmd *cmd)
 {
-	char	**new_envp;
-	int		i;
-	int		j;
-	int		k;
+	int	i;
 
-	j = 1;
+	i = 1;
 	if (!cmd->args[1])
 		return (print_export(shell));
-	while (cmd->args[j])
+	while (cmd->args[i])
 	{
-		i = 0;
-		new_envp = NULL;
-		if (!valid_argument(cmd->args[j]))
+		if (!valid_argument(cmd->args[i]))
 		{
 			printf("minishell: export: `%s': not a valid identifier\n",
-				cmd->args[j]);
+				cmd->args[i]);
 			shell->exit_status = 1;
 			return ;
 		}
-		while (shell->envp[i])
-		{
-			k = 0;
-			while (cmd->args[j][k])
-			{
-				if (cmd->args[j][k] == shell->envp[i][k])
-					k++;
-				else
-					break ;
-				if (cmd->args[j][k] == '=' || cmd->args[j][k] == '\0')
-				{
-					delete_env_var(shell, i);
-					break ;
-				}
-			}
-			i++;
-		}
-		i = 0;
-		while (shell->envp[i])
-			i++;
-		new_envp = malloc(sizeof(char *) * (i + 2));
-		if (!new_envp)
-			malloc_fail(shell);
-		i = 0;
-		while (shell->envp[i])
-		{
-			new_envp[i] = ft_strdup(shell->envp[i]);
-			i++;
-		}
-		new_envp[i] = ft_strdup(cmd->args[j]);
-		new_envp[i + 1] = NULL;
-		i = 0;
-		while (shell->envp[i])
-		{
-			free(shell->envp[i]);
-			i++;
-		}
-		free(shell->envp);
-		shell->envp = new_envp;
-		j++;
+		compare_to_env_vars(shell, cmd, i);
+		add_env_var(shell, cmd, i);
+		i++;
 	}
 	shell->exit_status = 0;
 }

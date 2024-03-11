@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/11 17:29:24 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:56:56 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,6 @@ int	re_output(t_data *shell)
 	else
 		fd = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	return (fd);
-}
-
-void	exec_built_in(t_data *shell, t_cmd *cmd)
-{
-	if (!ft_strncmp(cmd->cmd, "echo", 4))
-		echo(shell, cmd);
-	else if (!ft_strncmp(cmd->cmd, "cd", 2))
-		cd(shell, cmd);
-	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
-		pwd(shell);
-	else if (!ft_strncmp(cmd->cmd, "export", 6))
-		export(shell, cmd);
-	else if (!ft_strncmp(cmd->cmd, "unset", 3))
-		unset(shell, cmd);
-	else if (!ft_strncmp(cmd->cmd, "env", 5))
-		env(shell, cmd);
-	else if (!ft_strncmp(cmd->cmd, "exit", 5))
-		ft_exit(shell, cmd);
 }
 
 int	count_cmds(t_data *shell)
