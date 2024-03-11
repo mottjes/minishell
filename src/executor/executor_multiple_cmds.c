@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 14:47:12 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:39:42 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t chil
 	if (shell->in_file != (void *)0 && i == 0)
 	{
 		if (access(shell->in_file, R_OK) == -1)
-			return ; //error
+		{
+			ft_putstr_fd("minishell: NO READING RIGHTS\n", 2);
+			return ;
+		}
 		input_fd = open(shell->in_file, O_RDONLY, 0644);
 	}
 	else
@@ -35,20 +38,24 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t chil
 		if (i < cmd_count - 1)
 		{
 			if (pipe(fd) == -1)
-				return;
+				pipe_fail(shell);
 			next_input_fd = fd[0];
 			output_fd = fd[1];
 		}
 		else
 		{
 			if (shell->out_file != (void *)0)
+			{
 				output_fd = re_output(shell);
+				if (output_fd == -1)
+					return ;
+			}
 			else
 				output_fd = STDOUT_FILENO;
 		}
 		child_pid = fork();
 		if (child_pid == -1)
-				return ; //error
+			child_fail(shell);
 		if (child_pid == 0)
 		{
 			if (cmds->builtin == 1)

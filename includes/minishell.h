@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 14:43:10 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:35:16 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,11 @@ void	signal_handler_child(int signal);
 //				error
 void	free_all(t_data *shell);
 void	free_environment(t_data *shell);
+
+// 				fail.c
 void	malloc_fail(t_data *shell);
+void	pipe_fail(t_data *shell);
+void	child_fail(t_data *shell);
 
 //-----------------	 	Expander 		-----------------//
 

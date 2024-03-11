@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 14:59:48 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:37:54 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	executor(t_data *shell)
 	if (shell->restart)
 		return ;
 	if (has_heredoc(shell))
-			capture_heredoc(shell);
+		capture_heredoc(shell);
 	cmds = shell->cmd_list;
 	cmd_count = count_cmds(shell);
 	signals();
@@ -35,7 +35,10 @@ void	executor(t_data *shell)
 			if (shell->out_file != (void *)0)
 			{
 				if (access(shell->out_file, W_OK) == -1)
-					return ; //error
+				{
+					ft_putstr_fd("minishell: NO WRITING RIGHTS\n", 2);
+					return ;
+				}
 				shell->fd_built_in = re_output(shell);
 			}
 			exec_built_in(shell, cmds); //return(exec_b..);
@@ -44,11 +47,11 @@ void	executor(t_data *shell)
 		{
 			child_pid = fork();
 			if (child_pid == -1)
-				return ; //error
+				child_fail(shell);
 			if (child_pid == 0)
 				execute_one_cmd(shell, cmds);
 			waitpid(child_pid, &status, 0); ///return(WIFEXit(status))
-
+			shell->exit_status = status;
 		}
 	}
 	if (cmd_count > 1)
@@ -58,6 +61,7 @@ void	executor(t_data *shell)
 		while (cmds)
 		{
 			waitpid(cmds->pid, &status, 0);
+			shell->exit_status = status;
 			(void)status;
 			cmds = cmds->next; //return(WIFEXit(status))
 		}

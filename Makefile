@@ -6,7 +6,7 @@
 #    By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/11 14:40:02 by frbeyer          ###   ########.fr        #
+#    Updated: 2024/03/11 15:40:23 by frbeyer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC =	src/main.c						\
 		src/builtins/pwd.c				\
 		src/builtins/unset.c			\
 		src/error/error.c				\
+		src/error/fail.c				\
 		
 CC = gcc
 

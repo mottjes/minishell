@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/08 18:15:46 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:14:12 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,4 @@ void	free_environment(t_data *shell)
 		}
 		free(shell->envp);
 	}
-}
-
-void	malloc_fail(t_data *shell)
-{
-	ft_putstr_fd("minishell: no memory left on device\n", 2);
-	free_all(shell);
-	free_environment(shell);
-	rl_clear_history();
-	exit(1);
 }
