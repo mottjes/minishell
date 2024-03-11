@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 15:51:17 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:55:35 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,8 @@ int		count_cmds(t_data *shell);
 int		has_heredoc(t_data *shell);
 void	capture_heredoc(t_data *shell);
 
-//          builtins
+//-----------------	 	 Builtins 		-----------------//
+
 void	echo(t_data *shell, t_cmd *cmd);
 void	cd(t_data *shell, t_cmd *cmd);
 void	env(t_data *shell, t_cmd *cmd);
@@ -194,7 +195,5 @@ void	pwd(t_data *shell);
 void	ft_exit(t_data *shell, t_cmd *cmd);
 void	unset(t_data *shell, t_cmd *cmd);
 void	export(t_data *shell, t_cmd *cmd);
-
-
 
 #endif

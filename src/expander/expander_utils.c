@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 11:33:53 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 17:18:26 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/11 16:24:16 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ void	exit_status_copy(t_data *shell, int i)
 	int		nbr_len;
 	int		len;
 
-	nbr = ft_itoa(shell->exit_status);
 	if (shell->exit_status > 255)
-		shell->exit_status = shell->exit_status - 256;
+		shell->exit_status = shell->exit_status - 255;
+	nbr = ft_itoa(shell->exit_status);
 	nbr_len = ft_strlen(nbr);
 	len = ft_strlen(shell->input);
 	str_mod = malloc(sizeof(char) * (len + nbr_len + 1));
