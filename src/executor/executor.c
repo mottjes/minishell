@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/08 19:39:06 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:21:22 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	has_heredoc(t_data *shell)
 		}
 		token = token->next;
 	}
-	// printf("%d heredocs\n", shell->count_heredoc );
 	if (heredoc)
 	{
 		while (heredoc->next)
@@ -49,13 +48,13 @@ void	capture_heredoc(t_data *shell)
 	char	*line;
 	int		fd[2];
 	int		i = 0;
-
-	if (pipe(fd) == -1)
-		return;
-	shell->fd_heredoc = fd[0];	
+	
 	token = shell->token_list;
 	while (i < shell->count_heredoc)
 	{
+		if (pipe(fd) == -1)
+			return;
+		shell->fd_heredoc = fd[0];	
 		while (token)
 		{
 			if (token->type == HERE_DOC)
@@ -74,9 +73,10 @@ void	capture_heredoc(t_data *shell)
 			else
 				token = token->next;
 		}
+		close (fd[1]);
 		i++;
 	}
-	close (fd[1]);
+	shell->count_heredoc = 0;
 }
 
 
@@ -217,7 +217,7 @@ void	executor(t_data *shell)
 				return ; //error
 			if (child_pid == 0)
 				execute_one_cmd(shell, cmds);
-			waitpid(child_pid, &status, 0);
+			waitpid(child_pid, &status, 0); //errorcodes sind in der status variable
 		}
 	}
 	if (cmd_count > 1)
