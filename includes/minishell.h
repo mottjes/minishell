@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/08 19:05:47 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:43:10 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,21 @@ int		cmds_count(t_token *token);
 
 //			executor.c
 void	executor(t_data *shell);
+
+//			executor_one_cmd.c
+void	execute_one_cmd(t_data *shell, t_cmd *cmds);
+
+//			executor_multiple_cmds.c
+void	execute_multiple_cmds(t_data *shell, t_cmd *cmds, int cmd_count, pid_t child_pid);
+
+// 			executor_utils.c
+int		re_output(t_data *shell);
 void	exec_built_in(t_data *shell, t_cmd *cmd);
 int		count_cmds(t_data *shell);
+
+//			heredoc.c
+int		has_heredoc(t_data *shell);
+void	capture_heredoc(t_data *shell);
 
 //          builtins
 void	echo(t_data *shell, t_cmd *cmd);
@@ -178,8 +191,6 @@ void	ft_exit(t_data *shell, t_cmd *cmd);
 void	unset(t_data *shell, t_cmd *cmd);
 void	export(t_data *shell, t_cmd *cmd);
 
-// redirections
 
-int		re_output(t_data *shell);
 
 #endif

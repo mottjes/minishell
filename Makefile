@@ -6,7 +6,7 @@
 #    By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/08 18:18:08 by frbeyer          ###   ########.fr        #
+#    Updated: 2024/03/11 14:40:02 by frbeyer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,10 @@ SRC =	src/main.c						\
 		src/parser/cmd_table_init.c		\
 		src/parser/parser_utils.c		\
 		src/executor/executor.c			\
-		src/executor/redirections.c			\
+		src/executor/executor_one_cmd.c			\
+		src/executor/executor_multiple_cmds.c			\
+		src/executor/executor_utils.c			\
+		src/executor/heredoc.c			\
 		src/builtins/cd.c				\
 		src/builtins/echo.c				\
 		src/builtins/env.c				\
