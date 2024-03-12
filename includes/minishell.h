@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 16:25:42 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:33:56 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ char	*remove_env_var(t_data *shell, int i, int len_var);
 void	lexer(t_data *shell);
 void	token_list_init(t_data *shell, int count);
 void	tokens_str_cpy(t_data *shell);
+void	set_token_type(t_data *shell, t_token *token, int i);
 void	tokens_identify(t_token *token_list);
 
 //			lexer_utils.c

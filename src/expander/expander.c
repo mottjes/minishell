@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 16:02:31 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 13:47:26 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	expansion_env_vars(t_data *shell)
 		len = 0;
 		str_mod = NULL;
 		i = skip_single_quotes(shell, i);
+		if (shell->input[i] == '$' && (shell->input[i + 1] == ' ' || shell->input[i + 1] == '\"' || shell->input[i + 1] == '\0'))
+			i++;
 		if (shell->input[i] == '$' && shell->input[i + 1] != '?')
 		{
 			i++;
@@ -46,8 +48,16 @@ void	expansion_before_redirections(t_data *shell)
 	int	i;
 
 	i = 0;
+	
+	
 	while (shell->input && shell->input[i])
 	{
+		if (shell->input[i] == '\'' || shell->input[i] == '\"')
+		{
+			i++;
+			while (shell->input[i] && shell->input[i] != '\'' && shell->input[i] != '\"')
+				i++;
+		}
 		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
 			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
 		{
@@ -72,6 +82,12 @@ void	expansion_after_redirections(t_data *shell)
 	i = 0;
 	while (shell->input && shell->input[i])
 	{
+		if (shell->input[i] == '\'' || shell->input[i] == '\"')
+		{
+			i++;
+			while (shell->input[i] && shell->input[i] != '\'' && shell->input[i] != '\"')
+				i++;
+		}
 		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
 			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
 		{
@@ -96,6 +112,12 @@ void	expansion_pipes(t_data *shell)
 	i = 0;
 	while (shell->input[i])
 	{
+		if (shell->input[i] == '\'' || shell->input[i] == '\"')
+		{
+			i++;
+			while (shell->input[i] && shell->input[i] != '\'' && shell->input[i] != '\"')
+				i++;
+		}
 		if (shell->input[i] == '|')
 		{
 			if (check_before_operator(shell, i))

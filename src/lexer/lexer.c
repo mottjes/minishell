@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/06 16:11:38 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:24:59 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,57 +43,154 @@ void	token_list_init(t_data *shell, int count)
 void	tokens_str_cpy(t_data *shell)
 {
 	t_token	*token;
-	int		i;
 	int		size;
+	int		tmp;
+	int		i;
 	int		j;
 
 	i = 0;
 	token = shell->token_list;
 	while (shell->input[i] && token)
 	{
-		while (shell->input[i] == ' ' || shell->input[i] == '\t')
+		j = 0;
+		size = 0;
+		tmp = i;
+		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
 			i++;
-		j = i;
-		size = get_str_size(shell, i);
-		if (shell->input[i] == '\"' || shell->input[i] == '\'')
+		while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
 		{
-			i += 2;
-			j++;
+			if (shell->input[i] == '\"')
+			{
+				i++;
+				while (shell->input[i] != '\"' && shell->input[i])
+				{
+						size++;
+						i++;
+				}
+				if (shell->input[i] == '\"')
+					i++;
+			}
+			else if (shell->input[i] == '\'')
+			{
+				i++;
+				while (shell->input[i] != '\'' && shell->input[i])
+				{
+					size++;
+					i++;
+				}
+				if (shell->input[i] == '\'')
+					i++;
+			}
+			else
+			{
+				size++;
+				i++;
+			}
 		}
-		i += size;
 		token->str = malloc(sizeof(char) * size + 1);
 		if (!token->str)
 			malloc_fail(shell);
-		ft_strlcpy(token->str, shell->input + j, size + 1);
+		i = tmp;
+		if (size == 0)
+			token->str[0] = '\0';
+		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
+			i++;
+		while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
+		{
+			if (shell->input[i] == '\"')
+			{
+				i++;
+				while (shell->input[i] != '\"' && shell->input[i])
+				{
+					ft_strlcpy(token->str + j, shell->input + i, 2);
+					j++;
+					i++;
+				}
+				if (shell->input[i] == '\"')
+					i++;
+			}
+			else if (shell->input[i] == '\'')
+			{
+				i++;
+				while (shell->input[i] != '\'' && shell->input[i])
+				{
+					ft_strlcpy(token->str + j, shell->input + i, 2);
+					j++;
+					i++;
+				}
+				if (shell->input[i] == '\'')
+					i++;
+			}
+			else
+			{
+				ft_strlcpy(token->str + j, shell->input + i, 2);
+				j++;
+				i++;
+			}
+		}
 		token = token->next;
 	}
 }
 
-void	tokens_identify(t_token *token_list)
+void	set_token_type(t_data *shell, t_token *token, int i)
+{
+	if (shell->input[i] == '<')
+	{
+		if (shell->input[i + 1] == '<')
+			token->type = HERE_DOC;
+		else
+			token->type = RE_IN;
+	}
+	else if (shell->input[i] == '>')
+	{
+		if (shell->input[i + 1] == '>')
+			token->type = RE_APP;
+		else
+			token->type = RE_OUT;
+	}
+	else if (shell->input[i] == '|')
+		token->type = PIPE;
+	else
+		token->type = WORD;
+}
+
+void	tokens_identify(t_data *shell)
 {
 	t_token	*token;
-
-	token = token_list;
-	while (token)
+	int	i;
+	
+	i = 0;
+	token = shell->token_list;
+	while (shell->input[i] && token)
 	{
-		if (token->str[0] == '<')
+		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
+			i++;
+		while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
 		{
-			if (token->str[1] == '<')
-				token->type = HERE_DOC;
+			if (shell->input[i] == '\"')
+			{
+				i++;
+				token->type = WORD;
+				while (shell->input[i] != '\"' && shell->input[i])
+					i++;
+				if (shell->input[i] == '\"')
+					i++;
+			}
+			else if (shell->input[i] == '\'')
+			{
+				i++;
+				token->type = WORD;
+				while (shell->input[i] != '\'' && shell->input[i])
+					i++;
+				if (shell->input[i] == '\'')
+					i++;
+			}
 			else
-				token->type = RE_IN;
+			{
+				set_token_type(shell, token, i);
+				i++;
+			}
 		}
-		else if (token->str[0] == '>')
-		{
-			if (token->str[1] == '>')
-				token->type = RE_APP;
-			else
-				token->type = RE_OUT;
-		}
-		else if (token->str[0] == '|')
-			token->type = PIPE;
-		else
-			token->type = WORD;
 		token = token->next;
 	}
 }
@@ -111,6 +208,6 @@ void	lexer(t_data *shell)
 		return ;
 	}
 	token_list_init(shell, count);
+	tokens_identify(shell);
 	tokens_str_cpy(shell);
-	tokens_identify(shell->token_list);
 }

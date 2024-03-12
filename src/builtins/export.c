@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 18:42:56 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 13:50:50 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,9 @@ void	export(t_data *shell, t_cmd *cmd)
 	{
 		if (!valid_argument(cmd->args[i]))
 		{
-			printf("minishell: export: `%s': not a valid identifier\n",
-				cmd->args[i]);
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(cmd->args[i], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
 			shell->exit_status = 1;
 			return ;
 		}

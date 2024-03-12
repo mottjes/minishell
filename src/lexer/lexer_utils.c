@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:01:25 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/29 16:26:13 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:23:45 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,59 +38,73 @@ int	get_str_size(t_data *shell, int i)
 	return (size);
 }
 
-int	check_for_quotes(char *input, int *restart, int i)
-{
-	int	j;
+// int	check_for_quotes(char *input, int *restart, int i)
+// {
+// 	int	j;
 
-	j = i;
-	if (input[i] == '\"')
-	{
-		i++;
-		while (input[i] && input[i] != '\"')
-			i++;
-		if (input[i] != '\"')
-			return (ft_putstr_fd("minishell: quotes not closed\n", 2),
-				*restart = 1, 0);
-		i++;
-	}
-	else if (input[i] == '\'')
-	{
-		i++;
-		while (input[i] && input[i] != '\'')
-			i++;
-		if (input[i] != '\'')
-			return (ft_putstr_fd("minishell: quotes not closed\n", 2),
-				*restart = 1, 0);
-		i++;
-	}
-	return (i - j);
-}
+// 	j = i;
+// 	if (input[i] == '\"')
+// 	{
+// 		i++;
+// 		while (input[i] && input[i] != '\"')
+// 			i++;
+// 		if (input[i] != '\"')
+// 			return (ft_putstr_fd("minishell: quotes not closed\n", 2),
+// 				*restart = 1, 0);
+// 		i++;
+// 	}
+// 	else if (input[i] == '\'')
+// 	{
+// 		i++;
+// 		while (input[i] && input[i] != '\'')
+// 			i++;
+// 		if (input[i] != '\'')
+// 			return (ft_putstr_fd("minishell: quotes not closed\n", 2),
+// 				*restart = 1, 0);
+// 		i++;
+// 	}
+// 	return (i - j);
+// }
 
 int	tokens_count(char *input, int *restart)
 {
 	int	tokens;
 	int	i;
-	int	j;
 
-	j = 0;
 	i = 0;
 	tokens = 0;
-	while (input && input[i])
+	while (input[i])
 	{
-		while (input[i] == ' ' || input[i] == '\t')
+		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 			i++;
-		j = check_for_quotes(input, restart, i);
-		if (j)
+		if (!input[i])
+			return (tokens);
+		while (input[i] && input[i] != ' ' && input[i] != '\t')
 		{
-			i += j;
-			tokens++;
-		}
-		else if (input[i])
-		{
-			tokens++;
-			while (input[i] != ' ' && input [i] != '\t' && input[i])
+			if (input[i] == '\"')
+			{
+				i++;
+				while (input[i] && input[i] != '\"' )
+					i++;
+				if (input[i] != '\"')
+					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = 1, 0);
+				else
+					i++;
+			}
+			else if (input[i] == '\'')
+			{
+				i++;
+				while (input[i] && input[i] != '\'')
+					i++;
+				if (input[i] == '\'')
+					i++;
+				else
+					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = 1, 0);
+			}
+			else
 				i++;
 		}
+		tokens++;
 	}
 	return (tokens);
 }
