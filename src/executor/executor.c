@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 17:09:21 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:25:36 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@ static void	exec_one(t_data *shell, t_cmd *cmds)
 	pid_t	child_pid;
 	int		status;
 
+	if (check_rights(shell))
+		return ;
 	if (cmds->builtin == 1)
 	{
+		shell->fd_built_in = 1;
+		if (shell->out_file != (void *)0)
+			shell->fd_built_in = re_output(shell);
 		exec_built_in(shell, cmds);
 	}
 	else
@@ -62,9 +67,7 @@ void	executor(t_data *shell)
 	if (shell->cmd_count == 1)
 		exec_one(shell, cmds);
 	if (shell->cmd_count > 1)
-	{
 		exec_multiple(shell, cmds);
-	}
 	shell->cmd_count = 0;
 }
 

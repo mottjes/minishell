@@ -6,29 +6,30 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 17:30:07 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:31:53 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
+static int	set_output(t_data *shell)
 {
-	int	input_fd;
-	int	next_input_fd;
 	int	output_fd;
-	int	i = 0;
-	int	fd[2];
-	pid_t	child_pid;
 
-	if (check_rights(shell))
-		return ;
-	if (shell->in_file != (void *)0 && i == 0)
-		input_fd = open(shell->in_file, O_RDONLY, 0644);
+	if (shell->out_file != (void *)0)
+		output_fd = re_output(shell);
 	else
-		input_fd = STDIN_FILENO;
-	if (has_heredoc(shell))
-		input_fd = shell->fd_heredoc;
+		output_fd = STDOUT_FILENO;
+	return (output_fd);
+}
+
+static void	fork_child(t_data *shell, t_cmd *cmds, int i, int input_fd)
+{
+	pid_t	child_pid;
+	int		fd[2];
+	int		output_fd;
+	int		next_input_fd;
+
 	while (i < shell->cmd_count)
 	{
 		if (i < shell->cmd_count - 1)
@@ -39,16 +40,7 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
 			output_fd = fd[1];
 		}
 		else
-		{
-			if (shell->out_file != (void *)0)
-			{
-				output_fd = re_output(shell);
-				if (output_fd == -1)
-					return ;
-			}
-			else
-				output_fd = STDOUT_FILENO;
-		}
+			output_fd = set_output(shell);
 		child_pid = fork();
 		if (child_pid == -1)
 			child_fail(shell);
@@ -56,14 +48,7 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
 		{
 			if (cmds->builtin == 1)
 			{
-				if (i == shell->cmd_count - 1)
-				{
-					shell->fd_built_in = 1;
-					if (shell->out_file != (void *)0)
-						shell->fd_built_in = re_output(shell);
-				}
-				else
-					shell->fd_built_in = fd[1];
+				shell->fd_built_in = output_fd;
 				exec_built_in(shell, cmds);
 				next_input_fd = shell->fd_built_in;
 			}
@@ -75,11 +60,31 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
 		cmds->pid = child_pid;
 		if (cmds->next)
 			cmds = cmds->next;
-		i++;
 		if (input_fd != STDIN_FILENO)
 			close(input_fd);
 		if (output_fd != STDOUT_FILENO)
 			close(output_fd);
 		input_fd = next_input_fd;
+		i++;
 	}
 }
+
+void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
+{
+	int	input_fd;
+	int	i;
+
+	i = 0;
+	if (check_rights(shell))
+		return ;
+	if (shell->in_file != (void *)0 && i == 0)
+		input_fd = open(shell->in_file, O_RDONLY, 0644);
+	else
+		input_fd = STDIN_FILENO;
+	if (has_heredoc(shell))
+		input_fd = shell->fd_heredoc;
+	fork_child(shell, cmds, i, input_fd);
+}
+
+
+// grep "h" test1.txt | grep "a" test1.txt | wc -lgrep "h" test1.txt | grep "a" test1.txt | wc -l  und danach grep "h" test1.txt | grep "a" test1.txt | wc -l seg fault

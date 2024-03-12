@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/11 17:56:56 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 14:54:48 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ int	check_rights(t_data *shell)
 {
 	if (shell->in_file != (void *)0)
 	{
+		if (access(shell->in_file, F_OK) == -1)
+		{
+			ft_putstr_fd("minishell: No such file or directory\n", 2);
+			return (1);
+		}
 		if (access(shell->in_file, R_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
@@ -62,7 +67,9 @@ int	check_rights(t_data *shell)
 	}
 	if (shell->out_file != (void *)0)
 	{
-		if (access(shell->out_file, W_OK) == -1)
+		if (access(shell->out_file, F_OK) == -1)
+			return (0);
+		else if (access(shell->out_file, W_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
 			return (1);
@@ -70,3 +77,5 @@ int	check_rights(t_data *shell)
 	}
 	return (0);
 }
+
+// < test_output.txt wc -l >> test_output2.txt 

@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 17:26:16 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:22:16 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 	int	fdin;
 	int	fdout;
 
-	if (check_rights(shell))
-		return ;
 	if (has_heredoc(shell))
 	{
 		fdin = shell->fd_heredoc;
