@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:27:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 16:24:59 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:01:29 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,10 @@ void	tokens_identify(t_data *shell)
 	{
 		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
 			i++;
+		set_token_type(shell, token, i);
 		while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
 		{
+			
 			if (shell->input[i] == '\"')
 			{
 				i++;
@@ -186,10 +188,7 @@ void	tokens_identify(t_data *shell)
 					i++;
 			}
 			else
-			{
-				set_token_type(shell, token, i);
 				i++;
-			}
 		}
 		token = token->next;
 	}

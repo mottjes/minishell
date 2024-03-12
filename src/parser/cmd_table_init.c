@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/28 15:57:42 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:38:24 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ void	cmds_str_copy(t_token *token, t_cmd *cmds, t_data *shell)
 			{
 				cmds->args[i++] = ft_strdup(token->str);
 				token = token->next;
+				while (token && (token->type == RE_IN || token->type == RE_OUT || token->type == RE_APP || token->type == HERE_DOC))
+				{
+					token = token->next;
+					token = token->next;
+				}
 			}
 			cmds->args[i] = NULL;
 			cmds = cmds->next;

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:37:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 16:38:18 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:41:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	signal_handler_child(int signal)
 // void	signals_child(void)
 // {
 // 	struct sigaction	sa = {0};
-// 
+
 //     sa.sa_handler = &signal_handler;
 //     if (sigaction(SIGINT, &sa, NULL) == -1) {
 //         exit(1);
@@ -49,7 +49,7 @@ void	signal_handler_child(int signal)
 // void	signals_child(void)
 // {
 // 	struct sigaction	sa = {0};
-// 
+
 //     sa.sa_handler = &signal_handler;
 //     if (sigaction(SIGINT, &sa, NULL) == -1) {
 //         exit(1);

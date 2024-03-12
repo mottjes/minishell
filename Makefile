@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+         #
+#    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/12 16:32:10 by frbeyer          ###   ########.fr        #
+#    Updated: 2024/03/12 16:54:22 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ SRC =	src/main.c									\
 		
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS =# -Wall -Wextra -Werror -g
 
 OBJ = $(SRC:.c=.o)
 
