@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 16:38:48 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:31:18 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ typedef struct s_data
 	char		**envp;
 	t_token		*token_list;
 	t_cmd		*cmd_list;
-	char		*in_file;
-	char		*out_file;
 	int			fd_built_in;
 	int			fd_heredoc;
 	int			exit_status;
@@ -79,6 +77,8 @@ typedef struct s_cmd
 	char			*path;
 	int				builtin;
 	int				pid;
+	char			*in_file;
+	char			*out_file;
 	struct s_cmd	*next;
 }		t_cmd;
 

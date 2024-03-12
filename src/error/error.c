@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:44:31 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:31:29 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,6 @@ void	free_all(t_data *shell)
 		}
 	}
 	free_cmd_list(shell);
-	if (shell->in_file != NULL)
-		free(shell->in_file);
-	if (shell->out_file != NULL)
-		free(shell->out_file);
 }
 
 void	free_environment(t_data *shell)

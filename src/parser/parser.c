@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:17:05 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:47:32 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	parser(t_data *shell)
 		return ;
 	syntax_commands(shell->token_list, &shell->restart);
 	syntax_redirections(shell->token_list, &shell->restart);
-	syntax_pipe(shell->token_list, &shell->restart);
+	// syntax_pipe(shell->token_list, &shell->restart);
 	if (shell->restart)
 	{
 		shell->exit_status = 2;

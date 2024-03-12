@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:36:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:53:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:48:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ void	print_cmds(t_data *shell)
 			printf("builtin : %i\n", cmds->builtin);
 		if (cmds->path)
 			printf("path : %s\n", cmds->path);
+		if (cmds->in_file)
+			printf("in_file : %s\n", cmds->in_file);
+		if (cmds->out_file)
+			printf("out_file : %s\n", cmds->out_file);
 		cmds = cmds->next;
 	}
 }
@@ -67,9 +71,9 @@ int	main(int argc, char *argv[], char *envp[])
 		expander(&shell);
 		lexer(&shell);
 		parser(&shell);
-		print_lexer(&shell);
+		// print_lexer(&shell);
 		// print_cmds(&shell);
-		executor(&shell);
+		// executor(&shell);
 		free_all(&shell);
 	}
 }

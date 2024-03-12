@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:38:24 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:42:18 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,28 @@ void	cmd_list_init(t_data *shell, int count)
 void	get_redirections(t_data *shell)
 {
 	t_token	*token;
+	t_cmd	*cmd;
 
+	cmd = shell->cmd_list;
 	token = shell->token_list;
-	shell->in_file = NULL;
-	shell->out_file = NULL;
 	while (token)
 	{
+		if (token->type == PIPE)
+			cmd = cmd->next;
 		if (token->type == RE_IN)
 		{
-			if (shell->in_file)
-				free(shell->in_file);
-			shell->in_file = ft_strdup(token->next->str);
-			if (!shell->in_file)
+			if (cmd->in_file)
+				free(cmd->in_file);
+			cmd->in_file = ft_strdup(token->next->str);
+			if (!cmd->in_file)
 				malloc_fail(shell);
 		}
-		if (token->type == RE_OUT || token->type == RE_APP)
+		else if (token->type == RE_OUT || token->type == RE_APP)
 		{
-			if (shell->out_file)
-				free(shell->out_file);
-			shell->out_file = ft_strdup(token->next->str);
-			if (!shell->out_file)
+			if (cmd->out_file)
+				free(cmd->out_file);
+			cmd->out_file = ft_strdup(token->next->str);
+			if (!cmd->out_file)
 				malloc_fail(shell);
 		}
 		token = token->next;

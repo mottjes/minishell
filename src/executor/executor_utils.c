@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/12 14:54:48 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:07:58 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ int	check_rights(t_data *shell)
 		if (access(shell->in_file, F_OK) == -1)
 		{
 			ft_putstr_fd("minishell: No such file or directory\n", 2);
+			shell->exit_status = 1;
 			return (1);
 		}
 		if (access(shell->in_file, R_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
+			shell->exit_status = 1;
 			return (1);
 		}
 	}
@@ -72,6 +74,7 @@ int	check_rights(t_data *shell)
 		else if (access(shell->out_file, W_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
+			shell->exit_status = 1;
 			return (1);
 		}
 	}
