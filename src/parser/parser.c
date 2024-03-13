@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 18:47:32 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 12:50:05 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int	path_given(t_data *shell, t_cmd *cmds)
 			malloc_fail(shell);
 		if (access(cmds->path, F_OK))
 		{
-			printf("minishell: %s: No such file or directory\n", cmds->cmd);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmds->cmd, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 			shell->exit_status = 127;
 			shell->restart = 1;
 			return (1);
@@ -95,7 +97,9 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 				search_path(shell, cmds);
 				if (!cmds->path)
 				{
-					printf("minishell: %s: command not found\n", cmds->cmd);
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(cmds->cmd, 2);
+					ft_putstr_fd(": command not found\n", 2);
 					shell->exit_status = 127;
 					shell->restart = 1;
 					return ;
