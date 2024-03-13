@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 13:59:21 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:51:23 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	capture_heredoc(t_data *shell)
 	{
 		if (pipe(fd) == -1)
 			pipe_fail(shell);
-		shell->fd_heredoc = fd[0];	
+		shell->fd_heredoc = fd[0];
 		while (token)
 		{
 			if (token->type == HERE_DOC)

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/12 18:07:58 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:02:18 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	re_output(t_data *shell)
+int	re_output(t_data *shell, t_cmd *cmds)
 {
 	t_token	*token;
 	int		flag;
@@ -29,9 +29,9 @@ int	re_output(t_data *shell)
 		token = token->next;
 	}
 	if (flag == 1)
-		fd = open(shell->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = open(cmds->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
-		fd = open(shell->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(cmds->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	return (fd);
 }
 
@@ -50,31 +50,28 @@ int	count_cmds(t_data *shell)
 	return (count);
 }
 
-int	check_rights(t_data *shell)
+int	check_rights(t_cmd *cmds)
 {
-	if (shell->in_file != (void *)0)
+	if (cmds->in_file != (void *)0)
 	{
-		if (access(shell->in_file, F_OK) == -1)
+		if (access(cmds->in_file, F_OK) == -1)
 		{
 			ft_putstr_fd("minishell: No such file or directory\n", 2);
-			shell->exit_status = 1;
 			return (1);
 		}
-		if (access(shell->in_file, R_OK) == -1)
+		if (access(cmds->in_file, R_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
-			shell->exit_status = 1;
 			return (1);
 		}
 	}
-	if (shell->out_file != (void *)0)
+	if (cmds->out_file != (void *)0)
 	{
-		if (access(shell->out_file, F_OK) == -1)
+		if (access(cmds->out_file, F_OK) == -1)
 			return (0);
-		else if (access(shell->out_file, W_OK) == -1)
+		else if (access(cmds->out_file, W_OK) == -1)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
-			shell->exit_status = 1;
 			return (1);
 		}
 	}

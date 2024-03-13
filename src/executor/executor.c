@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:16:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:07:47 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@ static void	exec_one(t_data *shell, t_cmd *cmds)
 	pid_t	child_pid;
 	int		status;
 
-	if (check_rights(shell))
+	if (check_rights(cmds))
+	{
+		shell->exit_status = 1;
 		return ;
+	}
 	if (cmds->builtin == 1)
 	{
 		shell->fd_built_in = 1;
-		if (shell->out_file != (void *)0)
-			shell->fd_built_in = re_output(shell);
+		if (cmds->out_file != (void *)0)
+			shell->fd_built_in = re_output(shell, cmds);
 		exec_built_in(shell, cmds);
 	}
 	else

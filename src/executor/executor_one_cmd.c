@@ -6,7 +6,7 @@
 /*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 16:22:16 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:07:05 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 		dup2(fdin, STDIN_FILENO);
 		close(fdin);
 	}
-	else if (shell->in_file != (void *)0)
+	else if (cmds->in_file != (void *)0)
 	{
-		fdin = open(shell->in_file, O_RDONLY, 0644);
+		fdin = open(cmds->in_file, O_RDONLY, 0644);
 		dup2(fdin, STDIN_FILENO);
 		close(fdin);
 	}
-	if (shell->out_file != (void *)0)
+	if (cmds->out_file != (void *)0)
 	{
-		fdout = re_output(shell);
+		fdout = re_output(shell, cmds);
 		dup2(fdout, STDOUT_FILENO);
 		close(fdout);
 	}
