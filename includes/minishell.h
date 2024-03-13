@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:32:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 13:08:53 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:03:37 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds);
 int		re_output(t_data *shell, t_cmd *cmd);
 void	exec_built_in(t_data *shell, t_cmd *cmd);
 int		count_cmds(t_data *shell);
-int		check_rights(t_cmd *cmd);
+int		check_rights(t_data * shell, t_cmd *cmd);
 
 //			heredoc.c
 int		has_heredoc(t_data *shell);

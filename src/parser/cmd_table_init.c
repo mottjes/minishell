@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 13:32:58 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:03:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	get_redirections(t_data *shell)
 			cmd->in_file = ft_strdup(token->next->str);
 			if (!cmd->in_file)
 				malloc_fail(shell);
+			check_rights(shell, cmd);
 		}
 		else if (token->type == RE_OUT || token->type == RE_APP)
 		{
@@ -68,6 +69,7 @@ void	get_redirections(t_data *shell)
 			cmd->out_file = ft_strdup(token->next->str);
 			if (!cmd->out_file)
 				malloc_fail(shell);
+			check_rights(shell, cmd);
 		}
 		token = token->next;
 	}

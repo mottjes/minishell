@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/13 13:02:18 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:16:26 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,26 @@ int	count_cmds(t_data *shell)
 	return (count);
 }
 
-int	check_rights(t_cmd *cmds)
+int	check_rights(t_data *shell, t_cmd *cmds)
 {
 	if (cmds->in_file != (void *)0)
 	{
 		if (access(cmds->in_file, F_OK) == -1)
 		{
-			ft_putstr_fd("minishell: No such file or directory\n", 2);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmds->in_file, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			shell->exit_status = 1;
+			shell->restart = 1;
 			return (1);
 		}
 		if (access(cmds->in_file, R_OK) == -1)
 		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmds->in_file, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			shell->restart = 1;
+			shell->exit_status = 1;
 			return (1);
 		}
 	}
@@ -71,7 +79,11 @@ int	check_rights(t_cmd *cmds)
 			return (0);
 		else if (access(cmds->out_file, W_OK) == -1)
 		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmds->out_file, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			shell->restart = 1;
+			shell->exit_status = 1;
 			return (1);
 		}
 	}

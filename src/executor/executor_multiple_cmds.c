@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 13:28:11 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:04:13 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd)
 		if (dup2(output_fd, STDOUT_FILENO) >= 0
 			&& dup2(input_fd, STDIN_FILENO) >= 0)
 			execve(cmds->path, cmds->args, shell->envp);
-		exit(1);
+		exit(0);
 	}
 	cmds->pid = child_pid;
 	return (next_input_fd);
@@ -94,11 +94,6 @@ void	execute_multiple_cmds(t_data *shell, t_cmd *cmds)
 	int	i;
 
 	i = 0;		
-	if (check_rights(cmds))
-	{
-		shell->exit_status = 1;
-		return ;
-	}
 	if (cmds->in_file != (void *)0 && i == 0)
 		input_fd = open(cmds->in_file, O_RDONLY, 0644);
 	else
