@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:56:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 18:42:18 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:32:58 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	cmd_list_init(t_data *shell, int count)
 		malloc_fail(shell);
 	first_cmd->builtin = 0;
 	first_cmd->path = NULL;
+	first_cmd->in_file = NULL;
+	first_cmd->out_file = NULL;
 	shell->cmd_list = first_cmd;
 	count--;
 	while (count)
@@ -31,6 +33,8 @@ void	cmd_list_init(t_data *shell, int count)
 			malloc_fail(shell);
 		next_cmd->builtin = 0;
 		next_cmd->path = NULL;
+		next_cmd->in_file = NULL;
+		next_cmd->out_file = NULL;
 		first_cmd->next = next_cmd;
 		first_cmd = next_cmd;
 		count--;

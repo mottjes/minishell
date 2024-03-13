@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:09:37 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 18:31:29 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:35:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ static void	free_cmd_list(t_data *shell)
 				free(shell->cmd_list->args[i]);
 				i++;
 			}
+			if (shell->cmd_list->in_file)
+				free(shell->cmd_list->in_file);
+			if (shell->cmd_list->out_file)
+				free(shell->cmd_list->out_file);
 			free(shell->cmd_list->args);
 			next_cmd = shell->cmd_list->next;
 			free(shell->cmd_list);
