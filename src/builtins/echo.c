@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:14:30 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:30:41 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 16:03:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	echo(t_data *shell, t_cmd *cmd)
 	}
 	else
 		ft_putendl_fd("", shell->fd_built_in);
-	shell->exit_status = 0;
+	if (shell->exit_status != 1)
+		shell->exit_status = 0;
 }

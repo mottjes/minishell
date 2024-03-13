@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 15:15:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 16:00:55 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	exec_one(t_data *shell, t_cmd *cmds)
 	pid_t	child_pid;
 	int		status;
 
+	if (check_rights(shell, cmds))
+		return ;
 	if (cmds->builtin == 1)
 	{
 		shell->fd_built_in = 1;

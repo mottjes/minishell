@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:53:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 13:27:41 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/13 15:41:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	search_path(t_data *shell, t_cmd *cmds)
 
 void	cmd_get_path(t_cmd *cmds, t_data *shell)
 {
+	
 	while (cmds)
 	{
 		if (!cmds->builtin)
@@ -97,6 +98,7 @@ void	cmd_get_path(t_cmd *cmds, t_data *shell)
 				search_path(shell, cmds);
 				if (!cmds->path)
 				{
+				
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(cmds->cmd, 2);
 					ft_putstr_fd(": command not found\n", 2);
