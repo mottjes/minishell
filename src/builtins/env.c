@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:14:28 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:29:32 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:41:24 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 15:52:55 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 void	env(t_data *shell, t_cmd *cmd)
 {
@@ -32,7 +32,7 @@ void	env(t_data *shell, t_cmd *cmd)
 		while (shell->envp[i][j] != '=' && shell->envp[i][j] != '\0')
 			j++;
 		if (shell->envp[i][j] == '=')
-			printf("%s\n", shell->envp[i]);
+			ft_putendl_fd(shell->envp[i], cmd->fd_out);
 		i++;
 	}
 	shell->exit_status = 0;

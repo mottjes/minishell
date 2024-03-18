@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:14:20 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 17:57:18 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:41:35 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 16:00:07 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 static	void	unset_env_var(t_data *shell, int size, int i)
 {
@@ -24,11 +24,15 @@ static	void	unset_env_var(t_data *shell, int size, int i)
 	while (j < i)
 	{
 		new_envp[j] = ft_strdup(shell->envp[j]);
+		if (!new_envp[j])
+			malloc_fail(shell);
 		j++;
 	}
 	while (j < size - 1)
 	{
 		new_envp[j] = ft_strdup(shell->envp[j + 1]);
+		if (!new_envp[j])
+			malloc_fail(shell);
 		j++;
 	}
 	new_envp[j] = NULL;

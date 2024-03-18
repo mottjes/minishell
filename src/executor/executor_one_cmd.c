@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_one_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 13:07:05 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/18 17:38:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,7 @@ void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 	int	fdin;
 	int	fdout;
 
-	if (has_heredoc(shell))
-	{
-		fdin = shell->fd_heredoc;
-		dup2(fdin, STDIN_FILENO);
-		close(fdin);
-	}
-	else if (cmds->in_file != (void *)0)
+	if (cmds->in_file != (void *)0)
 	{
 		fdin = open(cmds->in_file, O_RDONLY, 0644);
 		dup2(fdin, STDIN_FILENO);
@@ -36,5 +30,10 @@ void	execute_one_cmd(t_data *shell, t_cmd *cmds)
 		close(fdout);
 	}
 	shell->exit_status = 0;
+	if (cmds->fd_in)
+	{
+		dup2(cmds->fd_in, STDIN_FILENO);
+		close(cmds->fd_in);
+	}
 	execve(cmds->path, cmds->args, shell->envp);
 }

@@ -5,16 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 14:37:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:41:44 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/13 17:38:51 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 17:29:47 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	g_status;
 
-void	signal_handler(int signal)
+static void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
@@ -26,7 +26,7 @@ void	signal_handler(int signal)
 	}
 }
 
-void	signal_handler_child(int signal)
+static void	signal_handler_child(int signal)
 {
 	if (signal == SIGINT)
 	{
@@ -36,33 +36,13 @@ void	signal_handler_child(int signal)
 	}
 }
 
-// void	signals_child(void)
-// {
-// 	struct sigaction	sa = {0};
-
-//     sa.sa_handler = &signal_handler;
-//     if (sigaction(SIGINT, &sa, NULL) == -1) {
-//         exit(1);
-//     }
-// }
-
-// void	signals_child(void)
-// {
-// 	struct sigaction	sa = {0};
-
-//     sa.sa_handler = &signal_handler;
-//     if (sigaction(SIGINT, &sa, NULL) == -1) {
-//         exit(1);
-//     }
-// }
-
-void	signals(void)
+void	signals_child(void)
 {
-	signal(SIGINT, &signal_handler);
+	signal(SIGINT, &signal_handler_child);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	signals_child(void)
+void	signals(void)
 {
 	signal(SIGINT, &signal_handler);
 	signal(SIGQUIT, SIG_IGN);

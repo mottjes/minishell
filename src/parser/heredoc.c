@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 17:51:23 by frbeyer          ###   ########.fr       */
+/*   Created: 2024/03/14 13:08:42 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 17:55:32 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	has_heredoc(t_data *shell)
-{
-	t_token	*token;
-	t_token	*heredoc;
-
-	heredoc = NULL;
-	token = shell->token_list;
-	while (token)
-	{
-		if (token->type == HERE_DOC)
-		{
-			heredoc = token;
-			shell->count_heredoc += 1;
-		}
-		token = token->next;
-	}
-	if (heredoc)
-	{
-		while (heredoc->next)
-		{
-			heredoc = heredoc->next;
-			if (heredoc->type == RE_IN)
-				return (0);
-		}
-		return (1);
-	}
-	return (0);
-}
 
 static void	read_line(t_token *token, int fd)
 {
@@ -48,6 +19,8 @@ static void	read_line(t_token *token, int fd)
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+			return ;
 		if (!ft_strncmp(line, token->next->str,
 				ft_strlen(token->next->str)))
 			return ;
@@ -56,19 +29,49 @@ static void	read_line(t_token *token, int fd)
 	}
 }
 
-void	capture_heredoc(t_data *shell)
+static int	count_heredocs(t_token *token)
 {
-	t_token	*token;
-	int		fd[2];
+	int	count;
 
-	token = shell->token_list;
-	while (shell->count_heredoc > 0)
+	count = 0;
+	while (token)
+	{
+		if (token->type == HERE_DOC)
+			count++;
+		token = token->next;
+	}
+	return (count);
+}
+
+void	unset_heredoc(t_token *token, t_cmd *cmd)
+{
+	while (token && token->type != PIPE)
+	{
+		if (token->type == HERE_DOC)
+			return ;
+		else
+			token = token->next;
+	}
+	// close(cmd->fd_in);
+	cmd->fd_in = 0;
+	return ;
+}
+
+void	capture_heredoc(t_data *shell, t_token *token, t_cmd *cmd)
+{
+	int	fd[2];
+	int	count;
+	
+	count = count_heredocs(shell->token_lst);
+	while (count)
 	{
 		if (pipe(fd) == -1)
 			pipe_fail(shell);
-		shell->fd_heredoc = fd[0];
 		while (token)
 		{
+			if (token->type == PIPE)
+				cmd = cmd->next;
+			cmd->fd_in = fd[0];
 			if (token->type == HERE_DOC)
 			{
 				read_line(token, fd[1]);
@@ -78,9 +81,8 @@ void	capture_heredoc(t_data *shell)
 			else
 				token = token->next;
 		}
-		close (fd[1]);
-		shell->count_heredoc--;
+		close(fd[1]);
+		count--;
 	}
-	shell->count_heredoc = 0;
-}
 
+}

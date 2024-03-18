@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:14:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:38:32 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:41:26 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 15:53:23 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	check_arguments(t_data *shell, t_cmd *cmd)
+static void	check_arguments(t_data *shell, t_cmd *cmd)
 {
 	int	i;
 

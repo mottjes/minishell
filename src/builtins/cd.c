@@ -5,12 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 17:59:22 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/07 18:23:18 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:41:14 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/18 15:18:22 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
+
 
 static void	copy_old_pwd(t_data *shell, char *new_pwd)
 {
@@ -24,9 +25,7 @@ static void	copy_old_pwd(t_data *shell, char *new_pwd)
 		{
 			free(shell->envp[i]);
 			size = ft_strlen(new_pwd);
-			shell->envp[i] = malloc(sizeof(char) * (size + 8));
-			if (!shell->envp[i])
-				malloc_fail(shell);
+			shell->envp[i] = safe_malloc(sizeof(char) * (size + 8), shell);
 			ft_strlcpy(shell->envp[i], "OLDPWD=", 8);
 			ft_strlcpy(shell->envp[i] + 7, new_pwd, size + 1);
 			return ;

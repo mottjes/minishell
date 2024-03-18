@@ -6,22 +6,22 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 16:11:52 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/18 17:45:02 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	set_output(t_data *shell, t_cmd *cmds)
-{
-	int	output_fd;
+// static int	set_output(t_data *shell, t_cmd *cmds)
+// {
+// 	int	output_fd;
 
-	if (cmds->out_file != (void *)0)
-		output_fd = re_output(shell, cmds);
-	else
-		output_fd = STDOUT_FILENO;
-	return (output_fd);
-}
+// 	if (cmds->out_file != (void *)0)
+// 		output_fd = re_output(shell, cmds);
+// 	else if (i == shell->cmd_count - 1 )
+// 		output_fd = STDOUT_FILENO;
+// 	return (output_fd);
+// }
 
 static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd)
 {
@@ -36,20 +36,20 @@ static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd)
 	{
 		if (cmds->builtin == 1)
 		{
-			shell->fd_built_in = output_fd;
+			cmds->fd_out = output_fd;
 			exec_built_in(shell, cmds);
-			next_input_fd = shell->fd_built_in;
+			next_input_fd = cmds->fd_out;
 		}
 		if (dup2(output_fd, STDOUT_FILENO) >= 0
 			&& dup2(input_fd, STDIN_FILENO) >= 0)
-			execve(cmds->path, cmds->args, shell->envp);
+				execve(cmds->path, cmds->args, shell->envp);
 		exit(0);
 	}
 	cmds->pid = child_pid;
 	return (next_input_fd);
 }
 
-static void	close_fds(int input_fd, int output_fd)
+static void	close_fds(t_cmd *cmd, int input_fd, int output_fd)
 {
 	if (input_fd != STDIN_FILENO)
 		close(input_fd);
@@ -65,16 +65,18 @@ static void	pipe_cmd(t_data *shell, t_cmd *cmds, int i, int input_fd)
 
 	while (i < shell->cmd_count)
 	{
-		if (has_heredoc(shell))
-			input_fd = shell->fd_heredoc;
-		if (i < shell->cmd_count - 1)
+		if (i < shell->cmd_count - 1 )
 		{
 			if (pipe(fd) == -1)
 				pipe_fail(shell);
 			output_fd = fd[1];
 		}
-		else
-			output_fd = set_output(shell, cmds);
+		// if (cmds->out_file)
+		// output_fd = set_output(shell, cmds);
+		if (cmds->out_file != (void *)0)
+			output_fd = re_output(shell, cmds);
+		else if (i == shell->cmd_count - 1 )
+			output_fd = STDOUT_FILENO;
 		next_input_fd = fork_child(shell, cmds, input_fd, output_fd);
 		if (i < shell->cmd_count - 1)
 			next_input_fd = fd[0];
@@ -82,7 +84,7 @@ static void	pipe_cmd(t_data *shell, t_cmd *cmds, int i, int input_fd)
 			cmds = cmds->next;
 		if (cmds->in_file != (void *)0)
 			next_input_fd = open(cmds->in_file, O_RDONLY, 0644);
-		close_fds(input_fd, output_fd);
+		close_fds(cmds, input_fd, output_fd);
 		input_fd = next_input_fd;
 		i++;
 	}

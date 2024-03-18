@@ -5,106 +5,89 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 17:01:25 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 16:23:45 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/13 19:53:41 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 18:15:37 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-int	get_str_size(t_data *shell, int i)
+int	tokens_count(char *input, bool *restart)
 {
-	int	size;
-
-	size = 0;
-	if (shell->input[i] == '\"' || shell->input[i] == '\'')
-	{
-		i++;
-		while (shell->input[i] != '\"' && shell->input[i] != '\'')
-		{
-			i++;
-			size++;
-		}
-	}
-	else
-	{
-		while (shell->input[i] && shell->input[i]
-			!= ' ' && shell->input[i] != '\t')
-		{
-			i++;
-			size++;
-		}
-	}
-	return (size);
-}
-
-// int	check_for_quotes(char *input, int *restart, int i)
-// {
-// 	int	j;
-
-// 	j = i;
-// 	if (input[i] == '\"')
-// 	{
-// 		i++;
-// 		while (input[i] && input[i] != '\"')
-// 			i++;
-// 		if (input[i] != '\"')
-// 			return (ft_putstr_fd("minishell: quotes not closed\n", 2),
-// 				*restart = 1, 0);
-// 		i++;
-// 	}
-// 	else if (input[i] == '\'')
-// 	{
-// 		i++;
-// 		while (input[i] && input[i] != '\'')
-// 			i++;
-// 		if (input[i] != '\'')
-// 			return (ft_putstr_fd("minishell: quotes not closed\n", 2),
-// 				*restart = 1, 0);
-// 		i++;
-// 	}
-// 	return (i - j);
-// }
-
-int	tokens_count(char *input, int *restart)
-{
-	int	tokens;
+	int	count;
 	int	i;
+	int	tmp;
 
 	i = 0;
-	tokens = 0;
+	count = 0;
 	while (input[i])
 	{
 		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 			i++;
 		if (!input[i])
-			return (tokens);
+			return (count);
 		while (input[i] && input[i] != ' ' && input[i] != '\t')
 		{
-			if (input[i] == '\"')
+			if (input[i] == '\'' || input[i] == '\"')
 			{
-				i++;
-				while (input[i] && input[i] != '\"' )
-					i++;
-				if (input[i] != '\"')
-					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = 1, 0);
-				else
-					i++;
+				tmp = i;
+				i = skip_quotes(input, i);
+				if (tmp == i - 2)
+					count--;
+				if (input[i] == '\0' && input[i - 1] != '\'' && input[i - 1] != '\"')
+					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = true, 0);
 			}
-			else if (input[i] == '\'')
-			{
-				i++;
-				while (input[i] && input[i] != '\'')
-					i++;
-				if (input[i] == '\'')
-					i++;
-				else
-					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = 1, 0);
-			}
-			else
+			else if (input[i])
 				i++;
 		}
-		tokens++;
+		count++;
 	}
-	return (tokens);
+	if (count == -1)
+		count = 0;
+	return (count);
+}
+
+void	set_token_type(t_data *shell, t_token *token, int i)
+{
+	if (shell->input[i] == '<')
+	{
+		if (shell->input[i + 1] == '<')
+			token->type = HERE_DOC;
+		else
+			token->type = RE_IN;
+	}
+	else if (shell->input[i] == '>')
+	{
+		if (shell->input[i + 1] == '>')
+			token->type = RE_APP;
+		else
+			token->type = RE_OUT;
+	}
+	else if (shell->input[i] == '|')
+		token->type = PIPE;
+	else
+		token->type = WORD;
+}
+
+int	get_str_size(t_data *shell, int i)
+{
+	int size;
+	int	tmp;
+
+	size = 0;
+	while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
+	{
+		if (shell->input[i] == '\"' || shell->input[i] == '\'')
+		{
+			tmp = i;
+			i = skip_quotes(shell->input, i);
+			size += (i - tmp - 2);
+		}
+		else
+		{
+			size++;
+			i++;
+		}
+	}
+	return (size);
 }

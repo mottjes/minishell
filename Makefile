@@ -6,45 +6,47 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/13 13:23:34 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/14 17:50:41 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC =	src/main.c									\
-		src/environment/environment.c				\
-		src/signals/signals.c						\
-		src/input/input.c							\
-		src/expander/expander.c						\
-		src/expander/expander_utils.c				\
-		src/expander/expander_utils2.c				\
-		src/lexer/lexer.c							\
-		src/lexer/lexer_utils.c						\
-		src/parser/parser.c							\
-		src/parser/syntax.c							\
-		src/parser/cmd_table_init.c					\
-		src/parser/parser_utils.c					\
-		src/executor/executor_builtin.c				\
-		src/executor/executor.c						\
-		src/executor/executor_one_cmd.c				\
-		src/executor/executor_multiple_cmds.c		\
-		src/executor/executor_utils.c				\
-		src/executor/heredoc.c						\
 		src/builtins/cd.c							\
 		src/builtins/echo.c							\
 		src/builtins/env.c							\
 		src/builtins/exit.c							\
-		src/builtins/export.c						\
 		src/builtins/export_utils.c					\
+		src/builtins/export.c						\
 		src/builtins/pwd.c							\
 		src/builtins/unset.c						\
+		src/environment/environment.c				\
 		src/error/error.c							\
-		src/error/fail.c							\
+		src/error/free.c							\
+		src/executor/executor_builtins.c			\
+		src/executor/executor_multiple_cmds.c		\
+		src/executor/executor_one_cmd.c				\
+		src/executor/executor_utils.c				\
+		src/executor/executor.c						\
+		src/expander/expander_env_vars.c			\
+		src/expander/expander_redirections.c		\
+		src/expander/expander_utils.c				\
+		src/expander/expander.c						\
+		src/input/input.c							\
+		src/lexer/lexer_utils.c						\
+		src/lexer/lexer.c							\
+		src/parser/heredoc.c						\
+		src/parser/init_cmd_table.c					\
+		src/parser/parser_utils.c					\
+		src/parser/parser.c							\
+		src/parser/redirections.c					\
+		src/parser/syntax.c							\
+		src/signals/signals.c						\
 		
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror
 
 OBJ = $(SRC:.c=.o)
 

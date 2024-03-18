@@ -5,21 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:14:22 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/04 15:22:15 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:41:32 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 15:59:05 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	pwd(t_data *shell)
+void	pwd(t_data *shell, t_cmd *cmd)
 {
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		malloc_fail(shell);
-	printf("%s\n", cwd);
+	ft_putendl_fd(cwd, cmd->fd_out);
 	free(cwd);
 	shell->exit_status = 0;
 }

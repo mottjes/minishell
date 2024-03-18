@@ -5,16 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 17:39:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/02/26 17:35:41 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/13 17:39:01 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/13 19:44:53 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	set_shlvl(t_data *shell)
+static void	set_shlvl(t_data *shell)
 {
-	char	*shlvlp;
+	char	*shlvl_str;
 	int		shlvl;
 	int		i;
 
@@ -25,23 +25,25 @@ void	set_shlvl(t_data *shell)
 		{
 			shlvl = ft_atoi(shell->envp[i] + 6);
 			shlvl++;
-			shlvlp = ft_itoa(shlvl);
-			ft_strlcpy(shell->envp[i] + 6, shlvlp, ft_strlen(shlvlp) + 1);
+			shlvl_str = ft_itoa(shlvl);
+			free(shell->envp[i]);
+			shell->envp[i] = safe_malloc(sizeof(char) * ft_strlen(shlvl_str) + 7, shell);
+			ft_strlcpy(shell->envp[i], "SHLVL=", 7);
+			ft_strlcpy(shell->envp[i] + 6, shlvl_str, ft_strlen(shlvl_str) + 1);
+			return ;
 		}
 		i++;
 	}
 }
 
-void	create_environment(t_data *shell, char **envp)
+void	init_environment(t_data *shell, char **envp)
 {
 	int	i;
 
 	i = 0;
 	while (envp[i])
 		i++;
-	shell->envp = malloc(sizeof(char *) * (i + 1));
-	if (!shell->envp)
-		malloc_fail(shell);
+	shell->envp = safe_malloc(sizeof (char *) * (i + 1), shell);
 	i = 0;
 	while (envp[i])
 	{

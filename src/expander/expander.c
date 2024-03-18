@@ -5,119 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 12:55:05 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 13:47:26 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/13 18:15:16 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/18 15:10:59 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	expansion_env_vars(t_data *shell)
+static void	expansion_env_vars(t_data *shell)
 {
-	char	*str_mod;
-	int		len;
 	int		i;
 
 	i = 0;
-	while (shell->input && shell->input[i])
+	while (shell->input[i])
 	{
-		len = 0;
-		str_mod = NULL;
 		i = skip_single_quotes(shell, i);
-		if (shell->input[i] == '$' && (shell->input[i + 1] == ' ' || shell->input[i + 1] == '\"' || shell->input[i + 1] == '\0'))
-			i++;
-		if (shell->input[i] == '$' && shell->input[i + 1] != '?')
+		if (shell->input[i] == '$')
+		{
+			if (shell->input[i + 1] == ' ' || shell->input[i + 1] == '\"')
+				i++;
+
+		}
+		if (shell->input[i] == '$' && shell->input[i + 1] != '?' && shell->input[i + 1] != ' ' && shell->input[i + 1])
 		{
 			i++;
-			while (shell->input[i + len] && shell->input[i + len] != ' '
-				&& shell->input[i + len] != '\"')
-				len++;
-			str_mod = search_env_var(shell, i, len);
-			if (!str_mod)
-				str_mod = remove_env_var(shell, i, len);
-			free(shell->input);
-			shell->input = str_mod;
+			expansion_env_var(shell, i);
 		}
-		else
+		else if (shell->input[i])
 			i++;
 	}
 }
 
-void	expansion_before_redirections(t_data *shell)
+static void	expansion_exit_status(t_data *shell)
 {
 	int	i;
-
+	
 	i = 0;
-	
-	
-	while (shell->input && shell->input[i])
+	while (shell->input[i])
 	{
-		if (shell->input[i] == '\'' || shell->input[i] == '\"')
+		if (shell->input[i] == '\'')
 		{
 			i++;
-			while (shell->input[i] && shell->input[i] != '\'' && shell->input[i] != '\"')
+			while (shell->input[i] && shell->input[i] != '\'')
+				i++;
+			if (shell->input[i] == '\'')
 				i++;
 		}
-		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
-			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
-		{
-			if (check_before_operator(shell, i))
-				i++;
-		}
-		else if ((shell->input[i] == '<' && shell->input[i + 1] == '<')
-			|| (shell->input[i] == '>' && shell->input[i + 1] == '>'))
-		{
-			if (check_before_operator(shell, i))
-				i++;
+		if (shell->input[i] == '$' && shell->input[i + 1] == '?')
+			add_exit_status(shell, i);
+		if (shell->input[i])
 			i++;
-		}
-		i++;
 	}
 }
 
-void	expansion_after_redirections(t_data *shell)
+static void	expansion_redirections(t_data *shell)
 {
-	int	i;
-
-	i = 0;
-	while (shell->input && shell->input[i])
-	{
-		if (shell->input[i] == '\'' || shell->input[i] == '\"')
-		{
-			i++;
-			while (shell->input[i] && shell->input[i] != '\'' && shell->input[i] != '\"')
-				i++;
-		}
-		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
-			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
-		{
-			if (check_after_operator(shell, i))
-				i++;
-		}
-		else if ((shell->input[i] == '<' && shell->input[i + 1] == '<')
-			|| (shell->input[i] == '>' && shell->input[i + 1] == '>'))
-		{
-			if (check_after_operator(shell, i + 1))
-				i++;
-			i++;
-		}
-		i++;
-	}
+	expansion_before_redirections(shell);
+	expansion_after_redirections(shell);
 }
 
-void	expansion_pipes(t_data *shell)
+static void	expansion_pipes(t_data *shell)
 {
 	int	i;
 
 	i = 0;
 	while (shell->input[i])
 	{
-		if (shell->input[i] == '\'' || shell->input[i] == '\"')
-		{
-			i++;
-			while (shell->input[i] && shell->input[i] != '\'' && shell->input[i] != '\"')
-				i++;
-		}
+		i = skip_quotes(shell->input, i);
 		if (shell->input[i] == '|')
 		{
 			if (check_before_operator(shell, i))
@@ -131,11 +85,8 @@ void	expansion_pipes(t_data *shell)
 
 void	expander(t_data *shell)
 {
-	if (shell->restart)
-		return ;
 	expansion_pipes(shell);
-	expansion_before_redirections(shell);
-	expansion_after_redirections(shell);
+	expansion_redirections(shell);
 	expansion_env_vars(shell);
 	expansion_exit_status(shell);
 }

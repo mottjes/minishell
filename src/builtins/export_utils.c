@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/11 18:41:04 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/11 18:46:15 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:57:07 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 15:58:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 void	create_new_envp(t_data *shell, char ***ptr, int j)
 {
@@ -47,9 +47,7 @@ void	delete_env_var(t_data *shell, int j)
 	i = 0;
 	while (shell->envp[i])
 		i++;
-	new_envp = malloc(sizeof(char *) * i + 1);
-	if (!new_envp)
-		malloc_fail(shell);
+	new_envp = safe_malloc(sizeof(char *) * i + 1, shell);
 	create_new_envp(shell, &new_envp, j);
 }
 

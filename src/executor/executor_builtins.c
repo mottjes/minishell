@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_builtin.c                                 :+:      :+:    :+:   */
+/*   executor_builtins.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/13 15:15:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/18 16:25:28 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exec_built_in(t_data *shell, t_cmd *cmd)
 	else if (!ft_strncmp(cmd->cmd, "cd", 2))
 		cd(shell, cmd);
 	else if (!ft_strncmp(cmd->cmd, "pwd", 3))
-		pwd(shell);
+		pwd(shell, cmd);
 	else if (!ft_strncmp(cmd->cmd, "export", 6))
 		export(shell, cmd);
 	else if (!ft_strncmp(cmd->cmd, "unset", 3))

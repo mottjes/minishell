@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 16:00:55 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/18 17:45:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@ static void	exec_one(t_data *shell, t_cmd *cmds)
 	pid_t	child_pid;
 	int		status;
 
-	if (check_rights(shell, cmds))
-		return ;
 	if (cmds->builtin == 1)
 	{
-		shell->fd_built_in = 1;
+		cmds->fd_out = 1;
 		if (cmds->out_file != (void *)0)
-			shell->fd_built_in = re_output(shell, cmds);
+			cmds->fd_out = re_output(shell, cmds);
 		exec_built_in(shell, cmds);
 	}
 	else
@@ -34,6 +32,8 @@ static void	exec_one(t_data *shell, t_cmd *cmds)
 		if (child_pid == 0)
 			execute_one_cmd(shell, cmds);
 		waitpid(child_pid, &status, 0);
+		if (cmds->fd_in)
+			close(cmds->fd_in);
 		shell->exit_status = status;
 	}
 }
@@ -43,12 +43,14 @@ static void	exec_multiple(t_data *shell, t_cmd *cmds)
 	int	status;
 
 	execute_multiple_cmds(shell, cmds);
-	cmds = shell->cmd_list;
+	cmds = shell->cmd_lst;
 	while (cmds)
 	{
 		waitpid(cmds->pid, &status, 0);
 		shell->exit_status = status;
 		(void)status;
+		if (cmds->fd_in)
+			close(cmds->fd_in);
 		cmds = cmds->next;
 	}
 }
@@ -56,14 +58,12 @@ static void	exec_multiple(t_data *shell, t_cmd *cmds)
 void	executor(t_data *shell)
 {
 	t_cmd	*cmds;
+	int		cmd_count;
 
 	if (shell->restart)
 		return ;
-	if (has_heredoc(shell))
-		capture_heredoc(shell);
-	cmds = shell->cmd_list;
+	cmds = shell->cmd_lst;
 	shell->cmd_count = count_cmds(shell);
-	signals();
 	if (shell->cmd_count == 1)
 		exec_one(shell, cmds);
 	if (shell->cmd_count > 1)

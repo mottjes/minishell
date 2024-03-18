@@ -5,17 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 16:19:45 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/12 18:47:42 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/13 21:08:09 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/14 14:22:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	syntax_error(int i, int *restart)
+void	syntax_error(int i, bool *restart)
 {
 	if (i)
-		*restart = 1;
+		*restart = true;
 	if (i == 1)
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 	else if (i == 2)
@@ -25,7 +25,7 @@ void	syntax_error(int i, int *restart)
 	}
 }
 
-void	syntax_commands(t_token *token, int *restart)
+void	syntax_commands(t_token *token, bool *restart)
 {
 	t_token	*token_prev;
 
@@ -40,11 +40,11 @@ void	syntax_commands(t_token *token, int *restart)
 		token_prev = token;
 		token = token->next;
 	}
-	*restart = 1;
+	*restart = true;
 	return ;
 }
 
-void	syntax_redirections(t_token *token, int *restart)
+void	syntax_redirections(t_token *token, bool *restart)
 {
 	while (token)
 	{
@@ -65,46 +65,6 @@ void	syntax_redirections(t_token *token, int *restart)
 				return ;
 			}
 		}
-		token = token->next;
-	}
-}
-
-void	check_before(t_token *token_prev_2, t_token *token, int *restart)
-{
-	if (token_prev_2->type == PIPE || token_prev_2->type == WORD)
-	{
-		if (token->next)
-		{
-			if (token->next->type == WORD)
-				return ;
-			syntax_error(1, restart);
-		}
-		return ;
-	}
-	return ;
-}
-
-void	syntax_pipe(t_token *token, int *restart)
-{
-	t_token	*token_prev;
-	t_token	*token_prev_2;
-
-	token_prev = token;
-	token_prev_2 = token_prev;
-	while (token)
-	{
-		if (token->type == PIPE)
-		{
-			if (token_prev->type == WORD)
-			{
-				check_before(token_prev_2, token, restart);
-				return ;
-			}
-			syntax_error(1, restart);
-			return ;
-		}
-		token_prev_2 = token_prev;
-		token_prev = token;
 		token = token->next;
 	}
 }

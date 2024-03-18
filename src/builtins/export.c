@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:14:24 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 15:09:05 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/14 15:41:29 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/18 15:15:12 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-int	valid_argument(char *var)
+static int	valid_argument(char *var)
 {
 	int	i;
 
@@ -31,7 +31,7 @@ int	valid_argument(char *var)
 	return (1);
 }
 
-void	print_export(t_data *shell)
+static void	print_export(t_data *shell, t_cmd * cmd)
 {
 	int		size;
 	int		i;
@@ -45,12 +45,13 @@ void	print_export(t_data *shell)
 	sort_envp(shell, size);
 	while (shell->envp[i])
 	{
-		printf("declare -x %s\n", shell->envp[i]);
+		ft_putstr_fd("declare -x ", cmd->fd_out);
+		ft_putendl_fd(shell->envp[i], cmd->fd_out);
 		i++;
 	}
 }
 
-void	add_env_var(t_data *shell, t_cmd *cmd, int j)
+static void	add_env_vars(t_data *shell, t_cmd *cmd, int j)
 {
 	char	**new_envp;
 	int		i;
@@ -58,9 +59,7 @@ void	add_env_var(t_data *shell, t_cmd *cmd, int j)
 	i = 0;
 	while (shell->envp[i])
 		i++;
-	new_envp = malloc(sizeof(char *) * (i + 2));
-	if (!new_envp)
-		malloc_fail(shell);
+	new_envp = safe_malloc(sizeof(char *) * (i + 2), shell);
 	i = 0;
 	while (shell->envp[i])
 	{
@@ -68,12 +67,14 @@ void	add_env_var(t_data *shell, t_cmd *cmd, int j)
 		i++;
 	}
 	new_envp[i] = ft_strdup(cmd->args[j]);
+	if (!new_envp[i])
+		malloc_fail(shell);
 	new_envp[i + 1] = NULL;
 	free_environment(shell);
 	shell->envp = new_envp;
 }
 
-void	compare_to_env_vars(t_data *shell, t_cmd *cmd, int i)
+static void	compare_to_env_vars(t_data *shell, t_cmd *cmd, int i)
 {
 	int	j;
 	int	k;
@@ -104,7 +105,7 @@ void	export(t_data *shell, t_cmd *cmd)
 
 	i = 1;
 	if (!cmd->args[1])
-		return (print_export(shell));
+		return (print_export(shell, cmd));
 	while (cmd->args[i])
 	{
 		if (!valid_argument(cmd->args[i]))
@@ -116,7 +117,7 @@ void	export(t_data *shell, t_cmd *cmd)
 			return ;
 		}
 		compare_to_env_vars(shell, cmd, i);
-		add_env_var(shell, cmd, i);
+		add_env_vars(shell, cmd, i);
 		i++;
 	}
 	shell->exit_status = 0;
