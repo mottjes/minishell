@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:53:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/14 18:15:37 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 13:42:48 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	tokens_count(char *input, bool *restart)
 			{
 				tmp = i;
 				i = skip_quotes(input, i);
-				if (tmp == i - 2)
+				if (tmp == i - 2 && (input[i] == ' ' || input[i] == '\t'))
 					count--;
 				if (input[i] == '\0' && input[i - 1] != '\'' && input[i - 1] != '\"')
 					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = true, 0);
