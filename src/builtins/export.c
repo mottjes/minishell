@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 15:41:29 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 15:15:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 13:54:00 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	valid_argument(char *var)
 	return (1);
 }
 
-static void	print_export(t_data *shell, t_cmd * cmd)
+static void	print_export(t_data *shell, t_cmd *cmd)
 {
 	int		size;
 	int		i;

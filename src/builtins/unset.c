@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 15:41:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/14 16:00:07 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 13:55:04 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ static	void	unset_env_var(t_data *shell, int size, int i)
 	int		j;
 
 	j = 0;
-	new_envp = malloc(sizeof(char *) * size + 1);
-	if (!shell->envp)
-		malloc_fail(shell);
+	new_envp = safe_mallocsizeof(sizeof(char *) * size + 1, shell);
 	while (j < i)
 	{
 		new_envp[j] = ft_strdup(shell->envp[j]);

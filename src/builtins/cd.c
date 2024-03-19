@@ -6,12 +6,11 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 15:41:14 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 15:18:22 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 13:53:44 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 static void	copy_old_pwd(t_data *shell, char *new_pwd)
 {
