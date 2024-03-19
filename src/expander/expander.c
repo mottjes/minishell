@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:15:16 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 15:10:59 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:23:56 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static void	expansion_env_vars(t_data *shell)
 		{
 			if (shell->input[i + 1] == ' ' || shell->input[i + 1] == '\"')
 				i++;
-
 		}
-		if (shell->input[i] == '$' && shell->input[i + 1] != '?' && shell->input[i + 1] != ' ' && shell->input[i + 1])
+		if (shell->input[i] == '$' && shell->input[i + 1] != '?'
+			&& shell->input[i + 1] != ' ' && shell->input[i + 1])
 		{
 			i++;
 			expansion_env_var(shell, i);
@@ -39,7 +39,7 @@ static void	expansion_env_vars(t_data *shell)
 static void	expansion_exit_status(t_data *shell)
 {
 	int	i;
-	
+
 	i = 0;
 	while (shell->input[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:39:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 19:44:53 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:19:02 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	set_shlvl(t_data *shell)
 {
 	char	*shlvl_str;
+	int		shlvl_len;
 	int		shlvl;
 	int		i;
 
@@ -27,9 +28,10 @@ static void	set_shlvl(t_data *shell)
 			shlvl++;
 			shlvl_str = ft_itoa(shlvl);
 			free(shell->envp[i]);
-			shell->envp[i] = safe_malloc(sizeof(char) * ft_strlen(shlvl_str) + 7, shell);
+			shlvl_len = ft_strlen(shlvl_str);
+			shell->envp[i] = safe_malloc(sizeof(char) * shlvl_len + 7, shell);
 			ft_strlcpy(shell->envp[i], "SHLVL=", 7);
-			ft_strlcpy(shell->envp[i] + 6, shlvl_str, ft_strlen(shlvl_str) + 1);
+			ft_strlcpy(shell->envp[i] + 6, shlvl_str, shlvl_len + 1);
 			return ;
 		}
 		i++;

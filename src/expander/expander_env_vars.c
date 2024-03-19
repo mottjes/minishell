@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:36:35 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 21:01:09 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:22:27 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*add_env_var(t_data *shell, int j, int i, int len_var)
 	char	*new_str;
 	int		len_envp;
 	int		size;
-	
+
 	len_envp = ft_strlen(shell->envp[j] + len_var + 1);
 	size = ft_strlen(shell->input);
 	size -= len_var - 1;
@@ -68,7 +68,7 @@ char	*search_env_var(t_data *shell, int i, int len_var)
 		if (!ft_strncmp(&shell->input[i], shell->envp[j], len_var))
 		{
 			if (!ft_strncmp(shell->envp[j] + len_var, "=", 1))
-				new_str = add_env_var(shell, j,  i - 1, len_var);
+				new_str = add_env_var(shell, j, i - 1, len_var);
 		}
 		j++;
 	}

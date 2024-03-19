@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:31:59 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/13 19:41:00 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:23:34 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	expansion_before_redirections(t_data *shell)
 		if ((shell->input[i] == '<' && shell->input[i + 1] != '<')
 			|| (shell->input[i] == '>' && shell->input[i + 1] != '>'))
 		{
-				if (check_before_operator(shell, i))
+			if (check_before_operator(shell, i))
 				i++;
 		}
 		else if ((shell->input[i] == '<' && shell->input[i + 1] == '<')

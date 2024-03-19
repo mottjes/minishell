@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:16:10 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 14:55:11 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:24:33 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	add_exit_status(t_data *shell, int i)
 	char	*nbr_str;
 	int		nbr_len;
 	int		str_len;
-	
+
 	if (shell->exit_status > 255)
 		shell->exit_status = shell->exit_status % 255;
 	nbr_str = ft_itoa(shell->exit_status);
 	nbr_len = ft_strlen(nbr_str);
 	str_len = ft_strlen(shell->input);
-	new_str = safe_malloc(sizeof(char) * (str_len+ nbr_len) + 1, shell);
+	new_str = safe_malloc(sizeof(char) * (str_len + nbr_len) + 1, shell);
 	ft_strlcpy(new_str, shell->input, i + 1);
 	ft_strlcpy(new_str + i, nbr_str, nbr_len + 1);
 	ft_strlcpy(new_str + i + nbr_len, shell->input + i + 2,

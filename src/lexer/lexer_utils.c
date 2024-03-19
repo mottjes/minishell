@@ -6,20 +6,27 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:53:41 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 13:42:48 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:47:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	tokens_count(char *input, bool *restart)
+static bool	quotes_closed(char *input, int i, bool *restart)
 {
-	int	count;
-	int	i;
+	if (input[i] == '\0' && input[i - 1] != '\'' && input[i - 1] != '\"')
+	{
+		ft_putstr_fd("minishell: quotes not closed\n", 2);
+		*restart = true;
+		return (false);
+	}
+	return (true);
+}
+
+int	tokens_count(char *input, bool *restart, int count, int i)
+{
 	int	tmp;
 
-	i = 0;
-	count = 0;
 	while (input[i])
 	{
 		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
@@ -32,18 +39,16 @@ int	tokens_count(char *input, bool *restart)
 			{
 				tmp = i;
 				i = skip_quotes(input, i);
-				if (tmp == i - 2 && (input[i] == ' ' || input[i] == '\t'))
+				if (tmp == i - 2 && input[i] == ' ' && count != 0)
 					count--;
-				if (input[i] == '\0' && input[i - 1] != '\'' && input[i - 1] != '\"')
-					return (ft_putstr_fd("minishell: quotes not closed\n", 2), *restart = true, 0);
+				if (!quotes_closed(input, i, restart))
+					return (0);
 			}
 			else if (input[i])
 				i++;
 		}
 		count++;
 	}
-	if (count == -1)
-		count = 0;
 	return (count);
 }
 
@@ -71,7 +76,7 @@ void	set_token_type(t_data *shell, t_token *token, int i)
 
 int	get_str_size(t_data *shell, int i)
 {
-	int size;
+	int	size;
 	int	tmp;
 
 	size = 0;

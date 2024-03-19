@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:46:48 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 13:35:04 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:46:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	token_add_str(t_data *shell, t_token * token, int i)
+int	token_add_str(t_data *shell, t_token *token, int i)
 {
 	int	j;
 
@@ -58,7 +58,7 @@ void	tokens_str_copy(t_data *shell)
 	t_token	*token;
 	int		size;
 	int		i;
-	
+
 	i = 0;
 	token = shell->token_lst;
 	while (shell->input[i] && token)
@@ -127,7 +127,7 @@ void	lexer(t_data *shell)
 {
 	int	count;
 
-	count = tokens_count(shell->input, &shell->restart);
+	count = tokens_count(shell->input, &shell->restart, 0, 0);
 	if (!count || shell->restart == true)
 	{
 		shell->restart = true;

@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 13:50:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 13:53:12 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:48:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	tokens_str_copy(t_data *shell);
 int		token_add_str(t_data *shell, t_token *token, int i);
 
 // 			lexer_utils.c
-int		tokens_count(char *input, bool *restart);
+int		tokens_count(char *input, bool *restart, int count, int i);
 void	set_token_type(t_data *shell, t_token *token, int i);
 int		get_str_size(t_data *shell, int i);
 
