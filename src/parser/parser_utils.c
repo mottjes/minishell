@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:15:02 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:26:37 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 14:23:27 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,28 @@ void	search_path(t_data *shell, t_cmd *cmds)
 	}
 }
 
+static void	print_error_2(t_data *shell, t_cmd *cmd, int error_nbr)
+{
+	if (error_nbr == 1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->cmd, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		shell->exit_status = 127;
+		shell->restart = true;
+		return ;
+	}
+	if (error_nbr == 2)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->cmd, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		shell->exit_status = 126;
+		shell->restart = true;
+		return ;
+	}
+}
+
 bool	check_path_given(t_data *shell, t_cmd *cmd)
 {
 	struct stat	filestat;
@@ -51,27 +73,13 @@ bool	check_path_given(t_data *shell, t_cmd *cmd)
 		if (!cmd->path)
 			malloc_fail(shell);
 		if (access(cmd->path, F_OK))
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->cmd, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			shell->exit_status = 127;
-			shell->restart = true;
-			return (true);
-		}
+			return (print_error_2(shell, cmd, 1), true);
 		else
 		{
 			if (stat(cmd->path, &filestat) == 0)
 			{
 				if (S_ISDIR(filestat.st_mode))
-				{
-					ft_putstr_fd("minishell: ", 2);
-					ft_putstr_fd(cmd->cmd, 2);
-					ft_putstr_fd(": Is a directory\n", 2);
-					shell->exit_status = 126;
-					shell->restart = true;
-					return (true);
-				}
+					return (print_error_2(shell, cmd, 2), true);
 			}
 		}
 	}

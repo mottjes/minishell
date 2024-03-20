@@ -6,11 +6,28 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 14:14:21 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:19:14 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 14:35:16 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	delete_cmds(t_data *shell, t_cmd *cmd)
+{
+	t_cmd	*cmd_lst;
+	t_cmd	*cmd_lst_next;
+
+	cmd_lst = shell->cmd_lst;
+	while (cmd_lst != cmd)
+	{
+		cmd_lst_next = cmd_lst->next;
+		free_cmd(cmd_lst);
+		cmd_lst = cmd_lst_next;
+	}
+	cmd_lst_next = cmd_lst->next;
+	free_cmd(cmd_lst);
+	shell->cmd_lst = cmd_lst_next;
+}
 
 void	free_cmd(t_cmd *cmd)
 {

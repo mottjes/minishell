@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 13:09:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:15:52 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:09:49 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	t_cmd	*cmd_lst;
 	bool	restart;
 	int		cmd_count;
+	int		index;
 	int		exit_status;
 }			t_data;
 
@@ -124,20 +125,25 @@ void	expander(t_data *shell);
 // 			lexer.c
 void	lexer(t_data *shell);
 void	token_lst_init(t_data *shell, int count);
-void	tokens_identify(t_data *shell);
-void	tokens_str_copy(t_data *shell);
+void	tokens_identify(t_data *shell, char *input);
+void	tokens_str_copy(t_data *shell, char *input);
 int		token_add_str(t_data *shell, t_token *token, int i);
 
 // 			lexer_utils.c
-int		tokens_count(char *input, bool *restart);
+int		tokens_count(char *input, bool *restart, int i, int count);
 void	set_token_type(t_data *shell, t_token *token, int i);
 int		get_str_size(t_data *shell, int i);
+
+// 			lexer_utils2.c
+int		copy_double_quotes(t_data *shell, t_token *token, int j);
+int		copy_single_quotes(t_data *shell, t_token *token, int j);
 
 //----------------------- Parser ------------------------//
 
 // 			heredoc.c
 void	capture_heredoc(t_data *shell, t_token *token, t_cmd *cmd);
 void	unset_heredoc(t_token *token, t_cmd *cmd);
+void	pipe_cmd(t_data *shell, t_cmd *cmd);
 
 // 			init_cmd_table.c
 void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd);
@@ -217,6 +223,7 @@ void	malloc_fail(t_data *shell);
 void	*safe_malloc(size_t bytes, t_data *shell);
 
 // 			free.c
+void	delete_cmds(t_data *shell, t_cmd *cmd);
 void	free_cmd(t_cmd *cmd);
 void	free_cmd_list(t_data *shell);
 void	free_environment(t_data *shell);

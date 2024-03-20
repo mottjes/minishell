@@ -6,11 +6,29 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:12:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:25:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 14:28:31 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	malloc_for_cmds(t_data *shell, t_token *token, t_cmd *cmd)
+{
+	cmd->cmd = ft_strdup(token->str);
+	if (!cmd->cmd)
+		malloc_fail(shell);
+	cmd->args = safe_malloc(sizeof(char *) * (arg_count(token) + 1), shell);
+	return (0);
+}
+
+static void	update_prev_token(t_token **t_ptr, t_token **prev, t_token *t)
+{
+	if (t)
+	{
+		*prev = *t_ptr;
+		*t_ptr = t->next;
+	}
+}
 
 void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd)
 {
@@ -22,11 +40,7 @@ void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd)
 	{
 		if (token->type == WORD && (prev->type == WORD || prev->type == PIPE))
 		{
-			i = 0;
-			cmd->cmd = ft_strdup(token->str);
-			if (!cmd->cmd)
-				malloc_fail(shell);
-			cmd->args = safe_malloc(sizeof(char *) * (arg_count(token) + 1), shell);
+			i = malloc_for_cmds(shell, token, cmd);
 			while (token && token->type == WORD)
 			{
 				cmd->args[i++] = ft_strdup(token->str);
@@ -41,11 +55,7 @@ void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd)
 			cmd->args[i] = NULL;
 			cmd = cmd->next;
 		}
-		if (token)
-		{
-			prev = token;
-			token = token->next;
-		}
+		update_prev_token(&token, &prev, token);
 	}
 }
 
@@ -85,5 +95,6 @@ void	init_cmd_table(t_data *shell)
 	count = cmds_count(shell->token_lst);
 	cmd_list_init(shell, count);
 	cmds_str_copy(shell, shell->token_lst, shell->cmd_lst);
+	capture_heredoc(shell, shell->token_lst, shell->cmd_lst);
 	get_redirections(shell, shell->token_lst);
 }

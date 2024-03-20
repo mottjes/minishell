@@ -6,54 +6,33 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:46:48 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:22:42 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:08:45 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	token_add_str(t_data *shell, t_token *token, int i)
+int	token_add_str(t_data *shell, t_token *token, int j)
 {
-	int	j;
-
-	j = 0;
-	while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
+	shell->index = 0;
+	while (shell->input[j] && shell->input[j] != ' ' && shell->input[j] != '\t')
 	{
-		if (shell->input[i] == '\"')
-		{
-			i++;
-			while (shell->input[i] != '\"' && shell->input[i])
-			{
-				ft_strlcpy(token->str + j, shell->input + i, 2);
-				j++;
-				i++;
-			}
-			if (shell->input[i] == '\"')
-				i++;
-		}
-		else if (shell->input[i] == '\'')
-		{
-			i++;
-			while (shell->input[i] != '\'' && shell->input[i])
-			{
-				ft_strlcpy(token->str + j, shell->input + i, 2);
-				j++;
-				i++;
-			}
-			if (shell->input[i] == '\'')
-				i++;
-		}
+		if (shell->input[j] == '\"')
+			j = copy_double_quotes(shell, token, j);
+		else if (shell->input[j] == '\'')
+			j = copy_single_quotes(shell, token, j);
 		else
 		{
-			ft_strlcpy(token->str + j, shell->input + i, 2);
+			ft_strlcpy(token->str + shell->index, shell->input + j, 2);
 			j++;
-			i++;
+			shell->index++;
 		}
 	}
-	return (i);
+	shell->index = 0;
+	return (j);
 }
 
-void	tokens_str_copy(t_data *shell)
+void	tokens_str_copy(t_data *shell, char *input)
 {
 	t_token	*token;
 	int		size;
@@ -61,15 +40,15 @@ void	tokens_str_copy(t_data *shell)
 
 	i = 0;
 	token = shell->token_lst;
-	while (shell->input[i] && token)
+	while (input[i] && token)
 	{
-		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
+		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 			i++;
-		if (shell->input[i] == '\'' && shell->input[i + 1] == '\'')
+		if (input[i] == '\'' && input[i + 1] == '\'')
 			i += 2;
-		else if (shell->input[i] == '\"' && shell->input[i + 1] == '\"')
+		else if (input[i] == '\"' && input[i + 1] == '\"')
 			i += 2;
-		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
+		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 			i++;
 		size = get_str_size(shell, i);
 		token->str = safe_malloc(sizeof(char) * (size + 1), shell);
@@ -80,21 +59,21 @@ void	tokens_str_copy(t_data *shell)
 	}
 }
 
-void	tokens_identify(t_data *shell)
+void	tokens_identify(t_data *shell, char *input)
 {
 	t_token	*token;
 	int		i;
 
 	i = 0;
 	token = shell->token_lst;
-	while (shell->input[i] && token)
+	while (input[i] && token)
 	{
-		while (shell->input[i] && (shell->input[i] == ' ' || shell->input[i] == '\t'))
+		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
 			i++;
 		set_token_type(shell, token, i);
-		i = skip_quotes(shell->input, i);
+		i = skip_quotes(input, i);
 		token = token->next;
-		while (shell->input[i] && shell->input[i] != ' ' && shell->input[i] != '\t')
+		while (shell->input[i] && input[i] != ' ' && input[i] != '\t')
 			i++;
 	}
 }
@@ -127,13 +106,15 @@ void	lexer(t_data *shell)
 {
 	int	count;
 
-	count = tokens_count(shell->input, &shell->restart);
+	count = tokens_count(shell->input, &shell->restart, 0, 0);
+	if (count == -1)
+		count = 0;
 	if (!count || shell->restart == true)
 	{
 		shell->restart = true;
 		return ;
 	}
 	token_lst_init(shell, count);
-	tokens_identify(shell);
-	tokens_str_copy(shell);
+	tokens_identify(shell, shell->input);
+	tokens_str_copy(shell, shell->input);
 }

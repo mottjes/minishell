@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:07:09 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:26:21 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 14:21:38 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,28 @@ static void	builtin_check(t_cmd *cmd_lst)
 	}
 }
 
+static void	print_error_1(t_data *shell, t_cmd *cmd, int error_nbr)
+{
+	if (error_nbr == 1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		shell->exit_status = 127;
+		shell->restart = true;
+		return ;
+	}
+	if (error_nbr == 2)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->cmd, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		shell->exit_status = 126;
+		shell->restart = true;
+		return ;
+	}
+}
+
 static void	cmd_get_path(t_data *shell, t_cmd *cmd)
 {
 	while (cmd)
@@ -44,23 +66,9 @@ static void	cmd_get_path(t_data *shell, t_cmd *cmd)
 			{
 				search_path(shell, cmd);
 				if (!cmd->path)
-				{
-					ft_putstr_fd("minishell: ", 2);
-					ft_putstr_fd(cmd->cmd, 2);
-					ft_putstr_fd(": command not found\n", 2);
-					shell->exit_status = 127;
-					shell->restart = true;
-					return ;
-				}
+					return (print_error_1(shell, cmd, 1));
 				if (access(cmd->path, X_OK) == -1)
-				{
-					ft_putstr_fd("minishell: ", 2);
-					ft_putstr_fd(cmd->cmd, 2);
-					ft_putstr_fd(": Permission denied\n", 2);
-					shell->exit_status = 126;
-					shell->restart = true;
-					return ;
-				}
+					return (print_error_1(shell, cmd, 2));
 			}
 			cmd = cmd->next;
 		}

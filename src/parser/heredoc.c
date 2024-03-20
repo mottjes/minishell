@@ -6,11 +6,27 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:08:42 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:23:24 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 14:36:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	pipe_cmd(t_data *shell, t_cmd *cmd)
+{
+	int	fd[2];
+
+	if (cmd->next)
+	{
+		if (pipe(fd) == -1)
+			pipe_fail(shell);
+		cmd = cmd->next;
+		cmd->fd_in = fd[0];
+		close(fd[1]);
+	}
+	else
+		shell->exit_status = 1;
+}
 
 static void	read_line(t_token *token, int fd)
 {

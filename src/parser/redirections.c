@@ -6,27 +6,38 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:42:33 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:27:27 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 14:36:23 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	delete_cmds(t_data *shell, t_cmd *cmd)
+static void	print_error_3(t_data *shell, t_cmd *cmd, int error_nbr)
 {
-	t_cmd	*cmd_lst;
-	t_cmd	*cmd_lst_next;
-
-	cmd_lst = shell->cmd_lst;
-	while (cmd_lst != cmd)
+	if (error_nbr == 1)
 	{
-		cmd_lst_next = cmd_lst->next;
-		free_cmd(cmd_lst);
-		cmd_lst = cmd_lst_next;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->in_file, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		shell->exit_status = 1;
+		return ;
 	}
-	cmd_lst_next = cmd_lst->next;
-	free_cmd(cmd_lst);
-	shell->cmd_lst = cmd_lst_next;
+	if (error_nbr == 2)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->in_file, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		shell->exit_status = 1;
+		return ;
+	}
+	if (error_nbr == 3)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->out_file, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		shell->exit_status = 1;
+		return ;
+	}
 }
 
 static bool	check_rights(t_data *shell, t_cmd *cmd)
@@ -34,52 +45,64 @@ static bool	check_rights(t_data *shell, t_cmd *cmd)
 	if (cmd->in_file)
 	{
 		if (access(cmd->in_file, F_OK) == -1)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->in_file, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			shell->exit_status = 1;
-			return (true);
-		}
+			return (print_error_3(shell, cmd, 1), true);
 		if (access(cmd->in_file, R_OK) == -1)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->in_file, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			shell->exit_status = 1;
-			return (true);
-		}
+			return (print_error_3(shell, cmd, 2), true);
 	}
 	if (cmd->out_file)
 	{
 		if (access(cmd->out_file, F_OK) == -1)
 			return (false);
 		else if (access(cmd->out_file, W_OK) == -1)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->out_file, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			shell->exit_status = 1;
-			return (true);
-		}
+			return (print_error_3(shell, cmd, 3), true);
 	}
 	return (false);
 }
 
-static void	pipe_cmd(t_data *shell, t_cmd *cmd)
+int	get_in_file(t_data *shell, t_cmd *cmd, t_token *token)
 {
-	int	fd[2];
-
-	if (cmd->next)
+	if (token->type == RE_IN)
 	{
-		if (pipe(fd) == -1)
-			pipe_fail(shell);
-		cmd = cmd->next;
-		cmd->fd_in = fd[0];
-		close(fd[1]);
+		if (cmd->in_file)
+			free(cmd->in_file);
+		cmd->in_file = ft_strdup(token->next->str);
+		if (!cmd->in_file)
+			malloc_fail(shell);
+		unset_heredoc(token, cmd);
+		if (check_rights(shell, cmd))
+		{
+			pipe_cmd(shell, cmd);
+			delete_cmds(shell, cmd);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int	get_out_file(t_data *shell, t_cmd *cmd, t_token *token)
+{
+	if (cmd->out_file)
+		free(cmd->out_file);
+	cmd->out_file = ft_strdup(token->next->str);
+	if (!cmd->out_file)
+		malloc_fail(shell);
+	if (token->type == RE_APP)
+	{
+		cmd->out_app = true;
+		cmd->fd_out = open(cmd->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	else
-		shell->exit_status = 1;
+	{
+		cmd->out_app = false;
+		cmd->fd_out = open(cmd->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	if (check_rights(shell, cmd))
+	{
+		pipe_cmd(shell, cmd);
+		delete_cmds(shell, cmd);
+		return (1);
+	}
+	return (0);
 }
 
 void	get_redirections(t_data *shell, t_token *token)
@@ -87,49 +110,20 @@ void	get_redirections(t_data *shell, t_token *token)
 	t_cmd	*cmd;
 
 	cmd = shell->cmd_lst;
-	capture_heredoc(shell, token, cmd);
 	while (token)
 	{
 		if (token->type == PIPE)
 			cmd = cmd->next;
-		if (token->type == RE_IN)
+		if (get_in_file(shell, cmd, token))
 		{
-			if (cmd->in_file)
-				free(cmd->in_file);
-			cmd->in_file = ft_strdup(token->next->str);
-			if (!cmd->in_file)
-				malloc_fail(shell);
-			unset_heredoc(token, cmd);
-			if (check_rights(shell, cmd))
-			{
-				pipe_cmd(shell, cmd);
-				delete_cmds(shell, cmd);
-				cmd = shell->cmd_lst;
-				while (token && token->type != PIPE)
-					token = token->next;
-			}		
+			cmd = shell->cmd_lst;
+			while (token && token->type != PIPE)
+				token = token->next;
 		}
 		else if (token->type == RE_OUT || token->type == RE_APP)
 		{
-			if (cmd->out_file)
-				free(cmd->out_file);
-			cmd->out_file = ft_strdup(token->next->str);
-			if (!cmd->out_file)
-				malloc_fail(shell);
-			if (token->type == RE_APP)
+			if (get_out_file(shell, cmd, token))
 			{
-				cmd->out_app = true;
-				cmd->fd_out = open(cmd->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			}
-			else
-			{
-				cmd->out_app = false;
-				cmd->fd_out = open(cmd->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			}
-			if (check_rights(shell, cmd))
-			{
-				pipe_cmd(shell, cmd);
-				delete_cmds(shell, cmd);
 				cmd = shell->cmd_lst;
 				while (token && token->type != PIPE)
 					token = token->next;

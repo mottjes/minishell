@@ -6,7 +6,7 @@
 #    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/14 17:50:41 by mottjes          ###   ########.fr        #
+#    Updated: 2024/03/20 15:10:58 by mottjes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC =	src/main.c									\
 		src/expander/expander.c						\
 		src/input/input.c							\
 		src/lexer/lexer_utils.c						\
+		src/lexer/lexer_utils2.c					\
 		src/lexer/lexer.c							\
 		src/parser/heredoc.c						\
 		src/parser/init_cmd_table.c					\
@@ -46,7 +47,7 @@ SRC =	src/main.c									\
 		
 CC = gcc
 
-CFLAGS = #-Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 OBJ = $(SRC:.c=.o)
 
