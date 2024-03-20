@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 17:45:46 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/19 15:57:05 by frbeyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	exec_multiple(t_data *shell, t_cmd *cmds)
 void	executor(t_data *shell)
 {
 	t_cmd	*cmds;
-	int		cmd_count;
 
 	if (shell->restart)
 		return ;
@@ -70,13 +69,3 @@ void	executor(t_data *shell)
 		exec_multiple(shell, cmds);
 	shell->cmd_count = 0;
 }
-
-// grep "h" test1.txt | wc -l
-// < test1.txt cat | wc -l
-// < test1.txt cat > test_output.txt > test_output2.txt 
-// < test1.txt wc -l | cat > test_output2.txt 
-// < test1.txt cat | wc -l >> test_output2.txt
-// < test1.txt cat | wc -l >> test_output2.txt > test_output3.txt
-// < test1.txt wc -l >> test_output2.txt > test_output3.txt
-// grep "h" test1.txt | grep "a" test1.txt | wc -l
-// grep "h" test1.txt | grep "a" test1.txt | grep "s" test1.txt
