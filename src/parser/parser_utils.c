@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:15:02 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 14:23:27 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:45:42 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	search_path(t_data *shell, t_cmd *cmds)
 	i = 0;
 	while (shell->envp[i] && ft_strncmp(shell->envp[i], "PATH=", 5))
 		i++;
+	if (!shell->envp[i])
+		return ;
 	env_paths = ft_split(shell->envp[i] + 5, ':');
 	cmd_mod = ft_strjoin("/", cmds->cmd);
 	if (!cmd_mod || !env_paths)
