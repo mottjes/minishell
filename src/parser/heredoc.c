@@ -6,13 +6,13 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:08:42 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 14:36:30 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:14:01 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	pipe_cmd(t_data *shell, t_cmd *cmd)
+void	pipe_cmd_2(t_data *shell, t_cmd *cmd)
 {
 	int	fd[2];
 

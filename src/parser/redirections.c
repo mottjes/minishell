@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:42:33 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 14:36:23 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:14:29 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	get_in_file(t_data *shell, t_cmd *cmd, t_token *token)
 		unset_heredoc(token, cmd);
 		if (check_rights(shell, cmd))
 		{
-			pipe_cmd(shell, cmd);
+			pipe_cmd_2(shell, cmd);
 			delete_cmds(shell, cmd);
 			return (1);
 		}
@@ -98,7 +98,7 @@ int	get_out_file(t_data *shell, t_cmd *cmd, t_token *token)
 	}
 	if (check_rights(shell, cmd))
 	{
-		pipe_cmd(shell, cmd);
+		pipe_cmd_2(shell, cmd);
 		delete_cmds(shell, cmd);
 		return (1);
 	}

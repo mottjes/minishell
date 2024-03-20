@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 13:09:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 15:09:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:13:50 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int		copy_single_quotes(t_data *shell, t_token *token, int j);
 // 			heredoc.c
 void	capture_heredoc(t_data *shell, t_token *token, t_cmd *cmd);
 void	unset_heredoc(t_token *token, t_cmd *cmd);
-void	pipe_cmd(t_data *shell, t_cmd *cmd);
+void	pipe_cmd_2(t_data *shell, t_cmd *cmd);
 
 // 			init_cmd_table.c
 void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd);
