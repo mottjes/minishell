@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:38:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 13:32:01 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:37:58 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(t_data));
 	init_environment(&shell, envp);
-	signals();
 	while (1)
 	{
+		signals();
 		input(&shell);
 		expander(&shell);
 		lexer(&shell);
@@ -31,5 +31,3 @@ int	main(int argc, char **argv, char **envp)
 		free_all(&shell);
 	}
 }
-
-// signals_child

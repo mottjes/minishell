@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 15:57:05 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:37:41 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	exec_one(t_data *shell, t_cmd *cmds)
 	}
 	else
 	{
+		signals_child();
 		child_pid = fork();
 		if (child_pid == -1)
 			child_fail(shell);

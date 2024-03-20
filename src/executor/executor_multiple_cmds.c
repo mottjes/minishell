@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_multiple_cmds.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 15:56:31 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/20 15:37:11 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd)
 	int		next_input_fd;
 
 	next_input_fd = 1;
+	signals_child();
 	child_pid = fork();
 	if (child_pid == -1)
 		child_fail(shell);
