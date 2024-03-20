@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:15:02 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 16:18:24 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:26:37 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	search_path(t_data *shell, t_cmd *cmds)
 
 bool	check_path_given(t_data *shell, t_cmd *cmd)
 {
-	struct stat fileStat;
+	struct stat	filestat;
 
 	if (cmd->cmd[0] == '/' || (cmd->cmd[0] == '.' && cmd->cmd[1] == '/'))
 	{
@@ -61,9 +61,9 @@ bool	check_path_given(t_data *shell, t_cmd *cmd)
 		}
 		else
 		{
-			if (stat(cmd->path, &fileStat) == 0)
+			if (stat(cmd->path, &filestat) == 0)
 			{
-        		if(S_ISDIR(fileStat.st_mode))
+				if (S_ISDIR(filestat.st_mode))
 				{
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(cmd->cmd, 2);

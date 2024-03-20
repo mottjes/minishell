@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:42:33 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 17:36:03 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:27:27 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	delete_cmds(t_data *shell, t_cmd *cmd)
 	shell->cmd_lst = cmd_lst_next;
 }
 
-static bool check_rights(t_data *shell, t_cmd *cmd)
+static bool	check_rights(t_data *shell, t_cmd *cmd)
 {
 	if (cmd->in_file)
 	{
@@ -37,7 +37,7 @@ static bool check_rights(t_data *shell, t_cmd *cmd)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->in_file, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);	
+			ft_putstr_fd(": No such file or directory\n", 2);
 			shell->exit_status = 1;
 			return (true);
 		}
@@ -66,14 +66,14 @@ static bool check_rights(t_data *shell, t_cmd *cmd)
 	return (false);
 }
 
-static void	pipe_cmd(t_data *shell, t_cmd * cmd)
+static void	pipe_cmd(t_data *shell, t_cmd *cmd)
 {
 	int	fd[2];
 
 	if (cmd->next)
 	{
 		if (pipe(fd) == -1)
-		pipe_fail(shell);
+			pipe_fail(shell);
 		cmd = cmd->next;
 		cmd->fd_in = fd[0];
 		close(fd[1]);
@@ -82,10 +82,10 @@ static void	pipe_cmd(t_data *shell, t_cmd * cmd)
 		shell->exit_status = 1;
 }
 
-void	get_redirections(t_data *shell, t_token * token)
+void	get_redirections(t_data *shell, t_token *token)
 {
-	t_cmd *cmd;
-	
+	t_cmd	*cmd;
+
 	cmd = shell->cmd_lst;
 	capture_heredoc(shell, token, cmd);
 	while (token)

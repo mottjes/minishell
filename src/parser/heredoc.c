@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:08:42 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/14 17:55:32 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:23:24 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	unset_heredoc(t_token *token, t_cmd *cmd)
 		else
 			token = token->next;
 	}
-	// close(cmd->fd_in);
 	cmd->fd_in = 0;
 	return ;
 }
@@ -61,7 +60,7 @@ void	capture_heredoc(t_data *shell, t_token *token, t_cmd *cmd)
 {
 	int	fd[2];
 	int	count;
-	
+
 	count = count_heredocs(shell->token_lst);
 	while (count)
 	{
@@ -84,5 +83,4 @@ void	capture_heredoc(t_data *shell, t_token *token, t_cmd *cmd)
 		close(fd[1]);
 		count--;
 	}
-
 }

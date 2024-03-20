@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:46:48 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 15:46:49 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:22:42 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	lexer(t_data *shell)
 {
 	int	count;
 
-	count = tokens_count(shell->input, &shell->restart, 0, 0);
+	count = tokens_count(shell->input, &shell->restart);
 	if (!count || shell->restart == true)
 	{
 		shell->restart = true;

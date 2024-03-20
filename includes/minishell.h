@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 13:50:56 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/19 15:48:11 by mottjes          ###   ########.fr       */
+/*   Created: 2024/03/20 13:09:38 by mottjes           #+#    #+#             */
+/*   Updated: 2024/03/20 13:15:52 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_cmd
 // 			environment.c
 void	init_environment(t_data *shell, char **envp);
 
-//---------------------- Signals ------------------------//
+//----------------------- Signals -----------------------//
 
 // 			signals.c
 void	signals_child(void);
@@ -96,7 +96,7 @@ void	signals(void);
 // 			input.c
 void	input(t_data *shell);
 
-//---------------------- Expander ------------------------//
+//--------------------- Expander ------------------------//
 
 //			expander_env_vars.c
 int		skip_single_quotes(t_data *shell, int i);
@@ -129,7 +129,7 @@ void	tokens_str_copy(t_data *shell);
 int		token_add_str(t_data *shell, t_token *token, int i);
 
 // 			lexer_utils.c
-int		tokens_count(char *input, bool *restart, int count, int i);
+int		tokens_count(char *input, bool *restart);
 void	set_token_type(t_data *shell, t_token *token, int i);
 int		get_str_size(t_data *shell, int i);
 
@@ -152,6 +152,7 @@ int		arg_count(t_token *token);
 
 // 			parser.c
 void	parser(t_data *shell);
+void	check_parser(t_data *shell);
 
 // 			redirections.c
 void	get_redirections(t_data *shell, t_token *token);
@@ -161,7 +162,7 @@ void	syntax_error(int i, bool *restart);
 void	syntax_commands(t_token *token, bool *restart);
 void	syntax_redirections(t_token *token, bool *restart);
 
-//--------------------- Executor ------------------------//
+//---------------------- Executor -----------------------//
 
 // 			executor_builtins.c
 void	exec_built_in(t_data *shell, t_cmd *cmd);
@@ -179,7 +180,7 @@ int		count_cmds(t_data *shell);
 // 			executor.c
 void	executor(t_data *shell);
 
-//--------------------- Builtins  -----------------------//
+//---------------------- Builtins -----------------------//
 
 // 			cd.c
 void	cd(t_data *shell, t_cmd *cmd);
@@ -207,7 +208,7 @@ void	pwd(t_data *shell, t_cmd *cmd);
 // 			unset.c
 void	unset(t_data *shell, t_cmd *cmd);
 
-//--------------------- Error  -----------------------//
+//---------------------- Error --------------------------//
 
 // 			error.c
 void	pipe_fail(t_data *shell);

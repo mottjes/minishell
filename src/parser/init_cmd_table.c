@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:12:06 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 15:01:23 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:25:46 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd)
 {
-	t_token *prev;
+	t_token	*prev;
 	int		i;
 
 	prev = token;
@@ -32,14 +32,14 @@ void	cmds_str_copy(t_data *shell, t_token *token, t_cmd *cmd)
 				cmd->args[i++] = ft_strdup(token->str);
 				token = token->next;
 				while (token && (token->type == RE_IN || token->type == RE_OUT
-					|| token->type == RE_APP || token->type == HERE_DOC))
+						|| token->type == RE_APP || token->type == HERE_DOC))
 				{
 					token = token->next;
 					token = token->next;
 				}
 			}
 			cmd->args[i] = NULL;
-			cmd = cmd->next;		
+			cmd = cmd->next;
 		}
 		if (token)
 		{

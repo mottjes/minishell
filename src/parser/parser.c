@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:07:09 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/18 16:21:31 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:26:21 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	cmd_get_path(t_data *shell, t_cmd *cmd)
 					shell->restart = true;
 					return ;
 				}
-				if (access(cmd->path, X_OK) == - 1)
+				if (access(cmd->path, X_OK) == -1)
 				{
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(cmd->cmd, 2);
@@ -80,7 +80,6 @@ void	parser(t_data *shell)
 		shell->exit_status = 2;
 		return ;
 	}
-	
 	init_cmd_table(shell);
 	builtin_check(shell->cmd_lst);
 	cmd_get_path(shell, shell->cmd_lst);
