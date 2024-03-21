@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 15:41:26 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:16:30 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 16:05:38 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	check_arguments(t_data *shell, t_cmd *cmd)
 void	ft_exit(t_data *shell, t_cmd *cmd)
 {
 	shell->exit_status = 0;
-	ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("exit\n", cmd->fd_out);
 	check_arguments(shell, cmd);
 	rl_clear_history();
 	free_all(shell);

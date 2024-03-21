@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 15:37:11 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 16:45:06 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	set_output(t_data *shell, t_cmd *cmds, int i, int fd)
 	return (output_fd);
 }
 
-static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd)
+static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd, int fd[2])
 {
 	pid_t	child_pid;
 	int		next_input_fd;
@@ -45,7 +45,15 @@ static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd)
 		}
 		if (dup2(output_fd, STDOUT_FILENO) >= 0
 			&& dup2(input_fd, STDIN_FILENO) >= 0)
-			execve(cmds->path, cmds->args, shell->envp);
+			{
+				if (output_fd > 3)
+					close(output_fd);
+				if (input_fd > 3)
+					close(input_fd);
+				close(fd[1]);
+				close(fd[0]);
+				execve(cmds->path, cmds->args, shell->envp);
+			}
 		exit(0);
 	}
 	cmds->pid = child_pid;
@@ -74,7 +82,7 @@ static void	pipe_cmd(t_data *shell, t_cmd *cmds, int i, int input_fd)
 				pipe_fail(shell);
 		}
 		output_fd = set_output(shell, cmds, i, fd[1]);
-		next_input_fd = fork_child(shell, cmds, input_fd, output_fd);
+		next_input_fd = fork_child(shell, cmds, input_fd, output_fd, fd);
 		if (i < shell->cmd_count - 1)
 			next_input_fd = fd[0];
 		if (cmds->next)
