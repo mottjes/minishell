@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frbeyer <frbeyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:02:31 by frbeyer           #+#    #+#             */
-/*   Updated: 2024/03/19 13:44:56 by frbeyer          ###   ########.fr       */
+/*   Updated: 2024/03/21 17:27:30 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int	re_output(t_data *shell, t_cmd *cmds)
 	else
 		fd = open(cmds->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	return (fd);
+}
+
+void	close_pipe(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
 }
 
 int	count_cmds(t_data *shell)

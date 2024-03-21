@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 13:09:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/21 17:03:17 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 17:27:54 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	execute_one_cmd(t_data *shell, t_cmd *cmds);
 
 // 			executor_utils.c
 int		re_output(t_data *shell, t_cmd *cmds);
+void	close_pipe(int fd[2]);
 int		count_cmds(t_data *shell);
 
 // 			executor.c

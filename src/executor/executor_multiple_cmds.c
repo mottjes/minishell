@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/21 16:45:06 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 17:28:18 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	set_output(t_data *shell, t_cmd *cmds, int i, int fd)
 	return (output_fd);
 }
 
-static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd, int fd[2])
+static int	fork_child(t_data *shell, t_cmd *cmds, int fd[2])
 {
 	pid_t	child_pid;
 	int		next_input_fd;
@@ -39,21 +39,15 @@ static int	fork_child(t_data *shell, t_cmd *cmds, int input_fd, int output_fd, i
 	{
 		if (cmds->builtin == 1)
 		{
-			cmds->fd_out = output_fd;
 			exec_built_in(shell, cmds);
 			next_input_fd = cmds->fd_out;
 		}
-		if (dup2(output_fd, STDOUT_FILENO) >= 0
-			&& dup2(input_fd, STDIN_FILENO) >= 0)
-			{
-				if (output_fd > 3)
-					close(output_fd);
-				if (input_fd > 3)
-					close(input_fd);
-				close(fd[1]);
-				close(fd[0]);
-				execve(cmds->path, cmds->args, shell->envp);
-			}
+		if (dup2(cmds->fd_out, STDOUT_FILENO) >= 0
+			&& dup2(cmds->fd_in, STDIN_FILENO) >= 0)
+		{
+			close_pipe(fd);
+			execve(cmds->path, cmds->args, shell->envp);
+		}
 		exit(0);
 	}
 	cmds->pid = child_pid;
@@ -82,7 +76,9 @@ static void	pipe_cmd(t_data *shell, t_cmd *cmds, int i, int input_fd)
 				pipe_fail(shell);
 		}
 		output_fd = set_output(shell, cmds, i, fd[1]);
-		next_input_fd = fork_child(shell, cmds, input_fd, output_fd, fd);
+		cmds->fd_in = input_fd;
+		cmds->fd_out = output_fd;
+		next_input_fd = fork_child(shell, cmds, fd);
 		if (i < shell->cmd_count - 1)
 			next_input_fd = fd[0];
 		if (cmds->next)
