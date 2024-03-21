@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 13:09:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 15:13:50 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 17:03:17 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	cmd_list_init(t_data *shell, int count);
 void	init_cmd_table(t_data *shell);
 
 // 			parser_utils.c
-void	search_path(t_data *shell, t_cmd *cmds);
+void	search_path(t_data *shell, t_cmd *cmds, int i);
 bool	check_path_given(t_data *shell, t_cmd *cmd);
 int		cmds_count(t_token *token);
 int		arg_count(t_token *token);

@@ -6,20 +6,18 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:15:02 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 15:45:42 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 17:03:08 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	search_path(t_data *shell, t_cmd *cmds)
+void	search_path(t_data *shell, t_cmd *cmds, int i)
 {
 	char	**env_paths;
 	char	*cmd_mod;
 	char	*cmd_path;
-	int		i;
 
-	i = 0;
 	while (shell->envp[i] && ft_strncmp(shell->envp[i], "PATH=", 5))
 		i++;
 	if (!shell->envp[i])

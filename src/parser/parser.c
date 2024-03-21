@@ -6,7 +6,7 @@
 /*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:07:09 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 14:21:38 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/03/21 17:02:54 by mottjes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	cmd_get_path(t_data *shell, t_cmd *cmd)
 		{
 			if (!check_path_given(shell, cmd))
 			{
-				search_path(shell, cmd);
+				search_path(shell, cmd, 0);
 				if (!cmd->path)
 					return (print_error_1(shell, cmd, 1));
 				if (access(cmd->path, X_OK) == -1)
