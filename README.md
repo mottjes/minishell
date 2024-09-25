@@ -16,7 +16,7 @@ This was a group project consisting of [@frbeyer](https://github.com/frbeyer1) a
 - **Ctrl-C, Ctrl-D, Ctrl-\ Handling**: The shell behaves like bash with respect to these keyboard shortcuts:
     - Ctrl-C: Displays a new prompt on a new line.
     - Ctrl-D: Exits the shell.
-    - Ctrl-\: No action taken.
+    - Ctrl-\\: No action taken.
 
 - **Command History**
 
