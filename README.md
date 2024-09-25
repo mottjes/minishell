@@ -52,7 +52,7 @@ Follow these steps to set up and run Minishell on your system:
 1. **Clone the Repository**:
 
     ```sh
-    git clone https://github.com/yourname/minishell.git
+    git https://github.com/mottjes/minishell.git
     ```
 
 2. **Navigate to the Directory**:
