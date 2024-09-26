@@ -43,7 +43,7 @@ This was a group project consisting of [@frbeyer](https://github.com/frbeyer1) a
     - `env` with no options or arguments
     - `exit` with no options
 
-For more detail read the [subject.pdf](https://github.com/mottjes/minishell/en.subject.pdf)
+For more detail read the [subject.pdf](https://github.com/mottjes/minishell/blob/main/en.subject.pdf)
 
 ### Installation
 
