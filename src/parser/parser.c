@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:07:09 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/21 17:02:54 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/09/26 19:23:53 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+bool	check_path_given(t_data *shell, t_cmd *cmd)
+{
+	struct stat	filestat;
+
+	if (cmd->cmd[0] == '/' || (cmd->cmd[0] == '.' && cmd->cmd[1] == '/'))
+	{
+		cmd->path = ft_strdup(cmd->cmd);
+		if (!cmd->path)
+			malloc_fail(shell);
+		if (access(cmd->path, F_OK))
+			return (print_error_2(shell, cmd, 1), true);
+		else
+		{
+			if (stat(cmd->path, &filestat) == 0)
+			{
+				if (S_ISDIR(filestat.st_mode))
+					return (print_error_2(shell, cmd, 2), true);
+			}
+		}
+	}
+	return (false);
+}
 
 static void	builtin_check(t_cmd *cmd_lst)
 {
@@ -83,6 +106,8 @@ void	parser(t_data *shell)
 		return ;
 	syntax_commands(shell->token_lst, &shell->restart);
 	syntax_redirections(shell->token_lst, &shell->restart);
+	if (!shell->restart)
+		syntax_pipes(shell->token_lst, &shell->restart);
 	if (shell->restart == true)
 	{
 		shell->exit_status = 2;

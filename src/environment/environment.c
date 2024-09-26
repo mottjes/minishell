@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:39:01 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/20 13:18:19 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/09/26 18:23:43 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static	void	shlvl_to_high(int *shlvl)
+{
+	ft_putstr_fd("bash: warning: shell level (", 2);
+	ft_putnbr_fd(*shlvl, 2);
+	ft_putstr_fd(") too high, resetting to 1\n", 2);
+	*shlvl = 1;
+}
 
 static void	set_shlvl(t_data *shell)
 {
@@ -26,12 +34,15 @@ static void	set_shlvl(t_data *shell)
 		{
 			shlvl = ft_atoi(shell->envp[i] + 6);
 			shlvl++;
+			if (shlvl > 999)
+				shlvl_to_high(&shlvl);
 			shlvl_str = ft_itoa(shlvl);
 			free(shell->envp[i]);
 			shlvl_len = ft_strlen(shlvl_str);
 			shell->envp[i] = safe_malloc(sizeof(char) * shlvl_len + 7, shell);
 			ft_strlcpy(shell->envp[i], "SHLVL=", 7);
 			ft_strlcpy(shell->envp[i] + 6, shlvl_str, shlvl_len + 1);
+			free(shlvl_str);
 			return ;
 		}
 		i++;

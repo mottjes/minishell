@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+         #
+#    By: mika <mika@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 14:33:05 by mottjes           #+#    #+#              #
-#    Updated: 2024/03/20 15:18:05 by mottjes          ###   ########.fr        #
+#    Updated: 2024/09/26 16:00:46 by mika             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,16 +44,14 @@ SRC =	src/main.c									\
 		src/parser/redirections.c					\
 		src/parser/syntax.c							\
 		src/signals/signals.c						\
-		
-CC = gcc
-
-CFLAGS = -Wall -Wextra -Werror
-
+	
 OBJ = $(SRC:.c=.o)
 
-LIBFT = libft/libft.a
+CC = gcc
 
-READLINE_PATH = $(PWD)/readline
+CFLAGS = -Wall -Wextra -Werror -no-pie
+
+LIBFT = libft/libft.a
 
 GREEN = "\033[1;32m"
 
@@ -63,19 +61,10 @@ RED = "\033[1;31m"
 
 NONE = "\033[0m"
 
-UNAME := $(shell uname)
-
-ifeq ($(UNAME), Linux)
-	LIBREADLINE_FLAGS = -lreadline -lhistory
-	CFLAGS += -no-pie
-else ifeq ($(UNAME), Darwin)
-	LIBREADLINE_FLAGS = -I$(READLINE_PATH)/include -L$(READLINE_PATH)/lib -lreadline -lhistory -ltermcap
-endif
-
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT) $(LIBREADLINE_FLAGS)
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT) -lreadline -lhistory
 	@echo $(GREEN)$(NAME) compiled $(NONE)
 	
 %.o: %.c

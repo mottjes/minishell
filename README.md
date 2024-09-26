@@ -43,11 +43,17 @@ This was a group project consisting of [@frbeyer](https://github.com/frbeyer1) a
     - `env` with no options or arguments
     - `exit` with no options
 
-For more detail: The subject pdf is inside of the project folder.
+For more detail read the [subject.pdf](https://github.com/mottjes/minishell/en.subject.pdf)
 
 ### Installation
 
 Follow these steps to set up and run Minishell on your system:
+
+#### Requirements:
+
+    - GCC / CLANG Compiler
+    - GNU Make
+    - GNU Readline library
 
 1. **Clone the Repository**:
 
@@ -55,21 +61,14 @@ Follow these steps to set up and run Minishell on your system:
     git https://github.com/mottjes/minishell.git
     ```
 
-2. **Navigate to the Directory**:
-
-    ```sh
-    cd minishell
-    ```
-
-3. **Compile the Code**: Ensure you have `make` and `gcc` installed on your system.
+2. **Compile the Code**:
 
     ```sh
     make
     ```
 
-4. **Launch the Executable**:
+3. **Launch the Executable**:
 
     ```sh
     ./minishell
     ```
-    

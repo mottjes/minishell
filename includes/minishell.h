@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 13:09:38 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/21 17:27:54 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/09/26 19:24:00 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
@@ -22,10 +23,8 @@
 # include <sys/stat.h>
 # include <signal.h>
 # include <errno.h>
-# include "../libft/libft.h"
-# define READLINE_LIBRARY
-# include "../readline/include/history.h"
-# include "../readline/include/readline.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_token	t_token;
 typedef struct s_cmd	t_cmd;
@@ -151,22 +150,24 @@ void	cmd_list_init(t_data *shell, int count);
 void	init_cmd_table(t_data *shell);
 
 // 			parser_utils.c
+
 void	search_path(t_data *shell, t_cmd *cmds, int i);
-bool	check_path_given(t_data *shell, t_cmd *cmd);
 int		cmds_count(t_token *token);
 int		arg_count(t_token *token);
+void	print_error_2(t_data *shell, t_cmd *cmd, int error_nbr);
 
 // 			parser.c
 void	parser(t_data *shell);
-void	check_parser(t_data *shell);
+bool	check_path_given(t_data *shell, t_cmd *cmd);
 
 // 			redirections.c
 void	get_redirections(t_data *shell, t_token *token);
 
 // 			syntax.c
-void	syntax_error(int i, bool *restart);
+void	syntax_error(t_token *token, bool *restart);
 void	syntax_commands(t_token *token, bool *restart);
 void	syntax_redirections(t_token *token, bool *restart);
+void	syntax_pipes(t_token *token, bool *restart);
 
 //---------------------- Executor -----------------------//
 

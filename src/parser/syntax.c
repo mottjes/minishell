@@ -3,26 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:08:09 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/14 14:22:33 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/09/26 17:24:41 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	syntax_error(int i, bool *restart)
+void	syntax_error(t_token *token, bool *restart)
 {
-	if (i)
-		*restart = true;
-	if (i == 1)
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-	else if (i == 2)
+	if (!token)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	}
+	else
+		*restart = true;
+	if (token->type == PIPE)
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+	else if (token->type == RE_IN)
+		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+	else if (token->type == RE_OUT)
+		ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+	else if (token->type == RE_APP)
+		ft_putstr_fd("minishell: syntax error near unexpected token `>>'\n", 2);
+	else if (token->type == HERE_DOC)
+		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 2);
 }
 
 void	syntax_commands(t_token *token, bool *restart)
@@ -55,16 +63,44 @@ void	syntax_redirections(t_token *token, bool *restart)
 			{
 				if (token->next->type != WORD)
 				{
-					syntax_error(1, restart);
+					syntax_error(token->next, restart);
 					return ;
 				}
 			}
 			else
 			{
-				syntax_error(2, restart);
+				syntax_error(token->next, restart);
 				return ;
 			}
 		}
 		token = token->next;
 	}
+}
+
+void	syntax_pipes(t_token *token, bool *restart)
+{
+	t_token	*pipe_ptr;
+	bool	pipe;
+
+	pipe_ptr = NULL;
+	pipe = false;
+	while (token)
+	{
+		if (pipe == true)
+		{
+			if (token->type == PIPE)
+				break ;
+			if (token->type == WORD)
+				pipe = false;
+		}
+		if (token->type == PIPE)
+		{
+			pipe_ptr = token;
+			pipe = true;
+		}
+		token = token->next;
+	}
+	if (pipe == true)
+		syntax_error(pipe_ptr, restart);
+	return ;
 }

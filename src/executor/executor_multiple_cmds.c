@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_multiple_cmds.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mottjes <mottjes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mika <mika@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:55:15 by mottjes           #+#    #+#             */
-/*   Updated: 2024/03/21 17:28:18 by mottjes          ###   ########.fr       */
+/*   Updated: 2024/09/26 19:58:53 by mika             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	fork_child(t_data *shell, t_cmd *cmds, int fd[2])
 			exec_built_in(shell, cmds);
 			next_input_fd = cmds->fd_out;
 		}
-		if (dup2(cmds->fd_out, STDOUT_FILENO) >= 0
+		else if (dup2(cmds->fd_out, STDOUT_FILENO) >= 0
 			&& dup2(cmds->fd_in, STDIN_FILENO) >= 0)
 		{
 			close_pipe(fd);
